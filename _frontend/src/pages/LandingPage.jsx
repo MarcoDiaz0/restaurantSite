@@ -1,8 +1,10 @@
 
 const LandingPage = () => {
   return (
-    <div>LandingPage</div>
-  )
+    <div className="lg:w-6/10 m-auto">
+      
+    </div>
+  );
 }
 
 export default LandingPage

@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const customerSchema = new mongoose.Schema(
+const RestaurantSchema = new mongoose.Schema(
   {
     username: {
       type: String,
@@ -14,19 +14,18 @@ const customerSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    address: {
-      type: String,
-    },
     phoneNumber: {
       type: Number,
+      required: false,
     },
-    commands:{
-      type: Array,
-    }
+    restaurantName: {
+      type: String,
+      required: false,
+    },
   },
   {
     timestamps: true, // created at , updated at
   }
 );
-const customers = mongoose.model("customers", customerSchema);
-export default customers;
+const Restaurants = mongoose.model("Restaurants", RestaurantSchema);
+export default Restaurants;

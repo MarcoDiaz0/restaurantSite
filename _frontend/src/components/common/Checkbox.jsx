@@ -1,4 +1,4 @@
-import React from "react";
+/* eslint-disable react/prop-types */
 import { FaCheck } from "react-icons/fa";
 
 export default function Checkbox({
@@ -13,7 +13,9 @@ export default function Checkbox({
       onClick={() => {
         !disabled && onCheck(!check);
       }}
-      className={`flex gap-2 items-center cursor-pointer  font-bold tracking-wide text-[16px] ${disabled && "!cursor-not-allowed opacity-50"}`}
+      className={`flex gap-2 items-center text-center cursor-pointer  font-bold tracking-wide text-[16px] ${
+        disabled && "!cursor-not-allowed opacity-50"
+      }`}
     >
       <div
         className={`w-5 h-5 border rounded-[5px] text-[12px] grid place-content-center  duration-300 ${className}
