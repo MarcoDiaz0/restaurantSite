@@ -1,8 +1,19 @@
 @import "tailwindcss";
-@theme{
-    --color-prime: rgb(255,122,43);
-    --color-lightPrime: rgb(255, 165, 113);
-    --color-second: rgb(255,239,230);
-    --color-light: rgb(255,255,255);
-    --color-dark: rgb(28, 23, 72);
+@theme {
+  --color-prime: rgb(255, 122, 43);
+  --color-lightPrime: rgb(255, 165, 113);
+  --color-second: rgb(255, 239, 230);
+  --color-light: rgb(255, 255, 255);
+  --color-dark: rgb(0, 0, 0);
+}
+
+.backgroundImageMD {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-image: url(./images/landingPagePic.jpg);
+}
+
+.img {
+  background-image: url(./images/landingPagePhoneS.jpg);
 }

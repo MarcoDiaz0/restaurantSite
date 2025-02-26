@@ -4,7 +4,7 @@ import { authSlice } from "../../Store/user";
 
 const Navbar = () => {
   const { pathname: location } = useLocation();
-  const btnclass = " border-b-2 tracking-wider";
+  const btnclass = " border-b-2 tracking-wider text-prime";
   const { auth, isOwner } = authSlice();
   return (
     <div className="w-full mb-3 p-5 gap-2  sm:flex-row flex flex-col items-center  sm:justify-between ">
@@ -31,7 +31,7 @@ const Navbar = () => {
           </Link>
         ))}
       </div>
-      <Link to={!auth? "sign" : isOwner? "profileRes":"profileCus" }>
+      <Link to={!auth ? "sign" : isOwner? "profileRes":"profileCus" }>
         <div className=" bg-white py-1 px-2 cursor-pointer hover:text-prime duration-200 rounded-full border-2">
           <FaRegUserCircle className="w-6 h-6" />
         </div>

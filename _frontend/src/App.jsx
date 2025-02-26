@@ -6,15 +6,13 @@ import Sign from "./pages/Sign";
 function App() {
 
   return (
-    <div className="bg-light text-dark min-h-[100vh] overflow-x-hidden">
+    <div className=" text-dark min-h-[100vh] overflow-x-hidden">
       <BrowserRouter>
-      <NavBar />
-      <Routes>
-        <Route path="/" element={<LandingPage/>} />
-        <Route path="/sign" element={<Sign />} />
-        
-        
-      </Routes>
+        <NavBar />
+        <Routes>
+          <Route path="/" element={<LandingPage />} />
+          <Route path="/sign" element={<Sign />} />
+        </Routes>
       </BrowserRouter>
     </div>
   );

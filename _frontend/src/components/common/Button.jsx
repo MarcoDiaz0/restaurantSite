@@ -1,5 +1,4 @@
-import React from "react";
-import { Ripple } from "react-ripple-click";
+/* eslint-disable react/prop-types */
 
 function Button({
   type = "button",
@@ -22,7 +21,7 @@ function Button({
       disabled={disabled}
     >
       {children}
-      <Ripple />
+      
     </button>
   );
 }
