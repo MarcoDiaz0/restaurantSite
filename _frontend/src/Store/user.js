@@ -10,5 +10,3 @@ export const authSlice = create((set) => ({
   isOwner: false,
   setOwner: (value) => set(() => ({ isOwner: value })),
 }));
-
-

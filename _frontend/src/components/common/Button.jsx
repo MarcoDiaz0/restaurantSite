@@ -15,7 +15,7 @@ function Button({
       type={type}
       id={id}
       onClick={onClick}
-      className={`relative overflow-hidden duration-300  isolate active:translate-y-0.5  ${className} 
+      className={`relativ cursor-pointer overflow-hidden duration-300  isolat active:translate-y-0.5  ${className} 
         ${disabled && "opacity-50 cursor-not-allowed pointer-events-none"}
         `}
       disabled={disabled}

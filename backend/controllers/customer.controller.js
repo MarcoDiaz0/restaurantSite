@@ -12,6 +12,7 @@ export const createCustomer = async (req, res) => {
   const usernameExist = await customers.findOne({
     username: username,
   });
+  
   if (usernameExist) {
     return res
       .status(403)
