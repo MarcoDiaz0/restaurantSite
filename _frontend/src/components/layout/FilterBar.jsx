@@ -4,6 +4,7 @@ import Select from "../common/Select";
 import { FaLocationDot } from "react-icons/fa6";
 import { MdOutlineDownloadDone } from "react-icons/md";
 import { useFiltersStore } from "../../Store/filters";
+import { IoMdOptions } from "react-icons/io";
 
 const FilterBar = () => {
   const foodType = ["Plate", "Fastfood", "Drink", "Dessert"];
@@ -27,8 +28,8 @@ const FilterBar = () => {
     <div className="md:flex flex-col hidden   col-span-1 rounded min-h-[80vh] border border-prime p-2">
       <div className="flex justify-between px-2 items-center">
         <h1 className="text-2xl">FELTERS</h1>
-        <Button className="hover:bg-prime duration-300 hover:text-light rounded p-2">
-          Reset
+        <Button className="hover:bg-prime text-3xl duration-300 hover:text-light rounded">
+          <IoMdOptions className="p-1" />
         </Button>
       </div>
       <div className="flex w-full flex-col gap-1 ">

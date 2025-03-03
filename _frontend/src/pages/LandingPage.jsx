@@ -24,6 +24,7 @@ const LandingPage = () => {
   const [buttonValue, setButtonValue] = useState(
     <FaLocationDot className="h-4 w-4 mx-2 flex" />
   );
+
   const getLocation = () => {
     if ("geolocation" in navigator) {
       navigator.geolocation.getCurrentPosition((position) => {
@@ -39,7 +40,7 @@ const LandingPage = () => {
   return (
     <div>
       <div className={` backgroundImageMD text-light md:py-30  flex`}>
-        <div className=" text-center bg-dark/80 md:min-w-1/2 px-2  rounded-3xl m-auto py-10">
+        <div className=" text-center backdrop-blur-xs bg-dark/80 md:min-w-1/2 px-2  rounded-3xl m-auto py-10">
           <h1 className="text-4xl">Find food and drinks online</h1>
           <div className="flex w-full md:w-3/5 flex-col md:flex-row gap-2 justify-self-center justify-around">
             <Select
@@ -90,7 +91,9 @@ const LandingPage = () => {
         className="h-96 my-10"
       >
         <SwiperSlide>
-          <img src={Search} className={SlideStyle} />
+          <div>
+            <img src={Search} className={SlideStyle} />
+          </div>
         </SwiperSlide>
         <SwiperSlide>
           <img src={Location} className={SlideStyle} />

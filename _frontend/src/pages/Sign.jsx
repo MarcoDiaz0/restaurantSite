@@ -6,7 +6,7 @@ import Login from "../components/Auth/Login";
 export default function Sign() {
   const [isSignUp, setIssignUp] = useState(true);
   return (
-    <div className="relative w-screen overflow-x-hidden h-full">
+    <div className="relative  overflow-x-hidden h-full">
       <div
         className={`absolute duration-500 -left-full top-0  ${
           isSignUp && "translate-x-full relative"
