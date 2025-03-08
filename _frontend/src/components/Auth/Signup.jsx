@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import { useEffect, useState } from "react";
 import Input from "../common/Input.jsx";
 import { IoIosMail, IoMdKey } from "react-icons/io";
 import { FaRegCircleUser } from "react-icons/fa6";
@@ -6,25 +6,44 @@ import GoogleSign from "./GoogleSign";
 import Button from "../common/Button.jsx";
 import { useSignup } from "../../hooks/useAuth.jsx";
 import Checkbox from "../common/Checkbox.jsx";
-const Signup = () => {
+import { useModal } from "../../Store/modal.js";
+import Lottie from "lottie-react";
+import Loader from "../../images/Loader.json";
+import { authSlice } from "../../Store/user.js";
 
+const Signup = () => {
   const [credentials, setCredentials] = useState({
     email: "marco@gmail.com",
     username: "marco",
     password: "marco1",
     confirmPassword: "marco1",
-    isOwner: false
   });
-  const { loading, signup, err } = useSignup()
+    const { isOwner, setOwner } = authSlice();
+  
+  const [minWait, setMinWait] = useState(false);
+  useEffect(() => {
+    const timeout = setTimeout(() => {
+      setMinWait(false);
+    }, 60000);
+    return () => {
+      clearTimeout(timeout);
+    };
+  }, [minWait]);
+  const { setModal} = useModal();
+  const { loading, signup, err } = useSignup();
   const btnclass =
-    " hover:bg-prime w-full  m-auto hover:text-light border border-grayText rounded-md text-grayText p-2";
+    " hover:bg-prime w-full flex justify-center  hover:text-light border p-2 rounded-md";
   return (
     <form
-      onSubmit={(e) => {
+      onSubmit={async (e) => {
         e.preventDefault();
-        signup(credentials);
+        const res = await signup(credentials);
+        if (res?.data?.success) {
+          setMinWait(true);
+          setModal(true, "signup");
+        }
       }}
-      className="relative my-4 mx-1.5 py-2 md:w-1/2 grow p-2 rounded-lg flex flex-col gap-3"
+      className="  my-4 mx-1.5 md:w-1/2 px-2 rounded-lg flex flex-col gap-3"
     >
       <h1 className=" text-3xl self-center font-medium text-center ">
         JOIN NEARBY<span className="text-prime">FOOD </span> NOW
@@ -81,20 +100,18 @@ const Signup = () => {
       </div>
       <div className="my-3 w-full flex gap-1 tracking-wider font-bold">
         <Checkbox
-          check={credentials.isOwner}
-          onCheck={() =>
-            setCredentials((ls) => ({
-              ...ls,
-              isOwner: !ls.isOwner,
-            }))
-          }
-          text="I am a Restaurant Owner "
-          className="ml-2"
+          check={isOwner}
+          onCheck={setOwner}
+          text="I am a Restaurant Owner"
         />
       </div>
-      {}
-      <Button type="submit" className={btnclass}>
-        {loading ? "..." : "SIGNUP"}
+      {minWait && <p className="m-auto">Please wait for 1 min</p>}
+      <Button type="submit" disabled={minWait} className={btnclass}>
+        {loading ? (
+          <Lottie animationData={Loader} className=" w-7" />
+        ) : (
+          "SIGN UP"
+        )}
       </Button>
     </form>
   );

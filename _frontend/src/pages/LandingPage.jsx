@@ -1,8 +1,6 @@
 import Select from "../components/common/Select";
 import Button from "../components/common/Button";
 import { Link } from "react-router-dom";
-import { FaLocationDot } from "react-icons/fa6";
-import { MdOutlineDownloadDone } from "react-icons/md";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import { useState } from "react";
 import { useFiltersStore } from "../Store/filters";
@@ -10,7 +8,9 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import Location from "../images/Location.svg";
 import Search from "../images/Search.svg";
 import Rating from "../images/Rating.svg";
-
+import Lottie from "lottie-react"
+import Locationicon from "../images/LocationIcon.json"
+import check from "../images/Check_custom_icon.json"
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
@@ -22,7 +22,7 @@ const LandingPage = () => {
   const { filters, setFilter } = useFiltersStore();
   const SlideStyle = "m-auto block md:w-1/2 w-full h-full";
   const [buttonValue, setButtonValue] = useState(
-    <FaLocationDot className="h-4 w-4 mx-2 flex" />
+    <Lottie animationData={Locationicon} className="h-7 w-7 mx-2 flex" />
   );
 
   const getLocation = () => {
@@ -32,14 +32,15 @@ const LandingPage = () => {
           latitude: position.coords.latitude,
           longitude: position.coords.longitude,
         });
-        setButtonValue(<MdOutlineDownloadDone className="h-6 w-6 mx-2 flex" />);
-        console.log(filters);
+        setButtonValue(
+          <Lottie animationData={check} loop={false} className="h-7 w-7 mx-2 flex" />
+        );
       });
     }
   };
   return (
     <div>
-      <div className={` backgroundImageMD text-light md:py-30  flex`}>
+      <div className={` backgroundImageMD text-light md:py-30 py-3 flex`}>
         <div className=" text-center backdrop-blur-xs bg-dark/80 md:min-w-1/2 px-2  rounded-3xl m-auto py-10">
           <h1 className="text-4xl">Find food and drinks online</h1>
           <div className="flex w-full md:w-3/5 flex-col md:flex-row gap-2 justify-self-center justify-around">

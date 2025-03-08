@@ -1,10 +1,13 @@
-import { useState } from "react";
+import {  useState } from "react";
 import Button from "../common/Button";
 import Select from "../common/Select";
 import { FaLocationDot } from "react-icons/fa6";
 import { MdOutlineDownloadDone } from "react-icons/md";
 import { useFiltersStore } from "../../Store/filters";
-import { IoMdOptions } from "react-icons/io";
+// import { IoMdOptions } from "react-icons/io";
+import filetrIcon from "../../images/Setting slider_custom_icon.json";
+import Lottie from "lottie-react";
+
 
 const FilterBar = () => {
   const foodType = ["Plate", "Fastfood", "Drink", "Dessert"];
@@ -24,12 +27,17 @@ const FilterBar = () => {
       });
     }
   };
+  
   return (
     <div className="md:flex flex-col hidden   col-span-1 rounded min-h-[80vh] border border-prime p-2">
       <div className="flex justify-between px-2 items-center">
         <h1 className="text-2xl">FELTERS</h1>
-        <Button className="hover:bg-prime text-3xl duration-300 hover:text-light rounded">
-          <IoMdOptions className="p-1" />
+        <Button  className=" text-3xl  rounded">
+          <Lottie
+            loop={false}
+            animationData={filetrIcon}
+            className="h-10 w-10 mx-2 flex"
+          />
         </Button>
       </div>
       <div className="flex w-full flex-col gap-1 ">

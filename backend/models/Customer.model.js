@@ -14,15 +14,18 @@ const customerSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    OTPCode: {
+      type: String,
+    },
     address: {
       type: String,
     },
     phoneNumber: {
       type: Number,
     },
-    commands:{
+    commands: {
       type: Array,
-    }
+    },
   },
   {
     timestamps: true, // created at , updated at

@@ -16,11 +16,12 @@ const RestaurantSchema = new mongoose.Schema(
     },
     phoneNumber: {
       type: Number,
-      required: false,
+    },
+    OTPCode: {
+      type: String,
     },
     restaurantName: {
       type: String,
-      required: false,
     },
   },
   {
