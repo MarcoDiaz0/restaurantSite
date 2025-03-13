@@ -11,11 +11,10 @@ const Navbar = () => {
   return (
     <div className="w-full p-4 gap-2 sticky z-20 top-0 bg-light/60 backdrop-blur-xs sm:flex-row flex flex-col items-center  sm:justify-between ">
       <div className="flex  items-center">
-        <h1 className="text-5xl  text-center mx-3 font-bold border-y-4 border-double border-prime ">
+        <h1 className="text-2xl  text-center mx-3 font-bold border-y-4 border-double border-prime ">
           <span className="text-prime">NEARBY</span>FOOD.
         </h1>
       </div>
-
       <div className="flex items-center">
         {[
           { route: "/", title: "HOME", icon: <GoHomeFill /> },
