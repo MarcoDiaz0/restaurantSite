@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import { FaInstagram } from "react-icons/fa";
 import { FaFacebook } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
+import LOGO from "../../images/LOGO.svg"
 
 const Footer = () => {
   return (
@@ -38,10 +39,13 @@ const Footer = () => {
             </div>
             </div>
           </div>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-24 md:gap-30">
           <div className="flex flex-col gap-4 text-sm text-gray-900 sm:flex-row sm:gap-2 sm:pr-4" >
             <p className="text-sm border-0" >Copyright © 2025 NEARBY FOOD.</p>
             <span className="max-sm:hidden">·</span>
             <Link to="/policy" className="hover:underline hover:cursor-pointer ">Policy</Link>
+          </div>
+          <img src={LOGO} className="h-30 w-30" />
           </div>
         </div>
       </div>

@@ -4,6 +4,7 @@ import NavBar from "./components/layout/Navbar"
 import Footer from "./components/layout/Footer"
 import Sign from "./pages/Sign";
 import Menu from "./pages/Menu";
+import Profile from "./pages/Profile";
 import Policy from "./pages/Policy";
 import ScrollToTop from "./components/common/ScrollToTop";
 import ContactUs from "./pages/ContactUs";
@@ -20,6 +21,7 @@ function App() {
           <Route path="/" element={<LandingPage />} />
           <Route path="/sign" element={<Sign />} />
           <Route path="/menu" element={<Menu />} />
+          <Route path="/profile" element={<Profile />} />
           <Route path="/policy" element={<Policy />} />
           <Route path="/contactUs" element={<ContactUs />} />
         </Routes>

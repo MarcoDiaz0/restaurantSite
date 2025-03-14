@@ -6,23 +6,28 @@ import Button from "../common/Button.jsx";
 import { useLogin } from "../../hooks/useAuth.jsx";
 import Checkbox from "../common/Checkbox.jsx";
 import { Link } from "react-router-dom";
-const Login = () => {
-  const [check, setcheck] = useState(false);
+import Lottie from "lottie-react";
+import Loader from "../../images/Loader.json";
+import { useModal } from "../../Store/modal.js";
+import { authSlice } from "../../Store/user.js";
 
+const Login = () => {
+  const { isOwner, setOwner } = authSlice();
+  const { setModal } = useModal();
   const [credentials, setCredentials] = useState({
     email: "marco@gmail.com",
     password: "marco1",
   });
   const { loading, login, err } = useLogin();
   const btnclass =
-    " hover:bg-prime w-full  m-auto hover:text-light border border-grayText rounded-md text-grayText p-2";
+    " hover:bg-prime w-full flex justify-center   m-auto hover:text-light border border-grayText rounded-md text-grayText p-2";
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
         login(credentials);
       }}
-      className="relative  w-full my-4 mx-1.5  py-3 md:w-1/2 grow p-2 rounded-lg flex flex-col gap-3"
+      className=" w-full my-4 mx-1.5  py-3 md:w-1/2 grow p-2 rounded-lg flex flex-col gap-3"
     >
       <h1 className=" text-3xl self-center font-medium text-center">
         JOIN NEARBY<span className="text-prime">FOOD </span> NOW
@@ -55,19 +60,21 @@ const Login = () => {
           icon={<IoMdKey />}
         />
       </div>
-      <div className="my-3 w-full  flex gap-1 justify-between tracking-wider font-bold">
+      <div className="my-2 w-full flex justify-between tracking-wider font-bold">
         <Checkbox
-          check={check}
-          onCheck={setcheck}
+          check={isOwner}
+          onCheck={setOwner}
           text="I am a Restaurant Owner "
-          className="ml-2"
         />
-        <Link className="hover:text-prime text-center duration-300">
+        <Link
+          onClick={() => setModal(true, "login")}
+          className="hover:text-prime grow text-center duration-300"
+        >
           Forgot your password ?
         </Link>
       </div>
       <Button type="submit" className={btnclass}>
-        {loading ? "..." : "LOGIN"}
+        {loading ? <Lottie animationData={Loader} className=" w-7" /> : "LOGIN"}
       </Button>
     </form>
   );
