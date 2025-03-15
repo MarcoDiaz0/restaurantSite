@@ -18,7 +18,7 @@ const Navbar = () => {
           FOOD.
         </h1>
       </div>
-
+      
       <div className="flex items-center">
         {[
           { route: "/", title: "HOME", icon: <GoHomeFill /> },

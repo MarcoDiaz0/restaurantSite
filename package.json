@@ -8,8 +8,8 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "dev": "sudo nodemon ./backend/main.js",
-    "mongo": "sudo systemctl start mongod"
+    "dev": " nodemon ./backend/main.js",
+    "mongo": " systemctl start mongod"
   },
   "dependencies": {
     "cors": "^2.8.5",
