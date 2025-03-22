@@ -25,7 +25,8 @@ export const RestaurantHome = () => {
             <Lottie animationData={Loader} className="w-1/4" />
           </div>
         ) : (
-          <div>
+          <div className="flex ">
+            
             <MapBox />
           </div>
         )}
