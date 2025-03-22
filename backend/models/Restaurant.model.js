@@ -23,6 +23,16 @@ const RestaurantSchema = new mongoose.Schema(
     restaurantName: {
       type: String,
     },
+    latitude: {
+      type: String,
+    },
+    longitude: {
+      type: String,
+    },
+    coverPicture: {
+      type: String,
+    },
+    
   },
   {
     timestamps: true, // created at , updated at

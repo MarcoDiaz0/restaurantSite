@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const platSchema = new mongoose.Schema(
+const plateSchema = new mongoose.Schema(
   {
     name: {
       type: String,
@@ -11,7 +11,7 @@ const platSchema = new mongoose.Schema(
       required: true,
     },
     description: {
-      type: Array,
+      type: String,
     },
     price: {
       type: Number,
@@ -25,14 +25,17 @@ const platSchema = new mongoose.Schema(
       type: Array,
       required: true,
     },
-    HealthCondition: {
+    healthCondition: {
       type: Array,
       required: true,
+    },
+    platePicture: {
+      type: String,
     },
   },
   {
     timestamps: true, // created at , updated at
   }
 );
-const plats = mongoose.model("plats", platSchema);
-export default plats;
+const Plates = mongoose.model("plats", plateSchema);
+export default Plates;

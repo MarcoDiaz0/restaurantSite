@@ -7,6 +7,9 @@ import cors from "cors";
 import { connect_To_mongoDB } from "./configs/database.js";
 import customerRouter from "./routes/customer.routes.js";
 import restaurantRoutes from "./routes/restaurant.routes.js";
+import authRouter from "./routes/auth.routes.js";
+import platesRoutes from "./routes/plates.routes.js";
+
 const app = express();
 dotenv.config(); // bah na9dro njibo mn .env file
 const port = process.env.PORT || 1000; // jebt el port mn .env file
@@ -16,6 +19,8 @@ app.use(cors()); // bah n9dro nb3tho requests mn FRONTEND
 
 app.use("/api/customer", customerRouter);
 app.use("/api/restaurant", restaurantRoutes);
+app.use("/api/plates", platesRoutes);
+app.use("/api/auth", authRouter);
 
 app.listen(port, () => {
   connect_To_mongoDB();

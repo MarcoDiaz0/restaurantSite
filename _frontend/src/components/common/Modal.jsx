@@ -14,11 +14,11 @@ const Modal = ({ children }) => {
       onClick={(e) => {
         if (modalRef.current === e.target) setModal();
       }}
-      className="bottom-0 right-0 top-0 left-0 isolate fixed z-40 bg-dark/30 duration-300 flex justify-center items-center"
+      className="bottom-0 right-0 top-0 left-0 isolate overflow-scroll fixed z-40 bg-dark/30 duration-300 flex justify-center items-center"
     >
       <div
         style={modal}
-        className="bg-light mx-10 relative duration-300 p-3 border rounded-2xl"
+        className="m-10 max-w-9/10 relative duration-300 border rounded-2xl"
       >
         <Button
           onClick={() => setModal(false)}

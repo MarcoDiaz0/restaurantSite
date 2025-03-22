@@ -4,7 +4,6 @@ import Select from "../common/Select";
 import { FaLocationDot } from "react-icons/fa6";
 import { MdOutlineDownloadDone } from "react-icons/md";
 import { useFiltersStore } from "../../Store/filters";
-// import { IoMdOptions } from "react-icons/io";
 import filetrIcon from "../../images/Setting slider_custom_icon.json";
 import Lottie from "lottie-react";
 

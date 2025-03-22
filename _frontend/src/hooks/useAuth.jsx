@@ -5,7 +5,7 @@ import { authSlice } from "../Store/user";
 
 //////!   SignUp   !//////
 export const useSignup = () => {
-  const { setAuth, isOwner } = authSlice();
+  const { setAuth ,isOwner } = authSlice();
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState({
     email: "",
@@ -13,23 +13,17 @@ export const useSignup = () => {
     username: "",
     confirmPassword: "",
   });
-  const signup = async (props) => {
+  const signup = async (props) => {    
     if (handleSignup({ ...props, setErr })) return;
     setLoading(true);
     try {
       setErr({ email: "", password: "", username: "", confirmPassword: "" });
-      let resp;
-      if (!isOwner) {
-        resp = await axios.post("/api/customer", props);
-      } else {
-        resp = await axios.post("/api/restaurant", props);
-      }
-      setAuth(resp.data.data._id);
-      return resp;
+      const resp = await axios.post("/api/auth", {...props,isOwner});   
+      setAuth(resp.data.data);
+      return resp
     } catch (error) {
       if (error.response.status === 402)
         setErr({ ...err, email: "Email Already Exist" });
-
       if (error.response.status === 403)
         setErr({ ...err, username: "Username Already Exist" });
     } finally {
@@ -116,14 +110,10 @@ export const useLogin = () => {
     setloading(true);
     try {
       setErr({ email: "", password: "" });
-      let resp; 
-      if (!isOwner) {
-        resp = await axios.post("/api/customer/login", { email, password });
-      } else {
-        resp = await axios.post("/api/restaurant/login", { email, password });
-      }
-      setAuth(resp.data.data._id);
-      navigate("/");
+      const resp  = await axios.post("/api/auth/login", { email, password ,isOwner });      
+      setAuth(resp.data.data);
+
+      navigate(isOwner ? "/restaurantHome" : "/");
     } catch (error) {
       if (error.response.status === 402 || error.response.status === 403)
         setErr({
@@ -143,15 +133,10 @@ export const useOTPCheck = () => {
   const navigate = useNavigate();
   const { auth, isOwner } = authSlice();
   const checkOTP = async (otp) => {
-    const props = { auth, otp };
-    let resp;
-    if (isOwner) {
-      resp = await axios.post("/api/restaurant/OTP", props);
-    } else {
-      resp = await axios.post("/api/customer/OTP", props);
-    }
+    const props = { auth, otp , isOwner };
+    const resp = await axios.post("/api/auth/OTP", props);
     if (resp.data.success) {
-      navigate("/");
+      navigate(isOwner ? "/restaurantHome" : "/");
     }
   };
 
@@ -161,15 +146,11 @@ export const useOTPCheck = () => {
 export const usePassRecover = () => {
   const { isOwner } = authSlice();
   const GetPass = async (email) => {
-    let resp;
-    if (isOwner) {
-      resp = await axios.post("/api/restaurant/passRecover", {
-        email,
-        isOwner,
-      });
-    } else {
-      resp = await axios.post("/api/customer/passRecover", { email, isOwner });
-    }
+    //TODO: make alert
+    const resp = await axios.post("/api/auth/passRecover", {
+      email,
+      isOwner,
+    });
     console.log(resp);
   };
 

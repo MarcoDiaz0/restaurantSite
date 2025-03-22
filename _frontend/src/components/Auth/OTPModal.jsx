@@ -52,7 +52,7 @@ const OTPModal = ({ length = 6 }) => {
     setModal(false)
   };
   return (
-    <div className="text-center">
+    <div className="text-center p-3 bg-light rounded-2xl">
       <h1>Enter The Code That We Sent You Via Email</h1>
       {otp.map((value, i) => {
         return (

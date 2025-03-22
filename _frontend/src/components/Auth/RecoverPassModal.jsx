@@ -21,7 +21,7 @@ function RecoverPassModal() {
     setModal();
   };GetPass;
   return (
-    <div className="flex flex-col gap-4">
+    <div className="flex flex-col gap-4 p-3 rounded-2xl bg-light">
       <h1 className="text-lg">We will Send You A New Password Via Email</h1>
       <Input
         placeholder="Enter Your Email"

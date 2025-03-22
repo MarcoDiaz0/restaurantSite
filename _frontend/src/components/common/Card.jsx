@@ -1,45 +1,80 @@
 /* eslint-disable react/prop-types */
-import { FaStar } from "react-icons/fa";
-import Button from "./Button";
-import { FaRegHeart } from "react-icons/fa";
-import { BiDetail } from "react-icons/bi";
+import { useRef, useState } from "react";
+import { FaStar, FaRegHeart } from "react-icons/fa";
 import { FcLike } from "react-icons/fc";
+import clsx from "clsx";
 
+import Button from "./Button";
 import Modal from "./Modal";
 import { useModal } from "../../Store/modal";
 import DetailsCard from "../layout/DetailsCard";
 
 const Card = ({ cardInfo }) => {
+  const [isActive, setIsActive] = useState(false);
   const { modal, setModal } = useModal();
+  const cardRef = useRef();
 
   return (
-    <div className=" shadow-lg shadow-dark/30 rounded-2xl overflow-hidden  my-2 justify-self-center self-start">
-      {modal.display === "flex" && <Modal><DetailsCard card={cardInfo} /></Modal>}
+    <div
+      
+      onClick={(e) => {
+        if (cardRef.current === e.target) setModal(true, "card");
+      }}
+      onMouseEnter={() => setIsActive(true)}
+      onMouseLeave={() => setIsActive(false)}
+      className="cursor-pointer shadow-lg relative shadow-dark/30 rounded-2xl overflow-hidden my-2 justify-self-center self-start"
+    >
+      {modal.display === "flex" && (
+        <Modal>
+          <DetailsCard card={cardInfo} />
+        </Modal>
+      )}
       <img
+        ref={cardRef}
         src={cardInfo.image}
-        className="object-cover w-full aspect-square   "
+        className="object-cover w-full aspect-square relative"
+        alt={cardInfo.title}
       />
-
-      <p className="text-lg mx-2 ">{cardInfo.title}</p>
-      <div className="flex justify-between flex-wrap">
-        <h1 className="font-bold mx-2">
-          Price: <span className="font-medium">{cardInfo.price}</span> dz
-        </h1>
-        <h1 className="font-bold mx-2 flex gap-1 items-center ">
-          Rate: <span className="font-medium">{cardInfo.rate}</span> <FaStar />
-        </h1>
-      </div>
-      <div className="flex w-full  border-t">
-        <Button className="w-1/2 h-10 border-r p-2">
-          {cardInfo.isliked ? (
-            <FcLike className={`m-auto static h-full w-full `} />
-          ) : (
-            <FaRegHeart className={`m-auto static h-full w-full `} />
+      <div
+        className={clsx(
+          "bg-gradient-to-b from-dark/30 w-full to-dark/90 absolute text-light flex flex-col p-2 duration-200 bottom-0",
+          { "lg:translate-y-[55%]": !isActive }
+        )}
+      >
+        <p className="text-lg  whitespace-nowrap text-ellipsis overflow-hidden h-1/2 mx-2">
+          {cardInfo.title}
+        </p>
+        <div className="h-1/2 justify-center gap-0 flex flex-col duration-800">
+          <p className="mx-2">
+            Price:{" "}
+            <span className="Inconsolata font-medium">{cardInfo.price}</span> dz
+          </p>
+          <p className="mx-2 flex gap-1 items-center">
+            Rate:{" "}
+            <span className="Inconsolata font-medium">{cardInfo.rate}</span>{" "}
+            <FaStar />
+          </p>
+        </div>
+        <div
+          className={clsx(
+            "flex duration-300 absolute right-2 bottom-3 w-10 lg:-right-8",
+            {
+              "lg:-translate-x-10": isActive,
+            }
           )}
-        </Button>
-        <Button onClick={() => setModal(true)} className="w-1/2 h-10 p-2">
-          <BiDetail className={`m-auto h-full w-full`} />
-        </Button>
+        >
+          <Button
+            className="h-10 p-2"
+            onClick={() => {}}
+            aria-label={cardInfo.isliked ? "Unlike" : "Like"}
+          >
+            {cardInfo.isliked ? (
+              <FcLike className="m-auto static h-full w-full" />
+            ) : (
+              <FaRegHeart className="m-auto static h-full w-full" />
+            )}
+          </Button>
+        </div>
       </div>
     </div>
   );

@@ -4,7 +4,7 @@ const Select = ({ id, title, options, className, value, onchange }) => {
   const optionStyle = "text-dark duration-300";
   return (
     <article
-      className={`${className}  flex duration-200 active:text-prime grow flex-col`}
+      className={`${className}  flex duration-200 focus:text-prime grow flex-col`}
     >
       <label className="my-2" htmlFor={id}>
         {title}
@@ -14,7 +14,7 @@ const Select = ({ id, title, options, className, value, onchange }) => {
           onchange(e.target.value)
         }}
         value={value}
-        className={`p-2 active:border-prime outline-0 border-2 rounded-lg  `}
+        className={`p-2 focus:border-prime outline-0 border-2 rounded-lg  `}
         id={id}
       >
         {options.map((option, index) => {

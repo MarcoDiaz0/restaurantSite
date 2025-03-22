@@ -39,7 +39,7 @@ function Input({
         <div className={`text-[25px] ${err && "!text-red-600"}`}>{icon}</div>
         <input
           type={type == "password" ? (hide ? "text" : "password") : type}
-          className={`w-full h-full p-3 px-3  tracking-wider bg-transparent placeholder:tracking-widest placeholder:text-dark/50 outline-none text-dark ${classPrefix}`}
+          className={`w-full h-full p-3   tracking-wider bg-transparent placeholder:tracking-widest placeholder:text-dark/50 outline-none text-dark ${classPrefix}`}
           placeholder={placeholder}
           disabled={disabled}
           value={value}

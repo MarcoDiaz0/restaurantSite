@@ -2,42 +2,24 @@ import Select from "../components/common/Select";
 import Button from "../components/common/Button";
 import { Link } from "react-router-dom";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
-import { useState } from "react";
 import { useFiltersStore } from "../Store/filters";
 import { Swiper, SwiperSlide } from "swiper/react";
 import Location from "../images/Location.svg";
 import Search from "../images/Search.svg";
 import Rating from "../images/Rating.svg";
-import Lottie from "lottie-react"
-import Locationicon from "../images/LocationIcon.json"
-import check from "../images/Check_custom_icon.json"
+
 // Import Swiper styles
 import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
+import { LocationButton } from "../components/common/LocationButton";
 
 const LandingPage = () => {
   const foodType = ["Plate", "Fastfood", "Drink", "Dessert"];
   const Categorie = ["diet", "sensitive", "disease"];
   const { filters, setFilter } = useFiltersStore();
   const SlideStyle = "m-auto block md:w-1/2 w-full h-full";
-  const [buttonValue, setButtonValue] = useState(
-    <Lottie animationData={Locationicon} className="h-7 w-7 mx-2 flex" />
-  );
 
-  const getLocation = () => {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        setFilter("location", {
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        });
-        setButtonValue(
-          <Lottie animationData={check} loop={false} className="h-7 w-7 mx-2 flex" />
-        );
-      });
-    }
-  };
   return (
     <div>
       <div className={` backgroundImageMD text-light md:py-30 py-3 flex`}>
@@ -62,12 +44,11 @@ const LandingPage = () => {
             />
           </div>
           <div className="flex flex-col w-full justify-self-center sm:w-3/5  ">
-            <Button
-              onClick={getLocation}
+            <LocationButton
               className="border-prime flex justify-center items-center w-full border py-2 my-2 hover:bg-prime duration-500 rounded-lg "
-            >
-              {buttonValue} Use Your Location
-            </Button>
+              setState={setFilter}
+              title={"Use Your Location"}
+            />
             <Link to={"/menu"}>
               <Button className="border-prime w-full border py-2 my-2 hover:bg-prime duration-200 rounded-lg ">
                 Get Start

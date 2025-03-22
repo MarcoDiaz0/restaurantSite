@@ -68,7 +68,7 @@ const Login = () => {
         />
         <Link
           onClick={() => setModal(true, "login")}
-          className="hover:text-prime grow text-center duration-300"
+          className="hover:text-prime grow text-right px-2 duration-300"
         >
           Forgot your password ?
         </Link>

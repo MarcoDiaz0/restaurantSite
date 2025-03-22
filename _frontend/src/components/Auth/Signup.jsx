@@ -12,16 +12,16 @@ import Loader from "../../images/Loader.json";
 import { authSlice } from "../../Store/user.js";
 
 const Signup = () => {
+  const { isOwner, setOwner } = authSlice();
   const [credentials, setCredentials] = useState({
     email: "marco@gmail.com",
     username: "marco",
     password: "marco1",
     confirmPassword: "marco1",
-  });
-    const { isOwner, setOwner } = authSlice();
-  
+  });  
   const [minWait, setMinWait] = useState(false);
   useEffect(() => {
+    
     const timeout = setTimeout(() => {
       setMinWait(false);
     }, 60000);
@@ -37,7 +37,7 @@ const Signup = () => {
     <form
       onSubmit={async (e) => {
         e.preventDefault();
-        const res = await signup(credentials);
+        const res = await signup(credentials);        
         if (res?.data?.success) {
           setMinWait(true);
           setModal(true, "signup");
