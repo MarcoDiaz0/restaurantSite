@@ -1,67 +1,22 @@
-import {  useState } from "react";
-import Button from "../common/Button";
-import Select from "../common/Select";
-import { FaLocationDot } from "react-icons/fa6";
-import { MdOutlineDownloadDone } from "react-icons/md";
-import { useFiltersStore } from "../../Store/filters";
-import filetrIcon from "../../images/Setting slider_custom_icon.json";
+import filterIcon from "../../images/FilterIconFromLottie.json";
 import Lottie from "lottie-react";
-
+import Filters from "../common/Filters";
+import { LocationButton } from "../common/LocationButton";
 
 const FilterBar = () => {
-  const foodType = ["Plate", "Fastfood", "Drink", "Dessert"];
-  const Categorie = ["diet", "sensitive", "disease"];
-  const { filters, setFilter } = useFiltersStore();
-  const [buttonValue, setButtonValue] = useState(
-    <FaLocationDot className="h-4 w-4 mx-2 flex" />
-  );
-  const getLocation = () => {
-    if ("geolocation" in navigator) {
-      navigator.geolocation.getCurrentPosition((position) => {
-        setFilter("location", {
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-        });
-        setButtonValue(<MdOutlineDownloadDone className="h-6 w-6 mx-2 flex" />);
-      });
-    }
-  };
-  
   return (
-    <div className="md:flex flex-col hidden   col-span-1 rounded min-h-[80vh] border border-prime p-2">
-      <div className="flex justify-between px-2 items-center">
-        <h1 className="text-2xl">FELTERS</h1>
-        <Button  className=" text-3xl  rounded">
-          <Lottie
-            loop={false}
-            animationData={filetrIcon}
-            className="h-10 w-10 mx-2 flex"
-          />
-        </Button>
-      </div>
-      <div className="flex w-full flex-col gap-1 ">
-        <Button
-          onClick={getLocation}
-          className="border-prime flex justify-center items-center w-full border py-2 my-2 hover:bg-prime duration-500 rounded-lg "
-        >
-          {buttonValue} Use Your Location
-        </Button>
-        <Select
-          options={foodType}
-          value={filters.foodType}
-          onchange={(v) => {
-            setFilter("foodType", v);
-          }}
-          title="Type of food "
-        />
-        <Select
-          options={Categorie}
-          value={filters.categorie}
-          onchange={(v) => {
-            setFilter("categorie", v);
-          }}
-          title="Categorie"
-        />
+    <div className="bg-dark">
+      <div className="relative ">
+        <div className="sticky h-15 top-0 mb-2 bg-prime w-full flex flex-row px-2 items-center z-20">
+          <div className="text-3xl rounded">
+            <Lottie loop={true} animationData={filterIcon} className="h-10 w-10 mx-2 flex" />
+          </div>
+          <h1 className="text-2xl">FILTERS</h1>
+        </div>
+        <div className="md:flex flex-col items-center rounded min-h-[80vh] p-2 m-2">
+          <LocationButton color="" textColor="" />
+          <div className="w-full text-light"><Filters /></div>
+        </div>
       </div>
     </div>
   );

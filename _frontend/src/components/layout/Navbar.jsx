@@ -11,7 +11,7 @@ const Navbar = () => {
   const { auth ,isOwner } = authSlice();
   
   return (
-    <div className="w-full p-4 gap-2 sticky z-20 top-0 bg-light/60 backdrop-blur-xs sm:flex-row flex flex-col items-center  sm:justify-between ">
+    <div className="w-full p-4 gap-2 sticky z-20 top-0 bg-light/60 backdrop-blur-xs flex flex-col items-center">
       <div className="flex  items-center">
         <h1 style={{fontFamily: "Signika Negative"}} className="text-4xl flex items-center text-center mx-3 font-bold border-y-4 border-double border-prime ">
           <span className="text-prime">NEARBY</span>
