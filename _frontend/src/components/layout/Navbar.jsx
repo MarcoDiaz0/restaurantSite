@@ -8,7 +8,7 @@ import LOGO from "../../images/LOGO.svg"
 const Navbar = () => {
   const { pathname: location } = useLocation();
   const btnclass = " border-b-2 tracking-wider text-prime";
-  const { auth ,isOwner } = authSlice();
+  const { auth } = authSlice();
   
   return (
     <div className="w-full p-4 gap-2 sticky z-20 top-0 bg-light/60 backdrop-blur-xs sm:flex-row flex flex-col items-center  sm:justify-between ">
@@ -22,7 +22,7 @@ const Navbar = () => {
       
       <div className="flex items-center">
         {[
-          { route: isOwner && auth ? "/restaurantHome":"/", title: "HOME", icon: <GoHomeFill /> },
+          { route:  auth.isOwner ? "/restaurantHome":"/", title: "HOME", icon: <GoHomeFill /> },
           { route: "/menu", title: "MENU", icon: <MdRestaurantMenu /> },
         ].map(({ route, title, icon }) => (
           <Link

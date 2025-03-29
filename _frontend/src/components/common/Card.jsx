@@ -22,7 +22,7 @@ const Card = ({ cardInfo }) => {
       }}
       onMouseEnter={() => setIsActive(true)}
       onMouseLeave={() => setIsActive(false)}
-      className="cursor-pointer shadow-lg relative shadow-dark/30 rounded-2xl overflow-hidden my-2 justify-self-center self-start"
+      className="cursor-pointer rounded shadow-lg relative shadow-dark/30  overflow-hidden justify-self-center self-start"
     >
       {modal.display === "flex" && (
         <Modal>

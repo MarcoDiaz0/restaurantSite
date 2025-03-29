@@ -16,7 +16,7 @@ const Login = () => {
   const { setModal } = useModal();
   const [credentials, setCredentials] = useState({
     email: "marco@gmail.com",
-    password: "marco1",
+    password: "dffdgcdsmarco1",
   });
   const { loading, login, err } = useLogin();
   const btnclass =

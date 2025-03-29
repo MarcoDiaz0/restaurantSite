@@ -73,7 +73,9 @@ export const createUser = async (req, res) => {
 
   try {
     await newUser.save();
-    res.status(201).json({ success: true, data: newUser._id });
+    res
+      .status(201)
+      .json({ success: true, data: isExist._id, isOwner: isOwner });
     setTimeout(async () => {
       let account;
       if (isOwner) {
@@ -119,7 +121,7 @@ export const login = async (req, res) => {
       });
     }
 
-    if (isExist) res.status(201).json({ success: true, data: isExist._id });
+    if (isExist) res.status(201).json({ success: true, data: isExist._id,isOwner:isOwner });
     else {
       let mailExist;
       if (isOwner) {

@@ -1,6 +1,6 @@
 import Select from "../components/common/Select";
 import Button from "../components/common/Button";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { Autoplay, Pagination, Navigation } from "swiper/modules";
 import { useFiltersStore } from "../Store/filters";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -13,12 +13,19 @@ import "swiper/css";
 import "swiper/css/pagination";
 import "swiper/css/navigation";
 import { LocationButton } from "../components/common/LocationButton";
+import { authSlice } from "../Store/user";
+import { useEffect } from "react";
 
 const LandingPage = () => {
   const foodType = ["Plate", "Fastfood", "Drink", "Dessert"];
   const Categorie = ["diet", "sensitive", "disease"];
   const { filters, setFilter } = useFiltersStore();
   const SlideStyle = "m-auto block md:w-1/2 w-full h-full";
+  const { auth  } = authSlice();
+      const navigate =useNavigate()
+      useEffect(()=>{
+        if(auth.id) navigate("/restaurantHome");
+      },[])
 
   return (
     <div>

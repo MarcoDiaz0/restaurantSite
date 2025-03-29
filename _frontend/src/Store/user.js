@@ -1,26 +1,28 @@
 import { create } from "zustand";
 
 export const authSlice = create((set) => ({
-  auth: localStorage.getItem("auth") || "",
+  auth: {
+    id: localStorage.getItem("auth") || "",
+    isOwner: localStorage.getItem("isOwner") == "true" ? true : false,
+  },
   setAuth: (auth) => {
-    if (!auth) {      
+    if (!auth) {
       localStorage.removeItem("auth");
-      localStorage.removeItem("isowner");
-      set({auth: ""});
+      localStorage.removeItem("isOwner");
+      set({ auth: "" });
     } else {
       set(() => {
-        localStorage.setItem("auth", auth);
+        localStorage.setItem("auth", auth.id);
+        localStorage.setItem("isOwner", String(auth.isOwner));
         return { auth };
       });
     }
   },
-  isOwner: localStorage.getItem("isowner") ? true : false,
+  isOwner: localStorage.getItem("isOwner") == "true" ? true : false,
   setOwner: (value) => {
-    if (!value) localStorage.removeItem("isowner");
-    else localStorage.setItem("isowner", "...");
+    if (!value) localStorage.removeItem("isOwner");
+    else localStorage.setItem("isOwner", "true");
 
-    set(() => {
-      return { isOwner: value };
-    });
+    set({ isOwner: value });
   },
 }));

@@ -2,25 +2,30 @@ import { CiImageOn } from "react-icons/ci";
 import Input from "../common/Input.jsx";
 import Button from "../common/Button";
 import { useState } from "react";
-import { useCreateRestaurant, useGetRestaurant } from "../../hooks/useRestaursnt.jsx";
+import {
+  useCreateRestaurant,
+  useGetRestaurant,
+} from "../../hooks/useRestaursnt.jsx";
 import { FileInput } from "../common/FileInput.jsx";
 import { LocationButton } from "../common/LocationButton.jsx";
 import { useModal } from "../../Store/modal.js";
 export const CreateRestaurant = () => {
   const btnclass = " rounded-lg m-2 p-2 tracking-wider bg-prime";
-const { getRestaurantData} = useGetRestaurant()
+  const { getRestaurantData } = useGetRestaurant();
+
   const [credentials, setCredentials] = useState({
     restaurantName: "",
     location: "",
     coverPicture: "",
   });
-    const { setModal } = useModal();
-  
+  const { setModal } = useModal();
+
   const { CreateRestaurant, err } = useCreateRestaurant();
-  const handleCreate = async () => {    
-    const success = await CreateRestaurant(credentials);
-    if(success) setModal()
-      getRestaurantData();
+  const handleCreate = async () => {
+    const credentialsCOPY = {...credentials}
+    const success = await CreateRestaurant(credentialsCOPY);
+    if (success) setModal();
+    getRestaurantData();
   };
 
   return (
@@ -34,7 +39,7 @@ const { getRestaurantData} = useGetRestaurant()
             />
           ) : (
             <FileInput
-              type={"image/png"}
+              type={"image/*"}
               title="Upload Your Cover Picture"
               icon={<CiImageOn className="inline-flex w-10 h-10 " />}
               className="border-dashed w-full h-full border-2 "

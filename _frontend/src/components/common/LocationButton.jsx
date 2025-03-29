@@ -19,7 +19,7 @@ export const LocationButton = ({title,setState,className}) => {
                   latitude: position.coords.latitude,
                   longitude: position.coords.longitude,
                 },
-              }));
+              }));              
               setButtonValue(
                 <Lottie
                   animationData={check}

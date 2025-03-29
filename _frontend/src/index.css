@@ -10,7 +10,14 @@
 *::-webkit-scrollbar {
   display: none;
 }
-
+li{
+  transition: all 0.5s;
+  text-decoration: underline;
+  display: flex;
+}
+li:hover {
+  color: white;
+}
 .backgroundImageMD {
   background-size: cover;
   background-repeat: no-repeat;
@@ -19,4 +26,15 @@
 }
 .Inconsolata {
   font-family: "Inconsolata", monospace;
+}
+.changeText:hover{
+  width: 130px;
+  font-size:large;
+}
+.changeText:hover:before{
+  width: 300px;
+  content: "add post";
+}
+.changeText{
+  font-size: 0px;
 }

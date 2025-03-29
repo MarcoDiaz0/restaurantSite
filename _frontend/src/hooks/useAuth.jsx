@@ -2,10 +2,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 import { authSlice } from "../Store/user";
+import { useAlert } from "../Store/Alert";
 
 //////!   SignUp   !//////
 export const useSignup = () => {
-  const { setAuth ,isOwner } = authSlice();
+  const { setAuth, isOwner } = authSlice();
   const [loading, setLoading] = useState(false);
   const [err, setErr] = useState({
     email: "",
@@ -13,14 +14,14 @@ export const useSignup = () => {
     username: "",
     confirmPassword: "",
   });
-  const signup = async (props) => {    
+  const signup = async (props) => {
     if (handleSignup({ ...props, setErr })) return;
     setLoading(true);
     try {
       setErr({ email: "", password: "", username: "", confirmPassword: "" });
-      const resp = await axios.post("/api/auth", {...props,isOwner});   
-      setAuth(resp.data.data);
-      return resp
+      const resp = await axios.post("/api/auth", { ...props, isOwner });
+      setAuth({ id: resp.data.data, isOwner: resp.data.isOwner });
+      return resp;
     } catch (error) {
       if (error.response.status === 402)
         setErr({ ...err, email: "Email Already Exist" });
@@ -85,6 +86,7 @@ export const useLogin = () => {
   const [loading, setloading] = useState(false);
   const [err, setErr] = useState({ email: "", password: "" });
   const { setAuth, isOwner } = authSlice();
+  const { Alert } = useAlert();
 
   const login = async ({ email, password }) => {
     if (
@@ -110,10 +112,15 @@ export const useLogin = () => {
     setloading(true);
     try {
       setErr({ email: "", password: "" });
-      const resp  = await axios.post("/api/auth/login", { email, password ,isOwner });      
-      setAuth(resp.data.data);
+      const resp = await axios.post("/api/auth/login", {
+        email,
+        password,
+        isOwner,
+      });
+      setAuth({ id: resp.data.data, isOwner: resp.data.isOwner });
 
       navigate(isOwner ? "/restaurantHome" : "/");
+      Alert("You Have Successfully Logged In", true);
     } catch (error) {
       if (error.response.status === 402 || error.response.status === 403)
         setErr({
@@ -131,9 +138,12 @@ export const useLogin = () => {
 //! OTP Confirmation
 export const useOTPCheck = () => {
   const navigate = useNavigate();
-  const { auth, isOwner } = authSlice();
+  const {
+    auth: { id },
+    isOwner,
+  } = authSlice();
   const checkOTP = async (otp) => {
-    const props = { auth, otp , isOwner };
+    const props = { id, otp, isOwner };
     const resp = await axios.post("/api/auth/OTP", props);
     if (resp.data.success) {
       navigate(isOwner ? "/restaurantHome" : "/");

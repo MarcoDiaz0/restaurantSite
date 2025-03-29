@@ -6,12 +6,12 @@ import Menu from "./pages/Menu";
 import Profile from "./pages/Profile";
 import Policy from "./pages/Policy";
 import ContactUs from "./pages/ContactUs";
-import Footer from "./components/layout/Footer";
 import { RestaurantHome } from "./pages/RestaurantHome";
-
+import Footer from "./components/layout/Footer";
+import { Alert } from "./components/common/Alert";
 
 function App() {
-  
+    
   return (
     <div className=" text-dark min-h-screen ">
       <BrowserRouter>
@@ -22,10 +22,11 @@ function App() {
           <Route path="/profile" element={<Profile />} />
           <Route path="/policy" element={<Policy />} />
           <Route path="/contactUs" element={<ContactUs />} />
-          <Route path="/*" element={<LandingPage />} />
           <Route path="/restaurantHome" element={<RestaurantHome />} />
+          <Route path="/*" element={<LandingPage />} />
         </Routes>
-        <Footer />
+        <Footer /> 
+        <Alert />
       </BrowserRouter>
     </div>
   );

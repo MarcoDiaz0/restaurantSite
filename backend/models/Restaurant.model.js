@@ -24,15 +24,14 @@ const RestaurantSchema = new mongoose.Schema(
       type: String,
     },
     latitude: {
-      type: String,
+      type: Number,
     },
     longitude: {
-      type: String,
+      type: Number,
     },
     coverPicture: {
       type: String,
     },
-    
   },
   {
     timestamps: true, // created at , updated at
