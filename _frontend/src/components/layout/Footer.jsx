@@ -3,7 +3,7 @@ import LOGO from "../../images/LOGO.svg";
 
 const Footer = () => {
   return (
-    <div className="p-3 mt-1 grid md:grid-cols-4  gap-10 bg-prime ">
+    <div className="p-7 mt-1 grid md:grid-cols-4 text-  gap-10 bg-prime ">
       <div className="col-span-2 ">
         <div>
           <h1

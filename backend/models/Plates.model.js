@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 const plateSchema = new mongoose.Schema(
   {
@@ -7,7 +7,8 @@ const plateSchema = new mongoose.Schema(
       required: true,
     },
     idRestaurant: {
-      type: String,
+      type: mongoose.Types.ObjectId,
+      ref: "Restaurants",
       required: true,
     },
     description: {
@@ -29,7 +30,7 @@ const plateSchema = new mongoose.Schema(
       type: Array,
       required: true,
     },
-    platePicture: {
+    picture: {
       type: String,
     },
   },
@@ -37,5 +38,5 @@ const plateSchema = new mongoose.Schema(
     timestamps: true, // created at , updated at
   }
 );
-const Plates = mongoose.model("plats", plateSchema);
+const Plates = mongoose.model("plates", plateSchema);
 export default Plates;

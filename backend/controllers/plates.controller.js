@@ -5,13 +5,12 @@ export const createplates = async (req, res) => {
     name,
     idRestaurant,
     description = "",
-    platePicture = "",
+    picture = "",
     price,
     type,
     category,
     healthCondition,
   } = req.body;
-  console.log(req.body);
 
   if (
     !name ||
@@ -25,23 +24,61 @@ export const createplates = async (req, res) => {
       .status(402)
       .json({ success: false, Error: "Please provide all fields" });
   }
-  const newPlate = new Plates({
-    name: name,
-    idRestaurant: idRestaurant,
-    description: description,
-    price: price,
-    type: type,
-    category: category,
-    healthCondition: healthCondition,
-    platePicture: platePicture,
-  });
   try {
-    await newPlate.save();
-    res.status(201).json({ success: true });
+    const plate = await Plates.create({
+      name: name,
+      idRestaurant: idRestaurant,
+      description: description,
+      price: price,
+      type: type,
+      category: category,
+      healthCondition: healthCondition,
+      picture: picture,
+    });
+    res.status(201).json({ success: true, data: plate });
   } catch (error) {
-    res.status(500).json({ success: false, Error: "something went wrong" });
+    res.status(400).json({ success: false, Error: "something went wrong" });
   }
 };
-export const getplates = async (req, res) => {};
-export const updateplates = async (req, res) => {};
-export const deleteplates = async (req, res) => {};
+export const getOneplate = async (req, res) => {
+  const { _id } = req.params;
+  try {
+    const plate = await Plates.findById(_id)
+    res.status(200).json({ success: true, data: plate });
+  } catch (error) {
+    res.status(400).json({ success: false, Error: "bad request" });
+  }
+};
+export const updateplates = async (req, res) => {
+  const { id, idRestaurant, Name, price, description, picture } = req.body;
+  try {
+    await Plates.updateOne(
+      { _id: id, idRestaurant: idRestaurant },
+      {
+        $set: {
+          name: Name,
+          description: description,
+          price: price,
+          picture: picture,
+        },
+      }
+    );
+    res.status(200).json({ success: true });
+  } catch (error) {
+    res.status(400).json({ success: false, Error: "server error" });
+  }
+};
+export const deleteplates = async (req, res) => {
+  const { id, idRestaurant } = req.body;
+  try {
+    await Plates.findOneAndDelete({
+      _id: id,
+      idRestaurant: idRestaurant,
+    });
+    res
+      .status(200)
+      .json({ success: true, message: "The Plate has been deleted" });
+  } catch (error) {
+    res.status(400).json({ success: false, Error: "something went wrong" });
+  }
+};

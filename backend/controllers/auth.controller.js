@@ -137,7 +137,7 @@ export const login = async (req, res) => {
       else res.status(403).json({ success: false });
     }
   } catch (error) {
-    res.status(500).json({ success: false, Error: "server error" });
+    res.status(400).json({ success: false, Error: "server error" });
   }
 };
 //! check OTP
@@ -166,7 +166,7 @@ export const checkOTP = async (req, res) => {
         .status(500)
         .json({ success: false, Error: "The Numbers are not correct" });
   } catch (error) {
-    res.status(500).json({ success: false, Error: "something went wrong" });
+    res.status(400).json({ success: false, Error: "something went wrong" });
   }
 };
 //! recover Password
@@ -213,7 +213,7 @@ export const recoverPass = async (req, res) => {
       });
 
       if (!isSent) {
-        res.status(500).json({ success: false, Error: "something went wrong" });
+        res.status(400).json({ success: false, Error: "something went wrong" });
       }
       if (!isOwner) {
         await Customers.updateOne(
@@ -234,6 +234,6 @@ export const recoverPass = async (req, res) => {
       else res.status(403).json({ success: false });
     }
   } catch (error) {
-    res.status(500).json({ success: false, Error: "server error" });
+    res.status(400).json({ success: false, Error: "bad request" });
   }
 };

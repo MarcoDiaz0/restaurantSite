@@ -1,13 +1,15 @@
 import mongoose from "mongoose";
 
-const commandSchema = new mongoose.Schema(
+const orderSchema = new mongoose.Schema(
   {
     idClient: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: "Customers",
       required: true,
     },
     idRestaurant: {
-      type: String,
+      type: Schema.Types.ObjectId,
+      ref: "Restaurants",
       required: true,
     },
     plats: {
@@ -25,5 +27,5 @@ const commandSchema = new mongoose.Schema(
     timestamps: true, // created at , updated at
   }
 );
-const commands = mongoose.model("commands", commandSchema);
-export default commands;
+const orders = mongoose.model("orders", orderSchema);
+export default orders;

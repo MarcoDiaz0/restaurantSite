@@ -15,15 +15,14 @@ export const getRestaurantData = async (req, res) => {
     const plates = await Plates.find({ idRestaurant: id });
     res.status(201).json({ success: true, data: Restaurant, plates: plates });
   } catch (error) {
-    res.status(500).json({ success: false, Error: "something went wrong" });
+    res.status(400).json({ success: false, Error: "something went wrong" });
   }
 };
 //! create
 export const createRestaurant = async (req, res) => {
   const { restaurantName, location, coverPicture, id } = req.body;
-  console.log(req.body);
   
-  if (!restaurantName || !id) {
+  if (!restaurantName || !location || !id) {
     res
       .status(402)
       .json({ success: false, Error: "Please provide all fields" });
@@ -49,7 +48,7 @@ export const createRestaurant = async (req, res) => {
       );
       res.status(200).json({ success: true, data: data });
     } catch (error) {
-      res.status(500).json({ success: false, Error: "server error" });
+      res.status(400).json({ success: false, Error: "server error" });
     }
   }
 };
@@ -70,6 +69,6 @@ export const updateRestaurant = async (req, res) => {
     );
     res.status(200).json({ success: true });
   } catch (error) {
-    res.status(500).json({ success: false, Error: "server error" });
+    res.status(400).json({ success: false, Error: "server error" });
   }
 };
