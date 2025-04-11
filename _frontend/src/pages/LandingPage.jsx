@@ -15,7 +15,7 @@ import { authSlice } from "../Store/user";
 import { useEffect } from "react";
 
 const LandingPage = () => {
-  const SlideStyle = "m-auto block md:w-1/2 w-full h-full";
+  const SlideStyle = "m-auto md:w-1/2 w-full h-full";
   
   const { auth  } = authSlice();
       const navigate =useNavigate()

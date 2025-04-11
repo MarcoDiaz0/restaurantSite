@@ -1,35 +1,33 @@
 import mongoose from "mongoose";
 
-const customerSchema = new mongoose.Schema(
-  {
-    username: {
-      type: String,
-      required: true,
-    },
-    email: {
-      type: String,
-      required: true,
-    },
-    password: {
-      type: String,
-      required: true,
-    },
-    OTPCode: {
-      type: String,
-    },
-    address: {
-      type: String,
-    },
-    phoneNumber: {
-      type: Number,
-    },
-    commands: {
-      type: Array,
-    },
+const customerSchema = new mongoose.Schema({
+  username: {
+    type: String,
+    required: true,
   },
-  {
-    timestamps: true, // created at , updated at
-  }
-);
-const customers = mongoose.model("customers", customerSchema);
-export default customers;
+  email: {
+    type: String,
+    required: true,
+  },
+  password: {
+    type: String,
+    required: true,
+  },
+  OTPCode: {
+    type: String,
+  },
+  address: {
+    type: String,
+  },
+  phoneNumber: {
+    type: Number,
+  },
+  favourites: [
+    {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Plates",
+    },
+  ],
+});
+const Customers = mongoose.model("Customers", customerSchema);
+export default Customers;

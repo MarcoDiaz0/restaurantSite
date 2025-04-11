@@ -2,25 +2,35 @@ import mongoose from "mongoose";
 
 const orderSchema = new mongoose.Schema(
   {
-    idClient: {
-      type: Schema.Types.ObjectId,
+    customer: {
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Customers",
-      required: true,
     },
-    idRestaurant: {
-      type: Schema.Types.ObjectId,
+    restaurant: {
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Restaurants",
       required: true,
     },
-    plats: {
-      type: Array,
-      required: true,
-    },
-    status: {
+    plates: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "plates",
+        required: true,
+      },
+    ],
+    success: {
       type: Boolean,
     },
     price: {
       type: Number,
+    },
+    location: {
+      type: Object,
+      required: true,
+    },
+    email: {
+      type: String,
+      required: true,
     },
   },
   {

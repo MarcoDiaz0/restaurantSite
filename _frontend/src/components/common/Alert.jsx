@@ -5,7 +5,7 @@ import { useAlert } from "../../Store/Alert";
 export const Alert = () => {
   const {
     AlertStatus: { isActive, success, message },
-    Alert,
+    Alert,    
   } = useAlert();  
   return (
     <div
@@ -13,12 +13,13 @@ export const Alert = () => {
         ${success ? "bg-green-400" : "bg-red-400"}
         ${isActive && "-translate-y-21"} `}
     >
-      <Button
-        onClick={() => Alert()}
-        className="absolute -top-1 -right-1 rounded-full bg-dark text-light  w-5 h-5"
-      >
-        <FaXmark className="w-full" />
-      </Button>
+        <Button
+          onClick={() => Alert()}
+          className="absolute -top-1 -right-1 rounded-full bg-dark text-light  w-5 h-5"
+        >
+          <FaXmark className="w-full" />
+        </Button>
+      
       {message}
     </div>
   );

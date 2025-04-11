@@ -1,3 +1,4 @@
+import Orders from "../models/Order.model.js";
 import Plates from "../models/Plates.model.js";
 import Restaurants from "../models/Restaurant.model.js";
 //!get data
@@ -13,7 +14,7 @@ export const getRestaurantData = async (req, res) => {
       return;
     }
     const plates = await Plates.find({ idRestaurant: id });
-    res.status(201).json({ success: true, data: Restaurant, plates: plates });
+    res.status(200).json({ success: true, data: Restaurant, plates: plates });
   } catch (error) {
     res.status(400).json({ success: false, Error: "something went wrong" });
   }
@@ -21,7 +22,7 @@ export const getRestaurantData = async (req, res) => {
 //! create
 export const createRestaurant = async (req, res) => {
   const { restaurantName, location, coverPicture, id } = req.body;
-  
+
   if (!restaurantName || !location || !id) {
     res
       .status(402)
@@ -46,7 +47,7 @@ export const createRestaurant = async (req, res) => {
           },
         }
       );
-      res.status(200).json({ success: true, data: data });
+      res.status(201).json({ success: true, data: data });
     } catch (error) {
       res.status(400).json({ success: false, Error: "server error" });
     }
@@ -67,8 +68,18 @@ export const updateRestaurant = async (req, res) => {
         },
       }
     );
-    res.status(200).json({ success: true });
+    res.status(202).json({ success: true });
   } catch (error) {
     res.status(400).json({ success: false, Error: "server error" });
+  }
+};
+//! Get Restaurant Orders
+export const getRestaurantOrders = async (req, res) => {
+  const { id } = req.params;
+  try {
+    const orders = await Orders.find({ restaurant: id });
+    res.status(200).json({ success: true, data: orders });
+  } catch (error) {
+    res.status(400).json({ success: false, Error: "Bad request" });
   }
 };

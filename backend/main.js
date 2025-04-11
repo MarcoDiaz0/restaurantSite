@@ -9,6 +9,7 @@ import customerRouter from "./routes/customer.routes.js";
 import restaurantRoutes from "./routes/restaurant.routes.js";
 import authRouter from "./routes/auth.routes.js";
 import platesRoutes from "./routes/plates.routes.js";
+import orderRouter from "./routes/orders.routes.js";
 
 const app = express();
 dotenv.config(); // bah na9dro njibo mn .env file
@@ -21,6 +22,7 @@ app.use("/api/customer", customerRouter);
 app.use("/api/restaurant", restaurantRoutes);
 app.use("/api/plates", platesRoutes);
 app.use("/api/auth", authRouter);
+app.use("/api/orders", orderRouter);
 
 app.listen(port, () => {
   connect_To_mongoDB();

@@ -6,7 +6,7 @@ const plateSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    idRestaurant: {
+    restaurant: {
       type: mongoose.Types.ObjectId,
       ref: "Restaurants",
       required: true,
@@ -19,7 +19,7 @@ const plateSchema = new mongoose.Schema(
       required: true,
     },
     type: {
-      type: String,
+      type: Array,
       required: true,
     },
     category: {
@@ -33,10 +33,14 @@ const plateSchema = new mongoose.Schema(
     picture: {
       type: String,
     },
+    location:{
+      type:Object
+    },
+    
   },
   {
     timestamps: true, // created at , updated at
   }
 );
-const Plates = mongoose.model("plates", plateSchema);
+const Plates = mongoose.model("Plates", plateSchema);
 export default Plates;
