@@ -139,11 +139,11 @@ export const useLogin = () => {
 export const useOTPCheck = () => {
   const navigate = useNavigate();
   const {
-    auth: { id },
+    auth: { _id },
     isOwner,
   } = authSlice();
   const checkOTP = async (otp) => {
-    const props = { id, otp, isOwner };
+    const props = { _id, otp, isOwner };
     const resp = await axios.post("/api/auth/OTP", props);
     if (resp.data.success) {
       navigate(isOwner ? "/restaurantHome" : "/");

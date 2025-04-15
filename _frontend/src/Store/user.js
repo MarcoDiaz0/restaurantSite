@@ -2,7 +2,7 @@ import { create } from "zustand";
 
 export const authSlice = create((set) => ({
   auth: {
-    id: localStorage.getItem("auth") || "",
+    _id: localStorage.getItem("auth") || "",
     isOwner: localStorage.getItem("isOwner") == "true" ? true : false,
   },
   setAuth: (auth) => {
@@ -12,7 +12,7 @@ export const authSlice = create((set) => ({
       set({ auth: "" });
     } else {
       set(() => {
-        localStorage.setItem("auth", auth.id);
+        localStorage.setItem("auth", auth._id);
         localStorage.setItem("isOwner", String(auth.isOwner));
         return { auth };
       });

@@ -1,26 +1,23 @@
+import mongoose from "mongoose";
 import Customers from "../models/Customer.model.js";
 import Restaurants from "../models/Restaurant.model.js";
 import { sendMail } from "../utils/sendMail.js";
 //! signup
 export const createUser = async (req, res) => {
-  const { username, password, email, isOwner } = req.body;  
+  const { username, password, email, isOwner } = req.body;
 
   if (!username || !email || !password) {
     return res
       .status(400)
-      .json({ success: false, Error: "Please provide all fields" });
+      .json({ success: false, message: "Please provide all fields" });
   }
   let usernameExist;
-  
+
   if (isOwner) {
-    usernameExist = await Restaurants.findOne({
-      username: username,
-    });
+    usernameExist = await Restaurants.findOne({ username });
   } else {
-    usernameExist = await Customers.findOne({
-      username: username,
-    });
-  }  
+    usernameExist = await Customers.findOne({ username });
+  }
   if (usernameExist) {
     return res
       .status(403)
@@ -28,13 +25,9 @@ export const createUser = async (req, res) => {
   }
   let emailExist;
   if (isOwner) {
-    emailExist = await Restaurants.findOne({
-      email: email,
-    });
+    emailExist = await Restaurants.findOne({ email });
   } else {
-    emailExist = await Customers.findOne({
-      email: email,
-    });
+    emailExist = await Customers.findOne({ email });
   }
   if (emailExist) {
     return res
@@ -43,17 +36,16 @@ export const createUser = async (req, res) => {
   }
   const randomNumber = Math.floor(100000 + Math.random() * 900000);
 
-  //   const isSent = await sendMail({
-  //     from: { name: "Nearby Food", address: process.env.GMAIL },
-  //     to: email,
-  //     subject: "Confirmation Code",
-  //     text: String(randomNumber),
-  //     html: `<b>${randomNumber} </b>`,
-  //   });
-
-//   if (!isSent) {
-//     res.status(500).json({ success: false, Error: "something went wrong" });
-//   }
+  await sendMail({
+    from: {
+      name: "Nearby Food",
+      address: "nearbyfoood@gmail.com",
+    },
+    to: email,
+    subject: "Confirmation Code",
+    text: String(randomNumber),
+    html: `<b>${randomNumber} </b>`,
+  });
   let newUser;
   if (isOwner) {
     newUser = new Restaurants({
@@ -72,10 +64,10 @@ export const createUser = async (req, res) => {
   }
 
   try {
-    await newUser.save();
-    res
-      .status(201)
-      .json({ success: true, data: isExist._id, isOwner: isOwner });
+    const success = await newUser.save();
+    if (success) {
+      res.status(201).json({ success: true });
+    }
     setTimeout(async () => {
       let account;
       if (isOwner) {
@@ -87,8 +79,7 @@ export const createUser = async (req, res) => {
           _id: newUser._id,
         });
       }
-      
-      
+
       if (account?.OTPCode !== null) {
         await Restaurants.findOneAndDelete({ _id: account?._id });
         await Customers.findOneAndDelete({ _id: account?._id });
@@ -121,7 +112,10 @@ export const login = async (req, res) => {
       });
     }
 
-    if (isExist) res.status(201).json({ success: true, data: isExist._id,isOwner:isOwner });
+    if (isExist)
+      res
+        .status(200)
+        .json({ success: true, data: isExist._id, isOwner: isOwner });
     else {
       let mailExist;
       if (isOwner) {
@@ -142,28 +136,38 @@ export const login = async (req, res) => {
 };
 //! check OTP
 export const checkOTP = async (req, res) => {
-  const { auth, otp, isOwner } = req.body;
-
+  const { _id, otp, isOwner } = req.body;
+  if (!mongoose.Types.ObjectId.isValid(_id)) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid ID format",
+    });
+  }
   try {
     let account;
     if (isOwner) {
-      account = await Restaurants.findOne({
-        _id: auth,
+      account = await Restaurants.findById({
+        _id,
       });
     } else {
-      account = await Customers.findOne({
-        _id: auth,
+      account = await Customers.findById({
+        _id,
       });
     }
     if (account?.OTPCode === otp) {
-      if (isOwner)
-        await Restaurants.updateOne({ _id: auth }, { $set: { OTPCode: null } });
-      else
-        await Customers.updateOne({ _id: auth }, { $set: { OTPCode: null } });
-      res.status(201).json({ success: true, message: "Email Confirmed" });
+      if (isOwner) {
+        await Restaurants.findByIdAndUpdate(
+          { _id },
+          { $set: { OTPCode: null } }
+        );
+        res.status(201).json({ success: true, message: "Email Confirmed" });
+      } else {
+        await Customers.findByIdAndUpdate({ _id }, { $set: { OTPCode: null } });
+        res.status(201).json({ success: true, message: "Email Confirmed" });
+      }
     } else
       res
-        .status(500)
+        .status(401)
         .json({ success: false, Error: "The Numbers are not correct" });
   } catch (error) {
     res.status(400).json({ success: false, Error: "something went wrong" });
@@ -205,7 +209,10 @@ export const recoverPass = async (req, res) => {
 
       const randomString = generateRandomString(10);
       const isSent = await sendMail({
-        from: { name: "Nearby Food", address: process.env.GMAIL },
+        from: {
+          name: "Nearby Food",
+          address: process.env.GMAIL || "nearbyfoood@gmail.com",
+        },
         to: email,
         subject: "New PassWord",
         text: randomString,
@@ -213,22 +220,27 @@ export const recoverPass = async (req, res) => {
       });
 
       if (!isSent) {
-        res.status(400).json({ success: false, Error: "something went wrong" });
+        res
+          .status(400)
+          .json({ success: false, message: "Your Email does not exist" });
       }
       if (!isOwner) {
-        await Customers.updateOne(
+        await Customers.findOneAndUpdate(
           { email: email },
           { $set: { password: randomString } }
         );
+        res
+          .status(202)
+          .json({ success: true, message: "we sent new password to you" });
       } else {
-        await Restaurants.updateOne(
+        await Restaurants.findOneAndUpdate(
           { email: email },
           { $set: { password: randomString } }
         );
+        res
+          .status(202)
+          .json({ success: true, message: "we sent new password to you" });
       }
-      res
-        .status(201)
-        .json({ success: true, message: "we sent new password to you" });
     } else {
       if (mailExist) res.status(402);
       else res.status(403).json({ success: false });

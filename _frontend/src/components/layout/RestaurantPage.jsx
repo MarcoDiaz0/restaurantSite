@@ -1,11 +1,11 @@
-import { RestaurantInfo } from "../../Store/restaurant";
+import { useRestaurant } from "../../Store/restaurant";
 import MapBox from "../common/MapBox";
 import PlateContainer from "../layout/PlateContainer";
 
 const RestaurantPage = () => {
 const {
   data: { latitude, longitude, restaurantName, coverPicture },
-} = RestaurantInfo();
+} = useRestaurant();
   return (
     <div className="flex w-full flex-col ">
       <div className=" flex flex-col md:flex-row justify-between ">

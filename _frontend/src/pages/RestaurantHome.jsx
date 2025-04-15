@@ -6,7 +6,7 @@ import Loader from "../images/Loader.json";
 import { useModal } from "../Store/modal";
 import Modal from "../components/common/Modal";
 import { CreateRestaurant } from "../components/layout/CreateRestaurant";
-import { useGetRestaurant } from "../hooks/useRestaursnt";
+import { useGetRestaurant } from "../hooks/useRestaurant";
 import { authSlice } from "../Store/user";
 import RestaurantPage from "../components/layout/RestaurantPage";
 

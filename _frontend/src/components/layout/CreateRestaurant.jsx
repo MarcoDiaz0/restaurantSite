@@ -5,7 +5,7 @@ import { useState } from "react";
 import {
   useCreateRestaurant,
   useGetRestaurant,
-} from "../../hooks/useRestaursnt.jsx";
+} from "../../hooks/useRestaurant.jsx";
 import { FileInput } from "../common/FileInput.jsx";
 import { LocationButton } from "../common/LocationButton.jsx";
 import { useModal } from "../../Store/modal.js";

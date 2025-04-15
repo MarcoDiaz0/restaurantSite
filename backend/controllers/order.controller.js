@@ -1,16 +1,20 @@
 import mongoose from "mongoose";
 import Orders from "../models/Order.model.js";
 import Plates from "../models/Plates.model.js";
+import Restaurants from "../models/Restaurant.model.js";
+
 //! Create Order
 export const createOrder = async (req, res) => {
   const { email, location, restaurant, plates, customer } = req.body;
-  if (!mongoose.Types.ObjectId.isValid(restaurant)) {
-    return res.status(400).json({
+  const restaurantExist = Restaurants.findById(restaurant);
+  if (restaurantExist) {
+    return res.status(404).json({
       success: false,
-      error: "Invalid ID format",
+      message: "Restaurant Does Not Exist",
     });
   }
-  if (!email || !location || !plates || !restaurant) {
+
+  if (!email || !location || !plates ) {
     res
       .status(401)
       .json({ success: false, message: "please provide all fields" });
@@ -39,13 +43,7 @@ export const createOrder = async (req, res) => {
 //! Confirm Order
 export const confirmOrder = async (req, res) => {
   const { success, _id, restaurant } = req.body;
-  if (!_id || !restaurant) {
-    return res.status(400).json({
-      success: false,
-      error: "Order ID and Restaurant ID are required",
-    });
-  }
-
+  
   if (
     !mongoose.Types.ObjectId.isValid(_id) ||
     !mongoose.Types.ObjectId.isValid(restaurant)
@@ -67,11 +65,11 @@ export const confirmOrder = async (req, res) => {
     if (!success) {
       return res.status(404).json({
         success: false,
-        error: "Order not found or not associated with this restaurant",
+        message: "Order not found or not associated with this restaurant",
       });
     }
     res.status(200).json({
-      success: true,
+      success: true,message:"order confirmed"
     });
   } catch (error) {
     res.status(500).json({

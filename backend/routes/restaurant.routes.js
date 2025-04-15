@@ -8,9 +8,9 @@ import {
 
 const RestaurantRouter = e.Router();
 
-RestaurantRouter.get("/:id", getRestaurantData);
+RestaurantRouter.get("/:_id", getRestaurantData);
 RestaurantRouter.post("/create", createRestaurant);
 RestaurantRouter.put("/update", updateRestaurant);
-RestaurantRouter.get("/getOrders/:id", getRestaurantOrders);
+RestaurantRouter.get("/getOrders/:_id", getRestaurantOrders);
 
 export default RestaurantRouter;

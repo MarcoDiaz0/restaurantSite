@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-export const RestaurantInfo = create((set) => ({
+export const useRestaurant = create((set) => ({
   data: {restaurantName: "",
     location: "",
     coverPicture: "",},

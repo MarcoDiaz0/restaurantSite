@@ -8,7 +8,6 @@ import nodemailer from "nodemailer";
 //   html: "<b>Hello world?</b>", // html body
 // };
 
-
 export const sendMail = async (mailOptions) => {
   const transporter = nodemailer.createTransport({
     service: "gmail",
@@ -16,8 +15,8 @@ export const sendMail = async (mailOptions) => {
     port: 587,
     secure: false, // true for port 465, false for other ports
     auth: {
-      user: process.env.GMAIL,
-      pass: process.env.GMAIL_PASS,
+      user: "nearbyfoood@gmail.com",
+      pass: "jzfx iygd uwdh zyks",
     },
   });
   try {

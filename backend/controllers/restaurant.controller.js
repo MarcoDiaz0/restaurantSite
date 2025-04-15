@@ -1,29 +1,30 @@
+import mongoose from "mongoose";
 import Orders from "../models/Order.model.js";
 import Plates from "../models/Plates.model.js";
 import Restaurants from "../models/Restaurant.model.js";
 //!get data
 export const getRestaurantData = async (req, res) => {
-  const { id } = req.params;
+  const { _id } = req.params;
   try {
-    const Restaurant = await Restaurants.findOne({
-      _id: id,
-    }).select("-password -__v -OTPCode -username -email -createdAt -updatedAt");
+    const Restaurant = await Restaurants.findById({
+      _id,
+    }).select("-password -__v -OTPCode -username -email ");
 
     if (!Restaurant.restaurantName) {
       res.status(402).json({ success: false });
       return;
     }
-    const plates = await Plates.find({ idRestaurant: id });
+    const plates = await Plates.find({ idRestaurant: _id });
     res.status(200).json({ success: true, data: Restaurant, plates: plates });
   } catch (error) {
     res.status(400).json({ success: false, Error: "something went wrong" });
   }
 };
-//! create
+//! create Restaurant
 export const createRestaurant = async (req, res) => {
-  const { restaurantName, location, coverPicture, id } = req.body;
+  const { restaurantName, location, coverPicture, _id } = req.body;
 
-  if (!restaurantName || !location || !id) {
+  if (!restaurantName || !location || !_id) {
     res
       .status(402)
       .json({ success: false, Error: "Please provide all fields" });
@@ -37,7 +38,7 @@ export const createRestaurant = async (req, res) => {
   else {
     try {
       const data = await Restaurants.updateOne(
-        { _id: id },
+        { _id },
         {
           $set: {
             restaurantName: restaurantName,
@@ -47,37 +48,58 @@ export const createRestaurant = async (req, res) => {
           },
         }
       );
+      if (!data)
+        return res
+          .status(404)
+          .json({ success: false, Error: "Restaurat Not Found" });
       res.status(201).json({ success: true, data: data });
     } catch (error) {
       res.status(400).json({ success: false, Error: "server error" });
     }
   }
 };
-//! update
+//! update Restaurant
 export const updateRestaurant = async (req, res) => {
-  const { restaurantName, location, coverPicture, id } = req.body;
+  const { restaurantName, location, coverPicture, _id } = req.body;
+  if (!mongoose.Types.ObjectId.isValid(_id)) {
+    return res.status(400).json({
+      success: false,
+      error: "Invalid ID format",
+    });
+  }
   try {
-    await Restaurants.updateOne(
-      { _id: id },
+    const restaurant = await Restaurants.findByIdAndUpdate(
+      { _id },
       {
         $set: {
-          restaurantName: restaurantName,
-          longitude: location.longitude,
-          latitude: location.latitude,
-          coverPicture: coverPicture,
+          restaurantName,
+          longitude: parseFloat(location.longitude),
+          latitude: parseFloat(location.latitude),
+          coverPicture,
         },
-      }
-    );
-    res.status(202).json({ success: true });
+      },
+      { new: true }
+    ).select("restaurantName latitude longitude coverPicture -_id");
+    if (!restaurant)
+      return res
+        .status(404)
+        .json({ success: false, Error: "Restaurat Not Found" });
+    res.status(202).json({ success: true, restaurant });
   } catch (error) {
     res.status(400).json({ success: false, Error: "server error" });
   }
 };
 //! Get Restaurant Orders
 export const getRestaurantOrders = async (req, res) => {
-  const { id } = req.params;
+  const { _id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(_id)) {
+    return res.status(400).json({
+      success: false,
+      error: "Invalid ID format",
+    });
+  }
   try {
-    const orders = await Orders.find({ restaurant: id });
+    const orders = await Orders.find({ restaurant: _id });
     res.status(200).json({ success: true, data: orders });
   } catch (error) {
     res.status(400).json({ success: false, Error: "Bad request" });

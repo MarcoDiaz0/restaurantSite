@@ -58,19 +58,26 @@ export const getOnePlate = async (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(_id)) {
     return res.status(400).json({
       success: false,
-      error: "Invalid ID format",
+      message: "Invalid ID format",
     });
   }
   try {
-    const plate = await Plates.findById(_id);
+    const plate = await Plates.findById(_id).populate({
+      path: "restaurant",
+      select: "restaurantName longitude latitude coverPicture -_id",
+    });
+    if (!plate)
+      return res
+        .status(404)
+        .json({ success: false, message: "Plate Not Found" });
     res.status(200).json({ success: true, data: plate });
   } catch (error) {
-    res.status(400).json({ success: false, Error: "bad request" });
+    res.status(400).json({ success: false, message: "bad request" });
   }
 };
 //! Update Plate
-export const updatePlates = async (req, res) => {
-  const { _id, restaurant, name, price, description, picture } = req.body;
+export const updatePlate = async (req, res) => {
+  const { _id, restaurant, price, description, picture } = req.body;
   if (
     !mongoose.Types.ObjectId.isValid(_id) ||
     !mongoose.Types.ObjectId.isValid(restaurant)
@@ -81,24 +88,30 @@ export const updatePlates = async (req, res) => {
     });
   }
   try {
-    await Plates.updateOne(
+    const newPlate = await Plates.findOneAndUpdate(
       { _id, restaurant },
       {
         $set: {
-          name: name,
-          description: description,
-          price: price,
-          picture: picture,
+          description,
+          price,
+          picture,
         },
-      }
+      },
+      { new: true }
     );
-    res.status(200).json({ success: true });
+    if (!newPlate) {
+      return res.status(404).json({
+        success: false,
+        error: "Plate not found ",
+      });
+    }
+    res.status(200).json({ success: true, data: newPlate });
   } catch (error) {
     res.status(400).json({ success: false, Error: "server error" });
   }
 };
 //! Delete Plate
-export const deletePlates = async (req, res) => {
+export const deletePlate = async (req, res) => {
   const { _id, restaurant } = req.body;
   if (
     !mongoose.Types.ObjectId.isValid(_id) ||
@@ -106,10 +119,9 @@ export const deletePlates = async (req, res) => {
   ) {
     return res.status(400).json({
       success: false,
-      error: "Invalid ID format",
+      message: "Invalid ID format",
     });
   }
-
   try {
     const success = await Plates.findOneAndDelete({
       _id,
@@ -118,15 +130,14 @@ export const deletePlates = async (req, res) => {
     if (!success) {
       return res.status(404).json({
         success: false,
-        error: "Plate not found or not associated with this restaurant",
+        message: "Plate not found",
       });
     }
-    
     res
       .status(200)
       .json({ success: true, message: "The Plate has been deleted" });
   } catch (error) {
-    res.status(400).json({ success: false, Error: "something went wrong" });
+    res.status(400).json({ success: false, message: "something went wrong" });
   }
 };
 //! Filter Plates
