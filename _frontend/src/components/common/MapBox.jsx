@@ -12,7 +12,7 @@ const MapBox = ({ latitude, longitude,className   }) => {
     <div className={`mb-1 relative ${className}`}>
       <Button
         onClick={() => setLocked(!locked)}
-        className="w-10 h-10 absolute top-3 bg-light border rounded-full p-2 z-1002 right-3"
+        className="w-10 h-10 absolute top-3 text-dark bg-light border rounded-full p-2 z-1002 right-3"
       >
         {locked ? (
           <FaLock className="m-auto" />
@@ -21,11 +21,11 @@ const MapBox = ({ latitude, longitude,className   }) => {
         )}
       </Button>
       <div
-        className={`h-full w-full z-1001 absolute ${!locked && "hidden"}`}
+        className={`h-full w-full z-1000 absolute ${!locked && "hidden"}`}
       ></div>
       <MapContainer
         center={[latitude, longitude]}
-        zoom={18}
+        zoom={16}
         className={`border  h-full w-full`}
       >
         <TileLayer url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />

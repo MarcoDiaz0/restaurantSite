@@ -14,7 +14,7 @@ export const getRestaurantData = async (req, res) => {
       res.status(402).json({ success: false });
       return;
     }
-    const plates = await Plates.find({ idRestaurant: _id });
+    const plates = await Plates.find({ restaurant: _id });
     res.status(200).json({ success: true, data: Restaurant, plates: plates });
   } catch (error) {
     res.status(400).json({ success: false, Error: "something went wrong" });

@@ -16,7 +16,7 @@ const Login = () => {
   const { setModal } = useModal();
   const [credentials, setCredentials] = useState({
     email: "marco@gmail.com",
-    password: "dffdgcdsmarco1",
+    password: "marco1",
   });
   const { loading, login, err } = useLogin();
   const btnclass =
@@ -30,7 +30,7 @@ const Login = () => {
       className=" w-full my-4 mx-1.5  py-3 md:w-1/2 grow p-2 rounded-lg flex flex-col gap-3"
     >
       <h1 className=" text-3xl self-center font-medium text-center">
-        JOIN NEARBY<span className="text-prime">FOOD </span> NOW
+        JOIN NEARBY<span className="text-prime">FOOOD </span> NOW
       </h1>
       <GoogleSign />
       <aside className="w-full flex justify-center items-center relative">

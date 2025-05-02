@@ -19,7 +19,7 @@ export const getOrders = async (req, res) => {
     res.status(400).json({ success: false, Error: "Bad request" });
   }
 };
-//! Get Customer favourites Plates 
+//! Get Customer favourites Plates
 export const getFavouritesPlates = async (req, res) => {
   const { _id } = req.params;
   if (!mongoose.Types.ObjectId.isValid(_id)) {
@@ -30,7 +30,7 @@ export const getFavouritesPlates = async (req, res) => {
   }
   try {
     const plates = await Customers.findById(_id).populate("favourites");
-    res.status(200).json({ success: true, data: plates });
+    res.status(200).json({ success: true, data: plates.favourites });
   } catch (error) {
     res.status(400).json({ success: false, Error: "Bad request" });
   }
@@ -67,7 +67,7 @@ export const addToFavourites = async (req, res) => {
         $addToSet: { favourites: plate },
       },
       { new: true }
-    );
+    ).populate("favourites");
 
     if (!Customer) {
       return res.status(404).json({
@@ -128,5 +128,55 @@ export const removeFromFavourites = async (req, res) => {
       error: "Internal server error",
       message: error.message,
     });
+  }
+};
+//! Rate Plate
+export const ratePlate = async (req, res) => {
+  const { stars, _id, customer } = req.body;
+  if (
+    !mongoose.Types.ObjectId.isValid(_id) ||
+    !mongoose.Types.ObjectId.isValid(customer)
+  ) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid ID format",
+    });
+  }
+  if (!stars)
+    return res.status(400).json({
+      success: false,
+      message: "Invalid rating stars",
+    });
+  try {
+    const getCurrentRate = await Plates.findById(_id).select("rate");
+    const isExsist = getCurrentRate["rater"].includes(customer);
+    if (isExsist) {
+      return res.status(400).json({
+        success: false,
+        message: "You have rated this before",
+      });
+    } else {
+      const success = await Plates.findByIdAndUpdate(
+        { _id },
+        {
+          $set: {
+            rate: {
+              stars: getCurrentRate["stars"] + stars,
+              rater: [...getCurrentRate["rater"], customer],
+              value:
+                (getCurrentRate["stars"] + stars) /
+                (getCurrentRate["rater"].length + 1),
+            },
+          },
+        }
+      );
+      if (success)
+        return res.status(202).json({
+          success: true,
+          message: "rating success",
+        });
+    }
+  } catch (error) {
+    res.status(400).json({ success: false, Error: "Bad request" });
   }
 };

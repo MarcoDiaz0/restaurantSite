@@ -11,9 +11,9 @@ export const useGetRestaurant = () => {
   const getRestaurantData = async (_id) => {
     setloading(true);
     try {
-      const res = await axios.get(`/api/restaurant/${_id}`);
+      const res = await axios.get(`/api/restaurant/${_id}`);      
       setData(res.data.data);
-      setPlates(res.data.plates);
+      setPlates(res.data.plates);      
       setRestaurantExist(true);
     } catch (error) {
       if (error.response.status === 402) setRestaurantExist(false);

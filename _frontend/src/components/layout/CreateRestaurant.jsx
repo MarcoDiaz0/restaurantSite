@@ -18,6 +18,7 @@ export const CreateRestaurant = () => {
     location: "",
     coverPicture: "",
   });
+
   const { setModal } = useModal();
 
   const { CreateRestaurant, err } = useCreateRestaurant();
@@ -63,8 +64,8 @@ export const CreateRestaurant = () => {
             placeholder={"Your Restaurant Name "}
           />
           <LocationButton
-            title={"Restaurant Location"}
-            setState={setCredentials}
+            credentials={credentials}
+            setlocation={setCredentials}
             className="bg-dark text-light flex justify-center items-center w-full   hover:bg-prime duration-500 rounded-lg p-2 "
           />
         </article>

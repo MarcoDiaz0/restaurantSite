@@ -10,8 +10,7 @@ export const createPlates = async (req, res) => {
     picture = "",
     price,
     type,
-    category,
-    healthCondition,
+    category = {},
   } = req.body;
   if (!mongoose.Types.ObjectId.isValid(restaurant)) {
     return res.status(400).json({
@@ -19,14 +18,7 @@ export const createPlates = async (req, res) => {
       error: "Invalid ID format",
     });
   }
-  if (
-    !name ||
-    !restaurant ||
-    !price ||
-    !type ||
-    !category ||
-    !healthCondition
-  ) {
+  if (!name || !price || !type || !restaurant) {
     res
       .status(402)
       .json({ success: false, Error: "Please provide all fields" });
@@ -36,6 +28,7 @@ export const createPlates = async (req, res) => {
     const { latitude, longitude } = await Restaurants.findById(
       restaurant
     ).select("latitude longitude");
+
     const plate = await Plates.create({
       name,
       restaurant,
@@ -43,9 +36,9 @@ export const createPlates = async (req, res) => {
       price,
       type,
       category,
-      healthCondition,
       picture,
       location: { latitude, longitude },
+      rate: { stars: 0, rater: [], value: 0 },
     });
     res.status(201).json({ success: true, data: plate });
   } catch (error) {
@@ -78,6 +71,7 @@ export const getOnePlate = async (req, res) => {
 //! Update Plate
 export const updatePlate = async (req, res) => {
   const { _id, restaurant, price, description, picture } = req.body;
+
   if (
     !mongoose.Types.ObjectId.isValid(_id) ||
     !mongoose.Types.ObjectId.isValid(restaurant)
@@ -113,6 +107,7 @@ export const updatePlate = async (req, res) => {
 //! Delete Plate
 export const deletePlate = async (req, res) => {
   const { _id, restaurant } = req.body;
+
   if (
     !mongoose.Types.ObjectId.isValid(_id) ||
     !mongoose.Types.ObjectId.isValid(restaurant)
@@ -144,25 +139,56 @@ export const deletePlate = async (req, res) => {
 export const filterPlates = async (req, res) => {
   const {
     category,
-    healthCondition,
-    type,
+    foodType,
     location: { latitude, longitude },
   } = req.body;
-
+  console.log(req.body);
+  
+  const categoryFilters = Object.entries(category).map(([key, values]) => ({
+    [`category.${key}`]: { $in: values },
+  }));
+  let location = {
+    "location.latitude": { $gt: latitude - 0.027, $lt: latitude + 0.027 },
+    "location.longitude": { $gt: longitude - 0.027, $lt: longitude + 0.027 },
+  };
+  if( !latitude || !longitude) location = null
   const page = req.query.page || 1;
   const limit = req.query.limit || 2;
   const args = {
-    category: { $in: category },
-    healthCondition: { $in: healthCondition },
-    type: { $in: type },
-    "location.latitude": { $gt: latitude - 0.027, $lt: latitude + 0.027 },
-    "location.longitude": { $gt: longitude - 0.027, $lt: longitude + 0.027 },
+    type: { $in: foodType },
+    ...location,
+    ...(categoryFilters.length > 0 ? { $or: categoryFilters } : {}),
+  };
+  console.log(args);
+  
+  try {
+    const platesCount = await Plates.countDocuments(args);
+    const plates = await Plates.find(args)
+      .skip(limit * (page - 1))
+      .limit(limit);
+    res.status(200).json({
+      success: true,
+      data: plates,
+      allPages: Math.ceil(platesCount / limit),
+    });
+  } catch (error) {
+    res.status(400).json({ success: false, Error: "Bad Request" });
+  }
+};
+//! Get Plate By Rating
+export const getPlates = async (req, res) => {
+  const page = req.query.page || 1;
+  const limit = req.query.limit || 3;
+  const args = {
+    "rate.value": { $gt: 3.5 },
   };
   try {
     const platesCount = await Plates.countDocuments(args);
     const plates = await Plates.find(args)
       .skip(limit * (page - 1))
       .limit(limit);
+    console.log(plates);
+      
     res.status(200).json({
       success: true,
       data: plates,

@@ -46,7 +46,7 @@ const Signup = () => {
       className="  my-4 mx-1.5 md:w-1/2 px-2 rounded-lg flex flex-col gap-3"
     >
       <h1 className=" text-3xl self-center font-medium text-center ">
-        JOIN NEARBY<span className="text-prime">FOOD </span> NOW
+        JOIN NEARBY<span className="text-prime">FOOOD </span> NOW
       </h1>
       <GoogleSign />
       <aside className="w-full flex justify-center items-center relative">

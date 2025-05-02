@@ -5,7 +5,7 @@ import { authSlice } from "../Store/user";
 const Profile = () => {
   const { setAuth } = authSlice();
   const handleLogOut = () => {
-    setAuth("");
+    setAuth(""); 
   };
   return (
     <div>

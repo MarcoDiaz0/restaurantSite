@@ -7,7 +7,7 @@ const plateSchema = new mongoose.Schema(
       required: true,
     },
     restaurant: {
-      type: mongoose.Types.ObjectId,
+      type: mongoose.Schema.Types.ObjectId,
       ref: "Restaurants",
       required: true,
     },
@@ -19,24 +19,22 @@ const plateSchema = new mongoose.Schema(
       required: true,
     },
     type: {
-      type: Array,
+      type: String,
       required: true,
     },
     category: {
-      type: Array,
-      required: true,
-    },
-    healthCondition: {
-      type: Array,
+      type: Object,
       required: true,
     },
     picture: {
       type: String,
     },
-    location:{
-      type:Object
+    location: {
+      type: Object,
     },
-    
+    rate: {
+      type: Object,
+    },
   },
   {
     timestamps: true, // created at , updated at

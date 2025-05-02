@@ -9,7 +9,7 @@ export const Alert = () => {
   } = useAlert();  
   return (
     <div
-      className={`fixed p-4 rounded-3xl mx-6 left-[50%] -translate-x-1/2 -bottom-18 duration-500 
+      className={`fixed p-4 rounded-3xl mx-6 left-1/2 -translate-x-1/2 -bottom-18 duration-500 
         ${success ? "bg-green-400" : "bg-red-400"}
         ${isActive && "-translate-y-21"} `}
     >

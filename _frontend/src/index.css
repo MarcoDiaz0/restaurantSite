@@ -16,7 +16,7 @@ li{
   display: flex;
 }
 li:hover {
-  color: white;
+  color: rgb(255, 122, 43);
 }
 .backgroundImageMD {
   background-size: cover;

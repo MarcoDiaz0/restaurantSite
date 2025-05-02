@@ -13,11 +13,10 @@ import RestaurantPage from "../components/layout/RestaurantPage";
 export const RestaurantHome = () => {
   const { getRestaurantData, loading, restaurantExist } = useGetRestaurant();
   const { setModal, modal } = useModal();
-  const { auth } = authSlice();
+  const { auth: {_id} } = authSlice();
   const  [insOpacity,setInsOpacity] = useState(0)
-
   useEffect(() => {
-    if (auth.id) getRestaurantData(auth.id);
+    if (_id) getRestaurantData(_id);
   }, []);
   if (restaurantExist)
     return (
@@ -33,7 +32,7 @@ export const RestaurantHome = () => {
     );
   else
     return (
-      <div className="w-full min-h-[50vh] relative flex justify-center items-center ">
+      <div className="w-full min-h-[80vh] relative flex justify-center items-center ">
         {modal.display === "flex" && (
           <Modal>
             <CreateRestaurant />
@@ -44,8 +43,8 @@ export const RestaurantHome = () => {
             <Lottie animationData={Loader} className="w-1/4" />
           </div>
         ) : (
-          <article className="text-center w-full">
-            <h1 className="text-4xl my-3">
+          <article className="text-center  w-full">
+            <h1 className="text-4xl my-10">
               You Need To Create Your Restaurant Page
             </h1>
             <div className="flex justify-around items-center">

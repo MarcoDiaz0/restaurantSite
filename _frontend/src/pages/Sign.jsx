@@ -2,7 +2,7 @@ import { useState } from "react";
 import Signup from "../components/Auth/Signup";
 import Button from "../components/common/Button";
 import Login from "../components/Auth/Login";
-import LOGO from "../images/LOGO.svg";
+import LOGO from "../images/LOGO dark.svg";
 import Modal from "../components/common/Modal";
 import { useModal } from "../Store/modal";
 import OTPModal from "../components/Auth/OTPModal";
@@ -14,7 +14,7 @@ export default function Sign() {
     const { modal} = useModal();
   
   return (
-    <div className="relative  overflow-x-hidden h-full">
+    <div className="relative   overflow-x-hidden h-full">
       {modal.display === "flex" && (
         <Modal>
           {modal.user == "signup" ? <OTPModal /> : <RecoverPassModal />}
@@ -48,7 +48,7 @@ export default function Sign() {
         >
           <img src={LOGO} className="w-36" />
           <h1 className="text-4xl text-bold">
-            {!isLogin ? "ALREADY A MEMBER?" : "NEW IN NEARBY FOOD?"}
+            {!isLogin ? "ALREADY A MEMBER?" : "NEW IN NEARBY FOOOD?"}
           </h1>
           <p className="w-2/3 text-center">
             {!isLogin

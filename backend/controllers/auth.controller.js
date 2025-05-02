@@ -66,7 +66,9 @@ export const createUser = async (req, res) => {
   try {
     const success = await newUser.save();
     if (success) {
-      res.status(201).json({ success: true });
+      res
+        .status(201)
+        .json({ success: true, _id: newUser._id, isOwner: isOwner });
     }
     setTimeout(async () => {
       let account;
@@ -127,7 +129,7 @@ export const login = async (req, res) => {
           email: email,
         });
       }
-      if (mailExist) res.status(402);
+      if (mailExist) res.status(402).json({ success: false });
       else res.status(403).json({ success: false });
     }
   } catch (error) {
@@ -146,13 +148,9 @@ export const checkOTP = async (req, res) => {
   try {
     let account;
     if (isOwner) {
-      account = await Restaurants.findById({
-        _id,
-      });
+      account = await Restaurants.findById(_id);
     } else {
-      account = await Customers.findById({
-        _id,
-      });
+      account = await Customers.findById(_id);
     }
     if (account?.OTPCode === otp) {
       if (isOwner) {

@@ -7,12 +7,9 @@ export const useFiltersStore = create((set) => ({
       longitude: null,
     },
     foodType: [],
-    categorie: [],
+    category: {},
   },
-  buttonState: {
-    icon: null,
-    text: "Use Your Location",
-  },
+
   setFilter: (filterName, value) => {
     set((state) => ({
       filters: {
@@ -21,9 +18,8 @@ export const useFiltersStore = create((set) => ({
       },
     }));
   },
-  setButtonState: (icon, text) => {
-    set(() => ({
-      buttonState: { icon, text },
-    }));
+  filteredPlates: [],
+  setFilteredPlates: (plates) => {
+    set(() => ({ filteredPlates: [...plates] }));
   },
 }));

@@ -1,32 +1,31 @@
+/* eslint-disable react/prop-types */
+import { useState } from "react";
+import { useModal } from "../../Store/modal";
 import Card from "../common/Card";
-import imgb from "../../images/landingPagePhoneS.jpg";
+import Modal from "../common/Modal";
+import DetailsCard from "./DetailsCard";
 
-
-const PlateContainer = (cards) => {
-  const card = {
-    image: imgb,
-    isliked: false,
-    price: 2000,
-    rate: 3.3,
-    title: "humburger",
-    id: "22",
-    description:
-      "sdsdf asdf sdafs safasdf sdffsd sdfk igbrpiwbfå piertnb irjtgnrg",
-  };
-
+const PlateContainer = ({ plates = []}) => {
+  const { modal } = useModal();
+  const [details,setDetails] = useState("")
+  const x =  plates.filter((plate) => plate._id == details)
   return (
-    <div className="px-2 md:col-span-2 col-span-full rounded grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 overflow-scroll gap-2">
-      <Card cardInfo={card} />
-      <Card cardInfo={card} />
-      <Card cardInfo={card} />
-      <Card cardInfo={card} />
-      <Card cardInfo={card} />
-      <Card cardInfo={card} />
-      <Card cardInfo={card} />
-      <Card cardInfo={card} />
-      <Card cardInfo={card} />
-      <Card cardInfo={card} />
-    </div>
+    <>
+      {modal.display === "flex" && (
+        <Modal>
+          <DetailsCard plate={x[0]} />
+        </Modal>
+      )}
+      {plates != [] ? (
+        <div className="p-2 md:col-span-2  grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 overflow-scroll gap-2">
+          {plates?.map((plate) => (
+            <Card key={plate._id} cardInfo={plate} setDetails={setDetails} />
+          ))}
+        </div>
+      ) : (
+        <p className="m-auto w-full">There Are No Plates</p>
+      )}
+    </>
   );
 };
 

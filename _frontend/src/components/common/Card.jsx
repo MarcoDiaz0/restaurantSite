@@ -5,35 +5,38 @@ import { FcLike } from "react-icons/fc";
 import clsx from "clsx";
 
 import Button from "./Button";
-import Modal from "./Modal";
 import { useModal } from "../../Store/modal";
-import DetailsCard from "../layout/DetailsCard";
+import { authSlice } from "../../Store/user";
+import { useFavouritesStore } from "../../Store/favouraites";
+import { useAddRemoveFav } from "../../hooks/useCustomer";
 
-const Card = ({ cardInfo }) => {
+const Card = ({ cardInfo, setDetails }) => {
   const [isActive, setIsActive] = useState(false);
-  const { modal, setModal } = useModal();
+  const { favouritesPlates } = useFavouritesStore();  
+  const { setModal } = useModal();
+  const { AddRemoveFav } = useAddRemoveFav()
   const cardRef = useRef();
+  const {
+    auth: { _id,isOwner },
+  } = authSlice();
 
   return (
     <div
-      
       onClick={(e) => {
-        if (cardRef.current === e.target) setModal(true, "card");
+        if (cardRef.current === e.target) {
+          setModal(true, "card");
+          setDetails(cardInfo._id);
+        }
       }}
       onMouseEnter={() => setIsActive(true)}
       onMouseLeave={() => setIsActive(false)}
-      className="cursor-pointer rounded shadow-lg relative shadow-dark/30  overflow-hidden justify-self-center self-start"
+      className="cursor-pointer rounded shadow-lg w-full relative shadow-dark/30 overflow-hidden justify-self-center self-start"
     >
-      {modal.display === "flex" && (
-        <Modal>
-          <DetailsCard card={cardInfo} />
-        </Modal>
-      )}
       <img
         ref={cardRef}
-        src={cardInfo.image}
+        src={cardInfo.picture}
         className="object-cover w-full aspect-square relative"
-        alt={cardInfo.title}
+        alt={cardInfo.name}
       />
       <div
         className={clsx(
@@ -42,7 +45,7 @@ const Card = ({ cardInfo }) => {
         )}
       >
         <p className="text-lg  whitespace-nowrap text-ellipsis overflow-hidden h-1/2 mx-2">
-          {cardInfo.title}
+          {cardInfo.name}
         </p>
         <div className="h-1/2 justify-center gap-0 flex flex-col duration-800">
           <p className="mx-2">
@@ -51,7 +54,9 @@ const Card = ({ cardInfo }) => {
           </p>
           <p className="mx-2 flex gap-1 items-center">
             Rate:{" "}
-            <span className="Inconsolata font-medium">{cardInfo.rate}</span>{" "}
+            <span className="Inconsolata font-medium">
+              {cardInfo.rate.value || 0}
+            </span>{" "}
             <FaStar />
           </p>
         </div>
@@ -63,17 +68,21 @@ const Card = ({ cardInfo }) => {
             }
           )}
         >
-          <Button
-            className="h-10 p-2"
-            onClick={() => {}}
-            aria-label={cardInfo.isliked ? "Unlike" : "Like"}
-          >
-            {cardInfo.isliked ? (
-              <FcLike className="m-auto static h-full w-full" />
-            ) : (
-              <FaRegHeart className="m-auto static h-full w-full" />
-            )}
-          </Button>
+          {!isOwner && _id && (
+            <Button className="h-10 p-2">
+              {favouritesPlates?.find((plate) => plate._id == cardInfo._id) ? (
+                <FcLike
+                  onClick={() => AddRemoveFav("delete", cardInfo._id)}
+                  className="m-auto static h-full w-full"
+                />
+              ) : (
+                <FaRegHeart
+                  onClick={() => AddRemoveFav("add", cardInfo._id)}
+                  className="m-auto static h-full w-full"
+                />
+              )}
+            </Button>
+          )}
         </div>
       </div>
     </div>

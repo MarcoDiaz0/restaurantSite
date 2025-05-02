@@ -20,7 +20,7 @@ export const useSignup = () => {
     try {
       setErr({ email: "", password: "", username: "", confirmPassword: "" });
       const resp = await axios.post("/api/auth", { ...props, isOwner });
-      setAuth({ id: resp.data.data, isOwner: resp.data.isOwner });
+      setAuth({ _id: resp.data._id, isOwner: resp.data.isOwner });
       return resp;
     } catch (error) {
       if (error.response.status === 402)
@@ -88,7 +88,7 @@ export const useLogin = () => {
   const { setAuth, isOwner } = authSlice();
   const { Alert } = useAlert();
 
-  const login = async ({ email, password }) => {
+  const login = async ({ email, password }) => { 
     if (
       !email ||
       !password ||
@@ -111,15 +111,16 @@ export const useLogin = () => {
     }
     setloading(true);
     try {
+      
       setErr({ email: "", password: "" });
       const resp = await axios.post("/api/auth/login", {
         email,
         password,
         isOwner,
       });
-      setAuth({ id: resp.data.data, isOwner: resp.data.isOwner });
+      setAuth({ _id: resp.data.data, isOwner: resp.data.isOwner });
 
-      navigate(isOwner ? "/restaurantHome" : "/");
+      navigate(resp.data.isOwner ? "/restaurantHome" : "/");
       Alert("You Have Successfully Logged In", true);
     } catch (error) {
       if (error.response.status === 402 || error.response.status === 403)
@@ -143,10 +144,10 @@ export const useOTPCheck = () => {
     isOwner,
   } = authSlice();
   const checkOTP = async (otp) => {
-    const props = { _id, otp, isOwner };
+    const props = { _id, otp, isOwner };    
     const resp = await axios.post("/api/auth/OTP", props);
     if (resp.data.success) {
-      navigate(isOwner ? "/restaurantHome" : "/");
+      navigate(isOwner ? "/restaurantHome" : "/"); 
     }
   };
 

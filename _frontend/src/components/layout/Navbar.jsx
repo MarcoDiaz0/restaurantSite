@@ -1,29 +1,38 @@
 import { Link, useLocation } from "react-router-dom";
 import { authSlice } from "../../Store/user";
 import { GoHomeFill } from "react-icons/go";
-import { MdRestaurantMenu } from "react-icons/md";
-import { FaUser } from "react-icons/fa";
-import LOGO from "../../images/LOGO.svg"
+import {  MdRestaurantMenu, MdShoppingCart } from "react-icons/md";
+import LOGO from "../../images/LOGO light.svg"
 
 const Navbar = () => {
   const { pathname: location } = useLocation();
   const btnclass = " border-b-2 tracking-wider text-prime";
-  const { auth } = authSlice();
+  const {
+    auth: { isOwner },
+  } = authSlice();
   
   return (
-    <div className="w-full p-4 gap-2 sticky z-2000 top-0 bg-light/60 backdrop-blur-xs flex flex-col justify-around sm:flex-row items-center">
-      <div className="flex  items-center">
-        <h1 style={{fontFamily: "Signika Negative"}} className="text-4xl flex items-center text-center mx-3 font-bold border-y-4 border-double border-prime ">
+    <div className="w-full p-4 gap-2 sticky z-2000 top-0 bg-dark text-light backdrop-blur-xs flex flex-col justify-around sm:flex-row items-center">
+      <div className="flex items-center gap-0">
+        <img src={LOGO} className="h-12 w-12 mx-2 " />
+        <h1
+          style={{ fontFamily: "Signika Negative" }}
+          className="text-2xl flex flex-col  text-center font-bold "
+        >
           <span className="text-prime">NEARBY</span>
-          <img src={LOGO} className="h-12 mx-2 " />
-          FOOD.
+          <p>FOOOD.</p>
         </h1>
       </div>
-      
+
       <div className="flex items-center">
         {[
-          { route:  auth.isOwner ? "/restaurantHome":"/", title: "HOME", icon: <GoHomeFill /> },
+          {
+            route: isOwner ? "/restaurantHome" : "/",
+            title: "HOME",
+            icon: <GoHomeFill />,
+          },
           { route: "/menu", title: "MENU", icon: <MdRestaurantMenu /> },
+          { route: "/orders", title: "ORDERS", icon: <MdShoppingCart /> },
         ].map(({ route, title, icon }) => (
           <Link
             key={title}
@@ -37,11 +46,7 @@ const Navbar = () => {
           </Link>
         ))}
       </div>
-      <Link to={!auth ? "sign" : "profile"}>
-        <div className=" bg-white fixed right-2 top-6 pt-1 px-1 cursor-pointer hover:text-prime duration-200 rounded-full border-2">
-          <FaUser className="w-6 h-6" />
-        </div>
-      </Link>
+      
     </div>
   );
 };

@@ -1,10 +1,10 @@
 import { FaFacebook, FaInstagram, FaLinkedin } from "react-icons/fa";
-import LOGO from "../../images/LOGO.svg";
+import LOGO from "../../images/LOGO light.svg";
 
 const Footer = () => {
   return (
-    <div className="p-7 mt-1 grid md:grid-cols-4 text-  gap-10 bg-prime ">
-      <div className="col-span-2 ">
+    <div className=" bg-dark text-light/80 ">
+      <div className=" grid md:grid-cols-3  gap-10 p-7">
         <div>
           <h1
             style={{ fontFamily: "Signika Negative" }}
@@ -12,73 +12,64 @@ const Footer = () => {
           >
             NEARBY
             <img src={LOGO} className="h-8 mx-2 " />
-            FOOD.
+            FOOOD.
           </h1>
+          <li className="my-2">Policy & Conditions</li>
         </div>
-        <p>
-          <span className="font-bold">Nearby Food</span> is the ideal platform
-          for personalized dining. We offer advanced filters to help you find
-          dishes that match your dietary needs, including allergies,
-          intolerances, or conditions like diabetes and heart disease. Whether
-          you&apos;re gluten-free, vegan, or low-sodium, you can easily find
-          suitable restaurants. Our platform also helps you discover nearby
-          options, making dining convenient and health-focused.
-        </p>
+        <div>
+          <h1 className="text-2xl font-bold uppercase text-light">Company</h1>
+          <ul className="flex flex-col gap-3 items-start">
+            <a href="#">
+              <li>Our Team</li>
+            </a>
+            <a href="#">
+              <li>Reviews & feedBack</li>
+            </a>
+          </ul>
+        </div>
+        <div>
+          <h1 className="text-2xl font-bold uppercase text-light">Resources</h1>
+          <ul className="flex flex-col gap-3 items-start">
+            <a href="#">
+              <li>Help & Support</li>
+            </a>
+            <a href="#">
+              <li>What&apos;s New</li>
+            </a>
+          </ul>
+        </div>
       </div>
-      <div>
-        <h1 className="text-2xl font-bold">Company</h1>
-        <ul className="flex flex-col gap-3 items-start">
-          <a href="#">
-            <li>Our Team</li>
-          </a>
-          <a href="#">
-            <li>Reviews & feedBack</li>
-          </a>
-          <li>Contact Us :</li>
-
-          <div className="flex flex-col-3 space-x-6">
-            {[
-              {
-                key: "facebook",
-                link: "https://fr-fr.facebook.com/",
-                icone: (
-                  <FaFacebook className="hover:scale-120 hover:text-light duration-200 w-6 h-6" />
-                ),
-              },
-              {
-                key: "instagram",
-                link: "https://www.instagram.com/",
-                icone: (
-                  <FaInstagram className="hover:scale-120 hover:text-light duration-200 w-6 h-6" />
-                ),
-              },
-              {
-                key: "linkedIn",
-                link: "https://www.linkedin.com/",
-                icone: (
-                  <FaLinkedin className="hover:scale-120 hover:text-light duration-200 w-6 h-6" />
-                ),
-              },
-            ].map(({ key, link, icone }) => (
-              <a
-                key={key}
-                href={link}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {icone}
-              </a>
-            ))}
-          </div>
-        </ul>
-      </div>
-      <div className="flex flex-col gap-3 items-start">
-        <li>Policy & Conditions</li>
-
-        <p className="text-sm border-0">
-          EMAIL: <br /> nearbyfoood@gmail.com
-        </p>
-        <p className="text-sm border-0">Copyright © 2025 NEARBY FOOD.</p>
+      <div className="flex justify-between border-t p-5">
+        <p className="text-sm border-0">Copyright © 2025 NEARBY FOOOD.</p>
+        <div className="flex flex-col-3 space-x-6">
+          {[
+            {
+              key: "facebook",
+              link: "https://fr-fr.facebook.com/",
+              icone: (
+                <FaFacebook className="hover:scale-120 hover:text-prime duration-200 w-6 h-6" />
+              ),
+            },
+            {
+              key: "instagram",
+              link: "https://www.instagram.com/",
+              icone: (
+                <FaInstagram className="hover:scale-120 hover:text-prime duration-200 w-6 h-6" />
+              ),
+            },
+            {
+              key: "linkedIn",
+              link: "https://www.linkedin.com/",
+              icone: (
+                <FaLinkedin className="hover:scale-120 hover:text-prime duration-200 w-6 h-6" />
+              ),
+            },
+          ].map(({ key, link, icone }) => (
+            <a key={key} href={link} target="_blank" rel="noopener noreferrer">
+              {icone}
+            </a>
+          ))}
+        </div>
       </div>
     </div>
   );
