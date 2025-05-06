@@ -4,6 +4,7 @@ import { useModal } from "../../Store/modal";
 import Card from "../common/Card";
 import Modal from "../common/Modal";
 import DetailsCard from "./DetailsCard";
+import OrderMadal from "../common/OrderMadal";
 
 const PlateContainer = ({ plates = []}) => {
   const { modal } = useModal();
@@ -13,7 +14,8 @@ const PlateContainer = ({ plates = []}) => {
     <>
       {modal.display === "flex" && (
         <Modal>
-          <DetailsCard plate={x[0]} />
+          {modal.user == "order"? <OrderMadal plate={x[0]} />:
+          <DetailsCard plate={x[0]} />}
         </Modal>
       )}
       {plates != [] ? (

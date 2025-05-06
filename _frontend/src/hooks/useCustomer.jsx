@@ -1,6 +1,7 @@
 import axios from "axios";
 import { authSlice } from "../Store/user";
 import { useFavouritesStore } from "../Store/favouraites";
+import { useState } from "react";
 
 //! Get Favourites
 export const useGetFavourites = () => {
@@ -25,15 +26,16 @@ export const useAddRemoveFav = () => {
     auth: { _id },
   } = authSlice();
   const AddRemoveFav = async (action, plate) => {
-    
     try {
       const res = await axios.post(`/api/customer/favourite/${action}`, {
         _id,
         plate,
       });
-      if(action == "add") setFavouritesPlates(res.data.favourites);
-      if(action == "delete") setFavouritesPlates(favouritesPlates.filter(plat => plat._id != plate));
-      
+      if (action == "add") setFavouritesPlates(res.data.favourites);
+      if (action == "delete")
+        setFavouritesPlates(
+          favouritesPlates.filter((plat) => plat._id != plate)
+        );
     } catch (error) {
       console.log(error);
     }
@@ -59,4 +61,20 @@ export const useRatePlates = () => {
     }
   };
   return { ratePlate };
+};
+//! Get Customer Orders
+export const useGetOrders = () => {
+  const {
+    auth: { _id },
+  } = authSlice();
+  const [orders, setOrders] = useState([]);
+  const getOrders = async () => {
+    try {
+      const res = await axios.get(`api/customer/orders/${_id}`);
+      setOrders(res.data.data);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+  return { getOrders, orders };
 };

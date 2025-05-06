@@ -12,7 +12,7 @@ import { useFavouritesStore } from "../Store/favouraites";
       getFavourites();
     }, []);
   return (
-    <div className="md:w-7/10 mx-auto py-2 ">
+    <div className="md:w-7/10 min-h-[70vh] mx-auto py-2 ">
       <PlateContainer plates={favouritesPlates} />
     </div>
   );

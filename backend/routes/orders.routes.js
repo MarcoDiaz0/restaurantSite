@@ -9,6 +9,6 @@ const orederRouter = e.Router();
 
 orederRouter.post("/create", createOrder);
 orederRouter.put("/confirm", confirmOrder);
-orederRouter.delete("/delete", deleteOrder);
+orederRouter.delete("/delete/:_id", deleteOrder);
 
 export default orederRouter;

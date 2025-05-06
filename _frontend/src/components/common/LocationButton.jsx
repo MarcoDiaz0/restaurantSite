@@ -7,7 +7,7 @@ import Button from "./Button";
 
 export const LocationButton = ({ className, setlocation,credentials }) => {
   const [button, setButton] = useState(
-    <Lottie animationData={Locationicon} className="h-7 w-7 mx-2 flex" />
+    <Lottie animationData={Locationicon}  className="h-7 w-7 mx-2 flex !text-black" />
   );
   const getLocation = () => {
     if (navigator.geolocation) {

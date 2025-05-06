@@ -9,7 +9,6 @@ import Loader from "../../images/Loader.json";
 import { useModal } from "../../Store/modal";
 
 function DetailsCard({ plate }) {
-  console.log(plate);
   
   const {
     auth: { _id, isOwner },
@@ -68,7 +67,7 @@ function DetailsCard({ plate }) {
               </Button>
             </div>
           ) : (
-            <Button className="bg-prime border w-full rounded-lg p-1">
+            <Button onClick={()=>setModal(true,"order")} className="bg-prime border w-full rounded-lg p-1">
               Buy Now
             </Button>
           )}

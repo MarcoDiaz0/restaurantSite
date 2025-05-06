@@ -32,9 +32,6 @@ const RestaurantSchema = new mongoose.Schema(
     coverPicture: {
       type: String,
     },
-  },
-  {
-    timestamps: true, // created at , updated at
   }
 );
 const Restaurants = mongoose.model("Restaurants", RestaurantSchema);

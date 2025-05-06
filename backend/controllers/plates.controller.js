@@ -142,7 +142,6 @@ export const filterPlates = async (req, res) => {
     foodType,
     location: { latitude, longitude },
   } = req.body;
-  console.log(req.body);
   
   const categoryFilters = Object.entries(category).map(([key, values]) => ({
     [`category.${key}`]: { $in: values },
@@ -159,7 +158,6 @@ export const filterPlates = async (req, res) => {
     ...location,
     ...(categoryFilters.length > 0 ? { $or: categoryFilters } : {}),
   };
-  console.log(args);
   
   try {
     const platesCount = await Plates.countDocuments(args);
@@ -187,7 +185,6 @@ export const getPlates = async (req, res) => {
     const plates = await Plates.find(args)
       .skip(limit * (page - 1))
       .limit(limit);
-    console.log(plates);
       
     res.status(200).json({
       success: true,

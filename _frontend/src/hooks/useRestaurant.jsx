@@ -11,9 +11,9 @@ export const useGetRestaurant = () => {
   const getRestaurantData = async (_id) => {
     setloading(true);
     try {
-      const res = await axios.get(`/api/restaurant/${_id}`);      
+      const res = await axios.get(`/api/restaurant/${_id}`);
       setData(res.data.data);
-      setPlates(res.data.plates);      
+      setPlates(res.data.plates);
       setRestaurantExist(true);
     } catch (error) {
       if (error.response.status === 402) setRestaurantExist(false);
@@ -78,21 +78,18 @@ export const useUpdateRestaurant = () => {
   return { updateRestaurant };
 };
 //! Get Restaurant Orders
-export const useGetOrders = () => {
-  const [loading, setloading] = useState(false);
+export const useGetOrders_R = () => {
+  const [ResOrders, setResOrders] = useState([]);
   const {
     auth: { _id },
   } = authSlice();
-  const getOrders = async () => {
-    setloading(true);
+  const getRestOrders = async () => {
     try {
       const res = await axios.get(`/api/restaurant/getOrders/${_id}`);
-      return res.data.data
+      setResOrders(res.data.data);
     } catch (error) {
       console.log(error);
-    } finally {
-      setloading(false);
     }
   };
-  return { getOrders, loading };
+  return { getRestOrders, ResOrders };
 };

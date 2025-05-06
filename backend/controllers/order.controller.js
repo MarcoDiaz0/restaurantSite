@@ -5,35 +5,32 @@ import Restaurants from "../models/Restaurant.model.js";
 
 //! Create Order
 export const createOrder = async (req, res) => {
-  const { email, location, restaurant, plates, customer } = req.body;
+  const { adress, restaurant, plate, customer, phoneNumber } = req.body;
+
   const restaurantExist = Restaurants.findById(restaurant);
-  if (restaurantExist) {
+  if (!restaurantExist) {
     return res.status(404).json({
       success: false,
       message: "Restaurant Does Not Exist",
     });
   }
 
-  if (!email || !location || !plates ) {
-    res
+  if (!phoneNumber || !adress || !plate) {
+    return res
       .status(401)
       .json({ success: false, message: "please provide all fields" });
   }
-  const platesPrice = await Plates.find({ _id: { $in: plates } }).select(
-    "price"
-  );
-  let price = 0;
-  if (platesPrice.length != 0)
-    platesPrice.map((plate) => (price = price + plate.price));
-  else return;
+  const { price } = await Plates.findById(plate).select("price -_id");
+
   try {
     const order = await Orders.create({
-      email,
-      location,
+      phoneNumber,
+      adress,
       restaurant,
       price,
       customer,
-      plates,
+      plate,
+      status: null,
     });
     res.status(201).json({ success: true, data: order });
   } catch (error) {
@@ -42,8 +39,7 @@ export const createOrder = async (req, res) => {
 };
 //! Confirm Order
 export const confirmOrder = async (req, res) => {
-  const { success, _id, restaurant } = req.body;
-  
+  const { status, _id, restaurant } = req.body;
   if (
     !mongoose.Types.ObjectId.isValid(_id) ||
     !mongoose.Types.ObjectId.isValid(restaurant)
@@ -54,22 +50,26 @@ export const confirmOrder = async (req, res) => {
     });
   }
   try {
-    const success = await Orders.findOneAndUpdate(
+    const oreder = await Orders.findOneAndUpdate(
       { _id, restaurant },
       {
         $set: {
-          success: success,
+          status:status
         },
-      }
+      },
+      { new: true }
     );
-    if (!success) {
+    
+    
+    if (!oreder) {
       return res.status(404).json({
         success: false,
-        message: "Order not found or not associated with this restaurant",
+        message: "Order not found",
       });
     }
-    res.status(200).json({
-      success: true,message:"order confirmed"
+    res.status(203).json({
+      success: true,
+      message: `Order ${status ? "Confirmed" : "Rejected"}`,
     });
   } catch (error) {
     res.status(500).json({
@@ -80,25 +80,19 @@ export const confirmOrder = async (req, res) => {
 };
 //! Delete Order
 export const deleteOrder = async (req, res) => {
-  const { _id, restaurant } = req.body;
-  if (
-    !mongoose.Types.ObjectId.isValid(_id) ||
-    !mongoose.Types.ObjectId.isValid(restaurant)
-  ) {
+  const { _id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(_id)) {
     return res.status(400).json({
       success: false,
       error: "Invalid ID format",
     });
   }
-  if (!_id) {
-    res.status(404).json({ success: false, message: "Order not found" });
-  }
   try {
-    const success = await Orders.findOneAndDelete({ _id, restaurant });
+    const success = await Orders.findByIdAndDelete(_id);
     if (!success) {
       return res.status(404).json({
         success: false,
-        error: "Order not found or not associated with this restaurant",
+        error: "Order not found ",
       });
     }
     res.status(203).json({ success: true });

@@ -5,7 +5,6 @@ import Sign from "./pages/Sign";
 import Menu from "./pages/Menu";
 import Profile from "./pages/Profile";
 import Policy from "./pages/Policy";
-import ContactUs from "./pages/ContactUs";
 import { RestaurantHome } from "./pages/RestaurantHome";
 import Footer from "./components/layout/Footer";
 import { Alert } from "./components/common/Alert";
@@ -13,6 +12,7 @@ import SideBar from "./components/layout/SideBar";
 import { authSlice } from "./Store/user";
 import { CreatePlate } from "./pages/CreatePlate";
 import  Favourites  from "./pages/Favourites";
+import Orders from "./pages/Orders";
 
 function App() {
   const {
@@ -28,10 +28,10 @@ function App() {
           <Route path="/menu" element={<Menu />} />
           <Route path="/profile" element={<Profile />} />
           <Route path="/policy" element={<Policy />} />
-          <Route path="/contactUs" element={<ContactUs />} />
           <Route path="/restaurantHome" element={<RestaurantHome />} />
           <Route path="/createPlate" element={<CreatePlate />} />
           <Route path="/favourites" element={<Favourites />} />
+          <Route path="/orders" element={<Orders />} />
           <Route path="/*" element={<LandingPage />} />
         </Routes>
         <Footer />

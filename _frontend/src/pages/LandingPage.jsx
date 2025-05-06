@@ -12,7 +12,7 @@ import { useFiltersStore } from "../Store/filters";
 
 const LandingPage = () => {
   const {
-    auth: { isOwner },
+    auth: { isOwner, _id },
   } = authSlice();
   const { filterPlates } = useFilterPlates()
     const {  setFilter } = useFiltersStore();
@@ -57,11 +57,11 @@ const LandingPage = () => {
           suitable restaurants. Our platform also helps you discover nearby
           options, making dining convenient and health-focused.
         </p>
-        <Link to="/sign">
+        {!_id && <Link to="/sign">
           <Button className="bg-prime p-3 rounded-3xl hover:bg-light hover:text-dark duration-500 ">
             JOIN US
           </Button>
-        </Link>
+        </Link>}
       </div>
 
       <div className="flex text-light backgroundImageMD  w-full p-2  py-10">

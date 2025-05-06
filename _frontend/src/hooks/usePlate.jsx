@@ -15,7 +15,6 @@ export const useCreatePlate = () => {
   const navigate = useNavigate();
 
   const createPlate = async (plate) => {
-    console.log(plate);
     const imgURL = await uploadImage(plate.picture);
     plate.picture = imgURL;
     try {

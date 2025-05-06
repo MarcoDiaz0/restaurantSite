@@ -13,7 +13,10 @@ export const getOrders = async (req, res) => {
     });
   }
   try {
-    const orders = await Orders.find({ customer: id });
+    const orders = await Orders.find({ customer: id }).populate({
+      path: "plate",
+      select: "name picture",
+    });    
     res.status(200).json({ success: true, data: orders });
   } catch (error) {
     res.status(400).json({ success: false, Error: "Bad request" });

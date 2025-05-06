@@ -11,26 +11,28 @@ const orderSchema = new mongoose.Schema(
       ref: "Restaurants",
       required: true,
     },
-    plates: [
-      {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "plates",
-        required: true,
-      },
-    ],
-    success: {
+    plate: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Plates",
+      required: true,
+    },
+
+    status: {
       type: Boolean,
     },
     price: {
       type: Number,
     },
-    location: {
-      type: Object,
+    phoneNumber: {
+      type: Number,
+      required: true,
+    },
+    adress: {
+      type: String,
       required: true,
     },
     email: {
       type: String,
-      required: true,
     },
   },
   {
