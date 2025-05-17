@@ -11,7 +11,7 @@ export const useSignup = () => {
   const [err, setErr] = useState({
     email: "",
     password: "",
-    username: "",
+    username: "", 
     confirmPassword: "",
   });
   const signup = async (props) => {
@@ -86,7 +86,7 @@ export const useLogin = () => {
   const [loading, setloading] = useState(false);
   const [err, setErr] = useState({ email: "", password: "" });
   const { setAuth, isOwner } = authSlice();
-  const { Alert } = useAlert();
+  const { Alert } = useAlert(); 
 
   const login = async ({ email, password }) => { 
     if (

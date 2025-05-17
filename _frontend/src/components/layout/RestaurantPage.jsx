@@ -4,11 +4,14 @@ import PlateContainer from "../layout/PlateContainer";
 
 const RestaurantPage = () => {
   const {
-    data: { latitude, longitude, restaurantName, coverPicture },plates
+    data: { latitude, longitude, restaurantName, coverPicture },
+    plates,
   } = useRestaurant();
+ 
+  
   return (
     <div className="flex w-full flex-col md:flex-row  ">
-      <article className="bg-dark/80 p-3 text-light md:w-1/2 w-full flex flex-col gap-5 ">
+      <article className="bg-dark/80 p-3 text-light w-full flex flex-col gap-5 ">
         <div className="text-center ">
           <img
             src={coverPicture}
@@ -32,7 +35,7 @@ const RestaurantPage = () => {
         </div>
       </article>
 
-      <article >
+      <article>
         <PlateContainer plates={plates} />
       </article>
     </div>

@@ -13,16 +13,18 @@ const Navbar = () => {
   
   return (
     <div className="w-full p-4 gap-2 sticky z-2000 top-0 bg-dark text-light backdrop-blur-xs flex flex-col justify-around sm:flex-row items-center">
-      <div className="flex items-center gap-0">
-        <img src={LOGO} className="h-12 w-12 mx-2 " />
-        <h1
-          style={{ fontFamily: "Signika Negative" }}
-          className="text-2xl flex flex-col  text-center font-bold "
-        >
-          <span className="text-prime">NEARBY</span>
-          <p>FOOOD.</p>
-        </h1>
-      </div>
+      <Link to={"/"}>
+        <div className="flex items-center gap-0">
+          <img src={LOGO} className="h-12 w-12 mx-2 " />
+          <h1
+            style={{ fontFamily: "Signika Negative" }}
+            className="text-2xl flex flex-col  text-center font-bold "
+          >
+            <span className="text-prime">NEARBY</span>
+            <p>FOOOD.</p>
+          </h1>
+        </div>
+      </Link>
 
       <div className="flex items-center">
         {[
@@ -46,7 +48,6 @@ const Navbar = () => {
           </Link>
         ))}
       </div>
-      
     </div>
   );
 };

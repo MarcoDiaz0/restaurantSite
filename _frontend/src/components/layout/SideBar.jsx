@@ -2,12 +2,14 @@ import { IoMdHeartEmpty, IoMdNotificationsOutline } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { authSlice } from "../../Store/user";
 import { FiUser } from "react-icons/fi";
-
+import { CiLogout } from "react-icons/ci";
 
 const SideBar = () => {
-    const {
-      auth: { _id,isOwner },
-    } = authSlice();
+  const {
+    auth: { _id, isOwner },
+  } = authSlice();
+  const { setAuth } = authSlice();
+
   return (
     <div
       className={` fixed z-2000 right-2 -translate-y-1/2 top-1/2 border-light border-2 text-light ${
@@ -24,17 +26,20 @@ const SideBar = () => {
           <IoMdNotificationsOutline className="w-6 h-6" />
         </div>
       </Link>
-      {!isOwner ? (
+      {!isOwner && (
         <Link to={"/favourites"}>
           <div className="  cursor-pointer hover:text-prime duration-200 rounded-full">
             <IoMdHeartEmpty className="w-6 h-6" />
           </div>
         </Link>
-      ) : (
-        ""
       )}
+      <Link to={"/sign"} onClick={() => setAuth("")}>
+        <div className="cursor-pointer hover:text-prime duration-200 ">
+          <CiLogout className="w-6 h-6" />
+        </div>
+      </Link>
     </div>
   );
-}
+};
 
-export default SideBar
+export default SideBar;

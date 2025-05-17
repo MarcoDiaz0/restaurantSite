@@ -18,7 +18,7 @@ const FilterBar = ({ setShowFilters }) => {
   return (
     <div className="bg-dark/70 w-full">
       <div className="relative">
-        <div className="sticky h-15 top-0 mb-2 bg-prime w-full flex px-2 gap-3 items-center ">
+        <div className="sticky h-15 top-0 mb-2 z-2 bg-prime w-full flex px-2 gap-3 items-center ">
           <Button
             className={` bg-light w-8 h-8 rounded-full border-2 border-prime `}
             onClick={() => setShowFilters(false)}

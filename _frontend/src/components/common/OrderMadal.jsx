@@ -6,7 +6,7 @@ import { useCreateOrder } from "../../hooks/useOrder.jsx";
 
 const OrderMadal = ({ plate }) => {
   const [credentials, setCredentials] = useState({phoneNumber:"",adress:""});
-  const { createOrder } = useCreateOrder()
+  const { createOrder ,err} = useCreateOrder()
   const create = ()=> {
     createOrder({ ...credentials, plate: plate._id, restaurant:plate.restaurant });
   }
@@ -28,6 +28,7 @@ const OrderMadal = ({ plate }) => {
         </div>
       </div>
       <Input
+        err={err}
         value={credentials.phoneNumber}
         onChange={(e) =>
           setCredentials((ls) => ({ ...ls, phoneNumber: e.target.value }))

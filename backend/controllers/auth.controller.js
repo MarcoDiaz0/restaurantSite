@@ -184,11 +184,11 @@ export const recoverPass = async (req, res) => {
   try {
     if (isOwner) {
       isExist = await Restaurants.findOne({
-        email: email,
+        email,
       });
     } else {
       isExist = await Customers.findOne({
-        email: email,
+        email,
       });
     }
     if (isExist) {
@@ -224,7 +224,7 @@ export const recoverPass = async (req, res) => {
       }
       if (!isOwner) {
         await Customers.findOneAndUpdate(
-          { email: email },
+          { email },
           { $set: { password: randomString } }
         );
         res
@@ -232,7 +232,7 @@ export const recoverPass = async (req, res) => {
           .json({ success: true, message: "we sent new password to you" });
       } else {
         await Restaurants.findOneAndUpdate(
-          { email: email },
+          { email },
           { $set: { password: randomString } }
         );
         res
@@ -245,5 +245,115 @@ export const recoverPass = async (req, res) => {
     }
   } catch (error) {
     res.status(400).json({ success: false, Error: "bad request" });
+  }
+};
+//! Get User
+export const getUser = async (req, res) => {
+  const { _id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(_id)) {
+    return res.status(400).json({
+      success: false,
+      error: "Invalid ID format",
+    });
+  }
+
+  try {
+    let user = await Customers.findById(_id).select(
+      "-_id -OTPCode -logitude -latitude"
+    );
+    if (!user) {
+      user = await Restaurants.findById(_id).select("-_id -OTPCode");
+    }
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: "User Not Found",
+      });
+    }
+    res.status(201).json({
+      success: true,
+      data: user,
+    });
+  } catch (error) {
+    res.status(400).json({ success: false, Error: "bad request" });
+  }
+};
+//! update User
+export const updateUser = async (req, res) => {
+  const {
+    restaurantName,
+    coverPicture = "",
+    _id,
+    username,
+    password,
+  } = req.body;
+  if (!mongoose.Types.ObjectId.isValid(_id)) {
+    return res.status(400).json({
+      success: false,
+      error: "Invalid ID format",
+    });
+  }
+  let usernameExist = await Customers.findOne({ username, _id: { $ne: _id } });
+
+  if (!usernameExist)
+    usernameExist = await Restaurants.findOne({ username, _id: { $ne: _id } });
+
+  if (usernameExist) {
+    return res
+      .status(403)
+      .json({ success: false, message: "this username already exist" });
+  }
+  let resNameExist = await Customers.findOne({
+    restaurantName,
+    _id: { $ne: _id },
+  });
+
+  if (!resNameExist)
+    usernameExist = await Restaurants.findOne({
+      restaurantName,
+      _id: { $ne: _id },
+    });
+
+  if (resNameExist) {
+    return res
+      .status(406)
+      .json({ success: false, message: "this restaurant name already exist" });
+  }
+  let user = await Customers.findByIdAndUpdate(
+    { _id },
+    {
+      $set: {
+        username,
+        password,
+      },
+    },
+    { new: true }
+  );
+
+  if (!user) {
+    user = await Restaurants.findByIdAndUpdate(
+      { _id },
+      {
+        $set: {
+          username,
+          password,
+          restaurantName,
+          coverPicture,
+        },
+      },
+      { new: true }
+    );
+  }
+  try {
+    if (!user)
+      return res
+        .status(404)
+        .json({ success: false, message: "user Not Found" });
+    return res
+      .status(202)
+      .json({ success: true, message: "The User Is Up To Date" });
+  } catch (error) {
+    res.status(400).json({ success: false, Error: "server error" });
   }
 };

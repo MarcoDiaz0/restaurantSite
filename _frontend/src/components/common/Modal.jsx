@@ -1,8 +1,8 @@
 /* eslint-disable react/prop-types */
 import { useRef } from "react";
 import { useModal } from "../../Store/modal";
-import Button from "./Button";
-import { FaXmark } from "react-icons/fa6";
+// import Button from "./Button";
+// import { FaXmark } from "react-icons/fa6";
 
 const Modal = ({ children }) => {
   const modalRef = useRef();
@@ -20,12 +20,12 @@ const Modal = ({ children }) => {
         style={modal}
         className="m-10 max-w-9/10 relative duration-300 border rounded-2xl"
       >
-        <Button
+        {/* <Button
           onClick={() => setModal(false)}
           className="absolute border-2 border-prime -top-3 -right-3 rounded-full bg-dark text-light  w-7 h-7"
         >
           <FaXmark className="w-full" />
-        </Button>
+        </Button> */}
         {children}
       </div>
     </div>

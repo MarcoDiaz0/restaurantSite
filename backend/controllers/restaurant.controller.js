@@ -58,37 +58,7 @@ export const createRestaurant = async (req, res) => {
     }
   }
 };
-//! update Restaurant
-export const updateRestaurant = async (req, res) => {
-  const { restaurantName, location, coverPicture, _id } = req.body;
-  if (!mongoose.Types.ObjectId.isValid(_id)) {
-    return res.status(400).json({
-      success: false,
-      error: "Invalid ID format",
-    });
-  }
-  try {
-    const restaurant = await Restaurants.findByIdAndUpdate(
-      { _id },
-      {
-        $set: {
-          restaurantName,
-          longitude: parseFloat(location.longitude),
-          latitude: parseFloat(location.latitude),
-          coverPicture,
-        },
-      },
-      { new: true }
-    ).select("restaurantName latitude longitude coverPicture -_id");
-    if (!restaurant)
-      return res
-        .status(404)
-        .json({ success: false, Error: "Restaurat Not Found" });
-    res.status(202).json({ success: true, restaurant });
-  } catch (error) {
-    res.status(400).json({ success: false, Error: "server error" });
-  }
-};
+
 //! Get Restaurant Orders
 export const getRestaurantOrders = async (req, res) => {
   const { _id } = req.params;

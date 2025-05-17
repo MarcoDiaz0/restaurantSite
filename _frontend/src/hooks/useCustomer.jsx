@@ -2,6 +2,7 @@ import axios from "axios";
 import { authSlice } from "../Store/user";
 import { useFavouritesStore } from "../Store/favouraites";
 import { useState } from "react";
+import { useAlert } from "../Store/Alert";
 
 //! Get Favourites
 export const useGetFavourites = () => {
@@ -48,6 +49,8 @@ export const useRatePlates = () => {
   const {
     auth: { _id },
   } = authSlice();
+    const { Alert } = useAlert();
+  
   const ratePlate = async (stars, id) => {
     try {
       const res = await axios.post("/api/customer/rate", {
@@ -55,9 +58,11 @@ export const useRatePlates = () => {
         stars,
         _id: id,
       });
-      return res.data.message;
+      Alert(res.data.message, true);
+      
     } catch (error) {
       console.log(error);
+      Alert(error.response.data.message, false);
     }
   };
   return { ratePlate };

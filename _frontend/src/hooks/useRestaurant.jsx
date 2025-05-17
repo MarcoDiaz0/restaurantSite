@@ -37,7 +37,7 @@ export const useCreateRestaurant = () => {
     credentials.coverPicture = imgURL;
     setloading(true);
     try {
-      setErr("");
+      setErr(""); 
       const res = await axios.post("/api/restaurant/create", {
         ...credentials,
         _id,

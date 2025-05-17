@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { useModal } from "../Store/modal";
 import { useGetOrders } from "./useCustomer";
 import { useGetOrders_R } from "./useRestaurant";
+import { useState } from "react";
 
 //! Create Order
 export const useCreateOrder = () => {
@@ -14,10 +15,26 @@ export const useCreateOrder = () => {
   const { Alert } = useAlert();
   const navigate = useNavigate();
   const { setModal } = useModal();
+  const [err, setErr] = useState("");
 
   //{ email, adress, restaurant, plates, customer }
   const createOrder = async (order) => {
+
+    if (
+      !order.phoneNumber ||
+      !/^(?:\+213|0)(5|6|7)\d{8}$/.test(order.phoneNumber)
+    ) {
+      setErr(
+        !order.phoneNumber
+          ? "Please fill the input with your Phone Number"
+          : /^(?:\+213|0)(5|6|7)\d{8}$/.test(order.phoneNumber)
+          ? ""
+          : "Please Enter Valid Phone Number"
+      );
+      return;
+    }
     try {
+      setErr("");
       const res = await axios.post("/api/orders/create", {
         ...order,
         customer: _id || null,
@@ -31,7 +48,7 @@ export const useCreateOrder = () => {
       console.log(error);
     }
   };
-  return { createOrder };
+  return { createOrder, err };
 };
 //! Delete Order
 export const useDeleteOrder = () => {
@@ -56,8 +73,8 @@ export const useConfirmOrder = () => {
   const {
     auth: { _id },
   } = authSlice();
-    const { getRestOrders } = useGetOrders_R();
-  
+  const { getRestOrders } = useGetOrders_R();
+
   const { Alert } = useAlert();
   const confirmOrder = async (id, status) => {
     try {
@@ -66,7 +83,7 @@ export const useConfirmOrder = () => {
         _id: id,
         status,
       });
-      getRestOrders()
+      getRestOrders();
       Alert(res.data.message, true);
     } catch (error) {
       console.log(error);

@@ -10,7 +10,7 @@ import { MdTitle } from "react-icons/md";
 import { useCreatePlate } from "../hooks/usePlate";
 
 export const CreatePlate = () => {
-  const types = ["Plate", "Fastfood", "Drink", "Dessert", "All"]; 
+  const types = ["Plate", "Fastfood", "Drink", "Dessert"]; 
   const Categories = {
     Diets: [
       "Vegetarian",
@@ -66,6 +66,7 @@ export const CreatePlate = () => {
   return (
     <div className="w-full min-h-[80vh] flex  flex-col-reverse md:flex-row ">
       <article className="bg-dark/80 p-3 text-light md:w-1/3 w-full overflow-scroll ">
+      <h1 className="m-auto text-3xl">Create Plate</h1>
         <Select
           options={types}
           value={plate.type}

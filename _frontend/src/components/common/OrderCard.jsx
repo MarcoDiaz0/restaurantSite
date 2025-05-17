@@ -1,12 +1,15 @@
 /* eslint-disable react/prop-types */
 
 import { useConfirmOrder, useDeleteOrder } from "../../hooks/useOrder";
+import { useModal } from "../../Store/modal";
 import { authSlice } from "../../Store/user";
 import Button from "./Button";
 
 const OrderCard = ({ order }) => {
   const { deleteOrder } = useDeleteOrder();
   const { confirmOrder } = useConfirmOrder();
+      const { setModal } = useModal();
+  
   const {
     auth: { isOwner },
   } = authSlice();
@@ -25,19 +28,23 @@ const OrderCard = ({ order }) => {
           {order.status !== null ? (
             <>
               {order.status === true ? (
-                <p className={`py-2 w-full text-center bg-emerald-500 rouned`}>
+                <p
+                  className={`py-2 w-full rounded text-center bg-emerald-500 rouned`}
+                >
                   Accepted
                 </p>
               ) : (
                 order.status === false && (
-                  <p className={`py-2 w-full text-center bg-red-500`}>
+                  <p className={`py-2 w-full rounded text-center bg-red-500`}>
                     Rejected
                   </p>
                 )
               )}
             </>
           ) : (
-            <p className={`py-2 w-full text-center bg-prime`}>Pending</p>
+            <p className={`py-2 w-full rounded text-center bg-prime`}>
+              Pending
+            </p>
           )}
         </div>
 
@@ -74,7 +81,10 @@ const OrderCard = ({ order }) => {
       ) : (
         <>
           {order.status === true && (
-            <Button className="absolute top-1.5 right-3 bg-green-500/70 p-1.5 hover:bg-green-500 rounded">
+            <Button
+              onClick={() => setModal(true, order.plate._id)}
+              className="absolute top-1.5 right-3 bg-green-500/70 p-1.5 hover:bg-green-500 rounded"
+            >
               Rate
             </Button>
           )}

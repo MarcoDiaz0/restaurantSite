@@ -6,7 +6,7 @@ export const useFiltersStore = create((set) => ({
       latitude: null,
       longitude: null,
     },
-    foodType: [],
+    foodType: ["Plate", "Fastfood", "Drink", "Dessert"],
     category: {},
   },
 

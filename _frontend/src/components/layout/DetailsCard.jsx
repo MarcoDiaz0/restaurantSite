@@ -42,7 +42,7 @@ function DetailsCard({ plate }) {
             <h1 className=" text-2xl mx-2 flex gap-1 items-center ">
               Rate:{" "}
               <span className="Inconsolata font-medium">
-                {plate.rate?.value || 0}
+                {plate.rate.value}
               </span>{" "}
               <FaStar />
             </h1>

@@ -7,7 +7,7 @@ export const FileInput = ({ type, title, onChange, icon, className }) => {
     >
       <label
         htmlFor="file"
-        className=" w-full  h-full flex justify-center items-center "
+        className=" w-full  h-full flex justify-center items-center"
       >
         {icon}
         {title}

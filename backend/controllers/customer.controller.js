@@ -151,10 +151,15 @@ export const ratePlate = async (req, res) => {
       message: "Invalid rating stars",
     });
   try {
-    const getCurrentRate = await Plates.findById(_id).select("rate");
-    const isExsist = getCurrentRate["rater"].includes(customer);
+    const getCurrentRate = await Plates.findById(_id).select("rate -_id");
+    if (!getCurrentRate)
+      return res.status(404).json({
+        success: false,
+        message: "Plate Not Found",
+      });
+    const isExsist = getCurrentRate.rate.rater.includes(customer);    
     if (isExsist) {
-      return res.status(400).json({
+      return res.status(402).json({
         success: false,
         message: "You have rated this before",
       });
@@ -164,11 +169,11 @@ export const ratePlate = async (req, res) => {
         {
           $set: {
             rate: {
-              stars: getCurrentRate["stars"] + stars,
-              rater: [...getCurrentRate["rater"], customer],
+              stars: getCurrentRate.rate["stars"] + stars,
+              rater: [...getCurrentRate.rate["rater"], customer],
               value:
-                (getCurrentRate["stars"] + stars) /
-                (getCurrentRate["rater"].length + 1),
+                (getCurrentRate.rate["stars"] + stars) /
+                (getCurrentRate.rate["rater"].length + 1),
             },
           },
         }

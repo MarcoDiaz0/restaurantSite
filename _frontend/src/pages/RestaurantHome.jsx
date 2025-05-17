@@ -26,7 +26,7 @@ export const RestaurantHome = () => {
             <Lottie animationData={Loader} className="w-1/4" />
           </div>
         ) : (
-          <RestaurantPage auth="123" />
+          <RestaurantPage  />
         )}
       </div>
     );

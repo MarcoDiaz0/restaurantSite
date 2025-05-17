@@ -2,7 +2,7 @@ import Checkbox from "../common/Checkbox";
 import { useFiltersStore } from "../../Store/filters";
 
 const Filters = () => {
-  const foodType = ["Plate", "Fastfood", "Drink", "Dessert", "All"];
+  const foodType = ["Plate", "Fastfood", "Drink", "Dessert"];
   const Categories = {
     Diets: [
       "Vegetarian",
@@ -48,41 +48,20 @@ const Filters = () => {
       <div className="flex w-full flex-col gap-1">
         <div className="p-4">
           <h2 className="text-xl font-bold mb-4">Food Type</h2>
-          <div>
+          <div className="grid  grid-cols-2">
             {foodType.map((type) => (
               <div key={type}>
                 <Checkbox
-                  check={
-                    type === "All"
-                      ? filters.foodType.length === foodType.length
-                      : filters.foodType.includes(type)
-                  }
+                  check={filters.foodType.includes(type)}
                   onCheck={(isChecked) => {
                     let updatedFoodTypes = [...filters.foodType];
 
-                    if (type === "All") {
-                      updatedFoodTypes = isChecked ? [...foodType] : [];
+                    if (isChecked) {
+                      updatedFoodTypes.push(type);
                     } else {
-                      if (isChecked) {
-                        updatedFoodTypes.push(type);
-                      } else {
-                        updatedFoodTypes = updatedFoodTypes.filter(
-                          (item) => item !== type
-                        );
-                      }
-
-                      if (updatedFoodTypes.length !== foodType.length) {
-                        updatedFoodTypes = updatedFoodTypes.filter(
-                          (item) => item !== "All"
-                        );
-                      }
-
-                      if (
-                        updatedFoodTypes.length === foodType.length - 1 &&
-                        !updatedFoodTypes.includes("All")
-                      ) {
-                        updatedFoodTypes.push("All");
-                      }
+                      updatedFoodTypes = updatedFoodTypes.filter(
+                        (item) => item !== type
+                      );
                     }
                     setFilter("foodType", updatedFoodTypes);
                   }}

@@ -31,9 +31,11 @@ const plateSchema = new mongoose.Schema(
     },
     location: {
       type: Object,
+      required: true,
     },
     rate: {
       type: Object,
+      required: true,
     },
   },
   {

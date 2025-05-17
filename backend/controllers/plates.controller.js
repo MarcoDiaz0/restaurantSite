@@ -136,13 +136,12 @@ export const deletePlate = async (req, res) => {
   }
 };
 //! Filter Plates
-export const filterPlates = async (req, res) => {
+export const filterPlates = async (req, res) => {  
   const {
     category,
     foodType,
     location: { latitude, longitude },
   } = req.body;
-  
   const categoryFilters = Object.entries(category).map(([key, values]) => ({
     [`category.${key}`]: { $in: values },
   }));
@@ -152,7 +151,6 @@ export const filterPlates = async (req, res) => {
   };
   if( !latitude || !longitude) location = null
   const page = req.query.page || 1;
-  const limit = req.query.limit || 2;
   const args = {
     type: { $in: foodType },
     ...location,
@@ -162,12 +160,12 @@ export const filterPlates = async (req, res) => {
   try {
     const platesCount = await Plates.countDocuments(args);
     const plates = await Plates.find(args)
-      .skip(limit * (page - 1))
-      .limit(limit);
+      .skip(18 * (page - 1))
+      .limit(18);
     res.status(200).json({
       success: true,
       data: plates,
-      allPages: Math.ceil(platesCount / limit),
+      allPages: Math.ceil(platesCount / 18),
     });
   } catch (error) {
     res.status(400).json({ success: false, Error: "Bad Request" });
@@ -176,20 +174,19 @@ export const filterPlates = async (req, res) => {
 //! Get Plate By Rating
 export const getPlates = async (req, res) => {
   const page = req.query.page || 1;
-  const limit = req.query.limit || 3;
   const args = {
     "rate.value": { $gt: 3.5 },
   };
   try {
     const platesCount = await Plates.countDocuments(args);
     const plates = await Plates.find(args)
-      .skip(limit * (page - 1))
-      .limit(limit);
+      .skip(18 * (page - 1))
+      .limit(18);
       
     res.status(200).json({
       success: true,
       data: plates,
-      allPages: Math.ceil(platesCount / limit),
+      allPages: Math.ceil(platesCount / 18),
     });
   } catch (error) {
     res.status(400).json({ success: false, Error: "Bad Request" });
