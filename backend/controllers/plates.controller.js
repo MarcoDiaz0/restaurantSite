@@ -90,8 +90,7 @@ export const updatePlate = async (req, res) => {
           price,
           picture,
         },
-      },
-      { new: true }
+      }
     );
     if (!newPlate) {
       return res.status(404).json({
@@ -159,7 +158,7 @@ export const filterPlates = async (req, res) => {
   
   try {
     const platesCount = await Plates.countDocuments(args);
-    const plates = await Plates.find(args)
+    const plates = await Plates.find(args).populate({path:"restaurant",select:"restaurantName"})
       .skip(18 * (page - 1))
       .limit(18);
     res.status(200).json({
@@ -180,6 +179,7 @@ export const getPlates = async (req, res) => {
   try {
     const platesCount = await Plates.countDocuments(args);
     const plates = await Plates.find(args)
+      .populate({ path: "restaurant", select: "restaurantName" })
       .skip(18 * (page - 1))
       .limit(18);
       

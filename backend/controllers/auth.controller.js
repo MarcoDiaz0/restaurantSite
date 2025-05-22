@@ -260,10 +260,14 @@ export const getUser = async (req, res) => {
 
   try {
     let user = await Customers.findById(_id).select(
-      "-_id -OTPCode -logitude -latitude"
+      "-_id -OTPCode "
     );
+    
+    
     if (!user) {
-      user = await Restaurants.findById(_id).select("-_id -OTPCode");
+      user = await Restaurants.findById(_id).select(
+        "-_id -OTPCode -__v -logitude -latitude"
+      );
     }
     if (!user) {
       return res.status(404).json({

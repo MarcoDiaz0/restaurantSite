@@ -24,7 +24,6 @@ const Menu = () => {
     auth: { _id, isOwner },
   } = authSlice();
   useEffect(() => {
-    
     if (isOwner) getRestaurantData(_id);
     else getPlates();
     if (!isOwner && _id) getFavourites();

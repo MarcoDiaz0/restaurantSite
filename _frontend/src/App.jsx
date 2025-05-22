@@ -4,7 +4,7 @@ import NavBar from "./components/layout/Navbar";
 import Sign from "./pages/Sign";
 import Menu from "./pages/Menu";
 import Profile from "./pages/Profile";
-import Policy from "./pages/Policy";
+
 import { RestaurantHome } from "./pages/RestaurantHome";
 import Footer from "./components/layout/Footer";
 import { Alert } from "./components/common/Alert";
@@ -13,6 +13,8 @@ import { authSlice } from "./Store/user";
 import { CreatePlate } from "./pages/CreatePlate";
 import  Favourites  from "./pages/Favourites";
 import Orders from "./pages/Orders";
+import RestaurantPage from "./components/layout/RestaurantPage";
+import { CreateRestaurant } from "./components/layout/CreateRestaurant";
 
 function App() {
   const {
@@ -27,8 +29,13 @@ function App() {
           <Route path="/sign" element={<Sign />} />
           <Route path="/menu" element={<Menu />} />
           <Route path="/profile" element={<Profile />} />
-          <Route path="/policy" element={<Policy />} />
-          <Route path="/restaurantHome" element={<RestaurantHome />} />
+          <Route path="/restaurantHome" element={<RestaurantHome />}>
+            {/* Default nested route */}
+            <Route index element={<></>} />
+            {/* More nested routes */}
+            <Route path="create" element={<CreateRestaurant />} />
+            <Route path="page" element={<RestaurantPage/>} />
+          </Route>
           <Route path="/createPlate" element={<CreatePlate />} />
           <Route path="/favourites" element={<Favourites />} />
           <Route path="/orders" element={<Orders />} />
@@ -37,6 +44,8 @@ function App() {
         <Footer />
         <Alert />
       </BrowserRouter>
+
+      
     </div>
   );
 }

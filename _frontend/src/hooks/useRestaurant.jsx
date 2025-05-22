@@ -3,25 +3,23 @@ import { useState } from "react";
 import { authSlice } from "../Store/user";
 import { useRestaurant } from "../Store/restaurant";
 import { useUploadImage } from "./useImage";
+import { useNavigate } from "react-router-dom";
 //! get data of the restaurant
 export const useGetRestaurant = () => {
-  const [loading, setloading] = useState(false);
-  const [restaurantExist, setRestaurantExist] = useState(false);
   const { setData, setPlates } = useRestaurant();
+  const [exist ,setExist] =  useState(false)
+  
   const getRestaurantData = async (_id) => {
-    setloading(true);
     try {
       const res = await axios.get(`/api/restaurant/${_id}`);
       setData(res.data.data);
       setPlates(res.data.plates);
-      setRestaurantExist(true);
+      setExist(true)
     } catch (error) {
-      if (error.response.status === 402) setRestaurantExist(false);
-    } finally {
-      setloading(false);
+      console.log(error);
     }
   };
-  return { getRestaurantData, loading, restaurantExist };
+  return { getRestaurantData, exist };
 };
 
 //! create  restaurant
@@ -29,20 +27,23 @@ export const useCreateRestaurant = () => {
   const {
     auth: { _id },
   } = authSlice();
+  const navigate = useNavigate();
   const [loading, setloading] = useState(false);
   const [err, setErr] = useState("");
   const { uploadImage } = useUploadImage();
   const CreateRestaurant = async (credentials) => {
-    const imgURL = await uploadImage(credentials.coverPicture);
+    let imgURL;
+    if (typeof credentials.coverPicture != "string")
+      imgURL = await uploadImage(credentials.coverPicture);
     credentials.coverPicture = imgURL;
     setloading(true);
     try {
-      setErr(""); 
+      setErr("");
       const res = await axios.post("/api/restaurant/create", {
         ...credentials,
         _id,
       });
-
+      navigate("/restaurantHome/page");
       return res.data.success;
     } catch (error) {
       if (error.response.status === 403) setErr("Already Exist");
@@ -53,30 +54,6 @@ export const useCreateRestaurant = () => {
   return { CreateRestaurant, loading, err };
 };
 
-//! update Restaurant
-export const useUpdateRestaurant = () => {
-  const {
-    auth: { _id },
-  } = authSlice();
-  const { data, setData } = useRestaurant();
-  const updateRestaurant = async () => {
-    try {
-      const res = await axios.put("/api/restaurant/update", { ...data, _id });
-      if (res.data.success)
-        setData({
-          restaurantName: res.data.restaurantName,
-          location: {
-            latitude: res.data.latitude,
-            longitude: res.data.longitude,
-          },
-          coverPicture: res.data.coverPicture,
-        });
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  return { updateRestaurant };
-};
 //! Get Restaurant Orders
 export const useGetOrders_R = () => {
   const [ResOrders, setResOrders] = useState([]);

@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { useRestaurant } from "../../Store/restaurant";
 import MapBox from "../common/MapBox";
 import PlateContainer from "../layout/PlateContainer";
@@ -7,17 +8,16 @@ const RestaurantPage = () => {
     data: { latitude, longitude, restaurantName, coverPicture },
     plates,
   } = useRestaurant();
- 
-  
   return (
     <div className="flex w-full flex-col md:flex-row  ">
-      <article className="bg-dark/80 p-3 text-light w-full flex flex-col gap-5 ">
+      <article className="bg-dark/80 p-3 md:w-1/3  w-full text-light  flex flex-col gap-5 ">
         <div className="text-center ">
-          <img
-            src={coverPicture}
-            className="aspect-5/3 rounded-lg object-cover"
-          />
-
+          {coverPicture && (
+            <img
+              src={coverPicture}
+              className="aspect-5/3 rounded-lg object-cover"
+            />
+          )}
           <h1 className=" text-3xl text-light underline w-full  ">
             Welcome To
           </h1>
@@ -34,8 +34,7 @@ const RestaurantPage = () => {
           />
         </div>
       </article>
-
-      <article>
+      <article className="md:w-2/3 w-full">
         <PlateContainer plates={plates} />
       </article>
     </div>

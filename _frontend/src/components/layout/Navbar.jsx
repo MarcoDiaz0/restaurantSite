@@ -29,7 +29,7 @@ const Navbar = () => {
       <div className="flex items-center">
         {[
           {
-            route: isOwner ? "/restaurantHome" : "/",
+            route: isOwner ? "/restaurantHome/create" : "/",
             title: "HOME",
             icon: <GoHomeFill />,
           },

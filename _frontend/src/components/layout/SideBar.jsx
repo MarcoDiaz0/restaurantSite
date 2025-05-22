@@ -1,4 +1,4 @@
-import { IoMdHeartEmpty, IoMdNotificationsOutline } from "react-icons/io";
+import { IoMdHeartEmpty } from "react-icons/io";
 import { Link } from "react-router-dom";
 import { authSlice } from "../../Store/user";
 import { FiUser } from "react-icons/fi";
@@ -21,11 +21,7 @@ const SideBar = () => {
           <FiUser className="w-6 h-6" />
         </div>
       </Link>
-      <Link>
-        <div className="cursor-pointer hover:text-prime duration-200 ">
-          <IoMdNotificationsOutline className="w-6 h-6" />
-        </div>
-      </Link>
+      
       {!isOwner && (
         <Link to={"/favourites"}>
           <div className="  cursor-pointer hover:text-prime duration-200 rounded-full">

@@ -9,6 +9,8 @@ import Button from "../components/common/Button";
 import { FileInput } from "../components/common/FileInput";
 import { useAlert } from "../Store/Alert";
 import { useUploadImage } from "../hooks/useImage";
+import { CiImageOff } from "react-icons/ci";
+
 
 const Profile = () => {
   const { Alert } = useAlert();
@@ -37,12 +39,7 @@ const Profile = () => {
     try {
       setErr({ username: "", restaurantName: "" });
       let imgURL = info.coverPicture;
-      
-      
-      if (typeof imgURL != "string")
-        imgURL = await uploadImage(imgURL);
-
-      console.log(imgURL);
+      if (typeof imgURL != "string") imgURL = await uploadImage(imgURL);
       const res = await axios.put("/api/auth/update", {
         ...info,
         coverPicture: imgURL,
@@ -101,7 +98,7 @@ const Profile = () => {
             type="password"
             icon={<IoMdKey />}
           />
-          {isOwner && (
+          {isOwner && info.restaurantName && (
             <Input
               onChange={(e) => {
                 setInfo((ls) => ({ ...ls, restaurantName: e.target.value }));
@@ -114,16 +111,20 @@ const Profile = () => {
             />
           )}
         </div>
-        {isOwner && info.coverPicture ? (
+        {isOwner ? (
           <div className="w-1/2 flex flex-col gap-1 items-center justify-center">
-            <img
-              src={
-                typeof info.coverPicture == "string"
-                  ? info.coverPicture
-                  : URL.createObjectURL(info.coverPicture)
-              }
-              className=" w-10/11 rounded-lg "
-            />
+            {info.coverPicture ? (
+              <img
+                src={
+                  typeof info.coverPicture == "string"
+                    ? info.coverPicture
+                    : URL.createObjectURL(info.coverPicture)
+                }
+                className=" w-10/11 rounded-lg "
+              />
+            ) : (
+              <CiImageOff className=" w-9/10 h-full rounded-lg " />
+            )}
             <FileInput
               type={"image/*"}
               title="Upload New Picture"

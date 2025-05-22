@@ -55,7 +55,7 @@ export const CreatePlate = () => {
     description: "",
     picture: "",
     price: "",
-    type: "plate",
+    type: "Plate",
     category: {},
   });
 

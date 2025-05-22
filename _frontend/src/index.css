@@ -27,14 +27,15 @@ li:hover {
 .Inconsolata {
   font-family: "Inconsolata", monospace;
 }
-.changeText:hover{
-  width: 130px;
-  font-size:large;
+
+
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
 }
-.changeText:hover:before{
-  width: 300px;
-  content: "add post";
-}
-.changeText{
-  font-size: 0px;
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }

@@ -5,6 +5,7 @@ import { useUploadImage } from "./useImage";
 import { useNavigate } from "react-router-dom";
 import { useAlert } from "../Store/Alert";
 import { useFiltersStore } from "../Store/filters";
+import { useGetRestaurant } from "./useRestaurant";
 
 //! Create Plate
 export const useCreatePlate = () => {
@@ -31,19 +32,27 @@ export const useCreatePlate = () => {
 };
 //! Update Plate
 export const useUpdatePlate = () => {
-  const [loading, setloading] = useState(false);
+  const { Alert } = useAlert();
+  const { uploadImage } = useUploadImage();
+  const { getRestaurantData } = useGetRestaurant();
+  const {
+    auth: { _id },
+  } = authSlice();
   const updatePlate = async (plate) => {
-    setloading(true);
+    let imgURL = plate.picture;
+    if (typeof imgURL != "string") imgURL = await uploadImage(imgURL);
+    plate.picture = imgURL;
     try {
       const res = await axios.put("/api/plates/update", plate); // plate = { _id, restaurant, price, description, picture }
-      return res.data.data;
+      console.log(res.data);
+      getRestaurantData(_id);
+
+      Alert("The Plate Updated successfully", res.data.success);
     } catch (error) {
       console.log(error);
-    } finally {
-      setloading(false);
     }
   };
-  return { updatePlate, loading };
+  return { updatePlate };
 };
 //! Delete Plate
 export const useDeletePlate = () => {
@@ -89,16 +98,16 @@ export const useHighRatedPlates = () => {
       console.log(error);
     }
   };
-  return { getPlates  };
+  return { getPlates };
 };
 //! Filter Plates
 export const useFilterPlates = () => {
-  const { filters } = useFiltersStore()
+  const { filters } = useFiltersStore();
   const { setFilteredPlates } = useFiltersStore();
   const filterPlates = async () => {
     try {
-      const res =  await axios.post("/api/plates/", filters);
-      setFilteredPlates(res.data.data)
+      const res = await axios.post("/api/plates/", filters);
+      setFilteredPlates(res.data.data);
     } catch (error) {
       console.log(error);
     }

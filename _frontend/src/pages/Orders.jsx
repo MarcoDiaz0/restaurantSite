@@ -19,7 +19,7 @@ const Orders = () => {
     if (_id && isOwner) getRestOrders();
   }, [_id, isOwner, orders, ResOrders]);
   return (
-    <div className="md:w-7/10 min-h-[70vh] flex flex-col-reverse mx-auto py-2 ">
+    <div className="md:w-7/10 min-h-[70vh] flex flex-col mx-auto py-2 ">
       {modal.display === "flex" && (
         <Modal>
           <RateModal plate={modal.user} />

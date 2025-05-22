@@ -23,7 +23,7 @@ const LandingPage = () => {
      setFilter ("location", location.location);
    }, [location, setFilter]);
   useEffect(() => {
-    if (isOwner) navigate("/restaurantHome");
+    if (isOwner) navigate("/restaurantHome/create");
   }, [isOwner, navigate]);
   const [text, setText] = useState({ display: false, index: 0 });
   const textArray = ["Diet Programs", "Sensitive People", "Patient Care"];

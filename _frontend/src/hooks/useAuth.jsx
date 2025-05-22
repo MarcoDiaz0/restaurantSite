@@ -11,7 +11,7 @@ export const useSignup = () => {
   const [err, setErr] = useState({
     email: "",
     password: "",
-    username: "", 
+    username: "",
     confirmPassword: "",
   });
   const signup = async (props) => {
@@ -86,9 +86,9 @@ export const useLogin = () => {
   const [loading, setloading] = useState(false);
   const [err, setErr] = useState({ email: "", password: "" });
   const { setAuth, isOwner } = authSlice();
-  const { Alert } = useAlert(); 
+  const { Alert } = useAlert();
 
-  const login = async ({ email, password }) => { 
+  const login = async ({ email, password }) => {
     if (
       !email ||
       !password ||
@@ -111,7 +111,6 @@ export const useLogin = () => {
     }
     setloading(true);
     try {
-      
       setErr({ email: "", password: "" });
       const resp = await axios.post("/api/auth/login", {
         email,
@@ -120,7 +119,7 @@ export const useLogin = () => {
       });
       setAuth({ _id: resp.data.data, isOwner: resp.data.isOwner });
 
-      navigate(resp.data.isOwner ? "/restaurantHome" : "/");
+      navigate(resp.data.isOwner ? "/restaurantHome/create" : "/");
       Alert("You Have Successfully Logged In", true);
     } catch (error) {
       if (error.response.status === 402 || error.response.status === 403)
@@ -144,10 +143,10 @@ export const useOTPCheck = () => {
     isOwner,
   } = authSlice();
   const checkOTP = async (otp) => {
-    const props = { _id, otp, isOwner };    
+    const props = { _id, otp, isOwner };
     const resp = await axios.post("/api/auth/OTP", props);
     if (resp.data.success) {
-      navigate(isOwner ? "/restaurantHome" : "/"); 
+      navigate(isOwner ? "/restaurantHome/create" : "/");
     }
   };
 
@@ -156,13 +155,19 @@ export const useOTPCheck = () => {
 //! password recover
 export const usePassRecover = () => {
   const { isOwner } = authSlice();
+  const { Alert } = useAlert();
+
   const GetPass = async (email) => {
-    //TODO: make alert
-    const resp = await axios.post("/api/auth/passRecover", {
-      email,
-      isOwner,
-    });
-    console.log(resp);
+    try {
+      const res = await axios.post("/api/auth/passRecover", {
+        email,
+        isOwner,
+      });
+      console.log(res);
+      Alert(res.data.message, res.data.success);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return { GetPass };
