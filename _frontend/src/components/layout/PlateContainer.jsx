@@ -18,14 +18,14 @@ const PlateContainer = ({ plates = []}) => {
           <DetailsCard plate={x[0]} />}
         </Modal>
       )}
-      {plates != [] ? (
+      {plates.length != 0 ? (
         <div className="p-2 md:col-span-2  grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 overflow-scroll gap-2">
           {plates?.map((plate) => (
             <Card key={plate._id} cardInfo={plate} setDetails={setDetails} />
           ))}
         </div>
       ) : (
-        <p className="m-auto w-full">There Are No Plates</p>
+        <p className="text-4xl text-center mt-10 w-full">There Are No Plates</p>
       )}
     </>
   );

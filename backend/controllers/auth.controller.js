@@ -262,8 +262,6 @@ export const getUser = async (req, res) => {
     let user = await Customers.findById(_id).select(
       "-_id -OTPCode "
     );
-    
-    
     if (!user) {
       user = await Restaurants.findById(_id).select(
         "-_id -OTPCode -__v -logitude -latitude"

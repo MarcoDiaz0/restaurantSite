@@ -16,17 +16,10 @@ function DetailsCard({ plate }) {
   const {
     auth: { _id, isOwner },
   } = authSlice();
-  const [newPlate, setNewPlate] = useState({
-    description: plate.description || "",
-    price: plate.price,
-    picture: plate.picture,
-    _id: plate._id,
-    restaurant: _id,
-  });
+  const [newPlate, setNewPlate] = useState({});
   const { updatePlate } = useUpdatePlate();
   const { getRestaurantData } = useGetRestaurant();
   const [editMode, setEditMode] = useState(false);
-
   const { setModal } = useModal();
   const { deletePlate, loading } = useDeletePlate();
   const DeleteHandler = () => {
@@ -40,6 +33,16 @@ function DetailsCard({ plate }) {
   const update = async () => {
     updatePlate(newPlate);
     setModal();
+  };
+  const editModeHandler = () => {
+    setNewPlate({
+      description: plate.description,
+      price: plate.price,
+      picture: plate.picture,
+      restaurant: _id,
+      _id: plate._id,
+    });
+    setEditMode(true);
   };
   if (plate)
     return (
@@ -67,7 +70,7 @@ function DetailsCard({ plate }) {
           </>
         ) : (
           <img
-            src={newPlate.picture}
+            src={plate.picture}
             className=" w-full md:w-96 md:h-96  rounded-t-lg md:rounded-l-2xl "
           />
         )}
@@ -147,7 +150,7 @@ function DetailsCard({ plate }) {
                   </Button>
                 ) : (
                   <Button
-                    onClick={() => setEditMode(true)}
+                    onClick={editModeHandler}
                     className="bg-blue-500/50 hover:bg-blue-500 rounded-xl p-2 flex items-center justify-center gap-2.5 w-1/2"
                   >
                     Edit <FaEdit />

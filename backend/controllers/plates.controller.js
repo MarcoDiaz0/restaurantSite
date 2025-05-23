@@ -45,29 +45,6 @@ export const createPlates = async (req, res) => {
     res.status(400).json({ success: false, Error: "something went wrong" });
   }
 };
-//! Get One Plate
-export const getOnePlate = async (req, res) => {
-  const { _id } = req.params;
-  if (!mongoose.Types.ObjectId.isValid(_id)) {
-    return res.status(400).json({
-      success: false,
-      message: "Invalid ID format",
-    });
-  }
-  try {
-    const plate = await Plates.findById(_id).populate({
-      path: "restaurant",
-      select: "restaurantName longitude latitude coverPicture -_id",
-    });
-    if (!plate)
-      return res
-        .status(404)
-        .json({ success: false, message: "Plate Not Found" });
-    res.status(200).json({ success: true, data: plate });
-  } catch (error) {
-    res.status(400).json({ success: false, message: "bad request" });
-  }
-};
 //! Update Plate
 export const updatePlate = async (req, res) => {
   const { _id, restaurant, price, description, picture } = req.body;
@@ -155,7 +132,6 @@ export const filterPlates = async (req, res) => {
     ...location,
     ...(categoryFilters.length > 0 ? { $or: categoryFilters } : {}),
   };
-  
   try {
     const platesCount = await Plates.countDocuments(args);
     const plates = await Plates.find(args).populate({path:"restaurant",select:"restaurantName"})

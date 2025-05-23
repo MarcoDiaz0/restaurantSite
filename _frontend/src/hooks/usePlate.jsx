@@ -58,6 +58,10 @@ export const useUpdatePlate = () => {
 export const useDeletePlate = () => {
   const [loading, setloading] = useState(false);
   const { Alert } = useAlert();
+  const { getRestaurantData } = useGetRestaurant();
+  const {
+    auth: { _id },
+  } = authSlice();
   const deletePlate = async (plate, restaurant) => {
     setloading(true);
 
@@ -66,6 +70,7 @@ export const useDeletePlate = () => {
         _id: plate,
         restaurant,
       });
+      getRestaurantData(_id);
       Alert(res.data.message, res.data.success);
     } catch (error) {
       console.log(error);
@@ -74,18 +79,6 @@ export const useDeletePlate = () => {
     }
   };
   return { deletePlate, loading };
-};
-//! Get One Plate
-export const useOnePlate = () => {
-  const getOnePlate = async (_id) => {
-    try {
-      const res = await axios.post(`/api/plates/getone/${_id}`);
-      return res.data.data;
-    } catch (error) {
-      console.log(error);
-    }
-  };
-  return { getOnePlate };
 };
 //! Get High Rated Plates
 export const useHighRatedPlates = () => {
