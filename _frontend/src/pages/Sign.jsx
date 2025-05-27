@@ -56,7 +56,7 @@ export default function Sign() {
               : `Search for your favorite fastfood, plates, drinks and desserts in the nearest place to you`}
           </p>
           <Button
-            className="bg-light p-3 rounded-2xl hover:scale-105"
+            className="bg-light p-2 rounded-2xl hover:scale-105"
             onClick={() => setIsLogin(!isLogin)}
           >
             {!isLogin ? "LOGIN" : "SIGN UP"}

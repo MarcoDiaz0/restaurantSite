@@ -19,7 +19,7 @@ export const createPlates = async (req, res) => {
     });
   }
   if (!name || !price || !type || !restaurant) {
-    res
+    return res
       .status(402)
       .json({ success: false, Error: "Please provide all fields" });
   }
@@ -40,7 +40,7 @@ export const createPlates = async (req, res) => {
       location: { latitude, longitude },
       rate: { stars: 0, rater: [], value: 0 },
     });
-    res.status(201).json({ success: true, data: plate });
+    return res.status(201).json({ success: true, data: plate });
   } catch (error) {
     res.status(400).json({ success: false, Error: "something went wrong" });
   }
@@ -112,7 +112,7 @@ export const deletePlate = async (req, res) => {
   }
 };
 //! Filter Plates
-export const filterPlates = async (req, res) => {  
+export const filterPlates = async (req, res) => {
   const {
     category,
     foodType,
@@ -125,7 +125,7 @@ export const filterPlates = async (req, res) => {
     "location.latitude": { $gt: latitude - 0.027, $lt: latitude + 0.027 },
     "location.longitude": { $gt: longitude - 0.027, $lt: longitude + 0.027 },
   };
-  if( !latitude || !longitude) location = null
+  if (!latitude || !longitude) location = null;
   const page = req.query.page || 1;
   const args = {
     type: { $in: foodType },
@@ -134,7 +134,8 @@ export const filterPlates = async (req, res) => {
   };
   try {
     const platesCount = await Plates.countDocuments(args);
-    const plates = await Plates.find(args).populate({path:"restaurant",select:"restaurantName"})
+    const plates = await Plates.find(args)
+      .populate({ path: "restaurant", select: "restaurantName" })
       .skip(18 * (page - 1))
       .limit(18);
     res.status(200).json({
@@ -158,7 +159,7 @@ export const getPlates = async (req, res) => {
       .populate({ path: "restaurant", select: "restaurantName" })
       .skip(18 * (page - 1))
       .limit(18);
-      
+
     res.status(200).json({
       success: true,
       data: plates,

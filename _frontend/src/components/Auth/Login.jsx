@@ -1,7 +1,6 @@
 import { useState } from "react";
 import Input from "../common/Input.jsx";
 import { IoIosMail, IoMdKey } from "react-icons/io";
-import GoogleSign from "./GoogleSign";
 import Button from "../common/Button.jsx";
 import { useLogin } from "../../hooks/useAuth.jsx";
 import Checkbox from "../common/Checkbox.jsx";
@@ -32,11 +31,7 @@ const Login = () => {
       <h1 className=" text-3xl self-center font-medium text-center">
         JOIN NEARBY<span className="text-prime">FOOOD </span> NOW
       </h1>
-      <GoogleSign />
-      <aside className="w-full flex justify-center items-center relative">
-        <div className="absolute w-full h-px bg-gray-800"></div>
-        <h2 className="px-4 tracking-widest  font-bold z-10 bg-light">OR</h2>
-      </aside>
+      
       <div className="flex flex-col gap-3 sm:flex-row">
         <Input
           err={err.email}
