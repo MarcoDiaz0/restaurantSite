@@ -9,9 +9,9 @@ export const Alert = () => {
   } = useAlert();  
   return (
     <div
-      className={`fixed p-4 rounded-3xl left-1/2 -translate-x-1/2 z-9999 text-light -bottom-18 duration-500 
+      className={` p-4 rounded-3xl left-1/2 -translate-x-1/2 z-9999 text-light -bottom-18 duration-500 
         ${success ? "bg-green-500/85 " : "bg-red-500/85 "}
-        ${isActive && "-translate-y-21"} `}
+        ${isActive && "-translate-y-21"} ${isActive ? "fixed" : "hidden"}`}
     >
       <Button
         onClick={() => Alert()}

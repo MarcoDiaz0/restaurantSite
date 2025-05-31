@@ -67,7 +67,7 @@ export const createUser = async (req, res) => {
       OTPCode: String(randomNumber),
       notification: 0,
     });
-  }  
+  }
   try {
     const success = await newUser.save();
 
@@ -113,24 +113,13 @@ export const login = async (req, res) => {
     } else {
       isExist = await Customers.findOne({ email });
     }
-    const isMatch = await bcrypt.compare(password, isExist.password);
 
-    if (isMatch)
-      res
-        .status(200)
-        .json({ success: true, data: isExist._id, isOwner: isOwner });
-    else {
-      let mailExist;
-      if (isOwner) {
-        mailExist = await Restaurants.findOne({ email });
-      } else {
-        mailExist = await Customers.findOne({ email });
-      }
-      if (mailExist) res.status(402).json({ success: false });
-      else res.status(403).json({ success: false });
-    }
+    const isMatch = await bcrypt.compare(password, isExist.password);
+    res
+      .status(200)
+      .json({ success: true, data: isExist._id, isOwner: isOwner });
   } catch (error) {
-    res.status(400).json({ success: false, Error: "server error" });
+    res.status(400).json({ success: false, Error: "Incorrect" });
   }
 };
 //! check OTP
@@ -188,6 +177,7 @@ export const recoverPass = async (req, res) => {
         email,
       });
     }
+
     if (isExist) {
       const generateRandomString = (length) => {
         const characters =
@@ -201,43 +191,30 @@ export const recoverPass = async (req, res) => {
         }
         return result;
       };
-
       const randomString = generateRandomString(10);
       const isSent = await sendMail({
         from: {
           name: "Nearby Food",
-          address: process.env.GMAIL || "nearbyfoood@gmail.com",
+          address: "nearbyfoood@gmail.com",
         },
         to: email,
         subject: "New PassWord",
         text: randomString,
-        html: `<b>${randomString} </b>`,
+        html: `<b>You New Password Is: ${randomString} </b>`,
       });
 
       if (!isSent) {
-        res
+        return res
           .status(400)
           .json({ success: false, message: "Your Email does not exist" });
       }
-      if (!isOwner) {
-        await Customers.findOneAndUpdate(
-          { email },
-          { $set: { password: randomString } }
-        );
-        res
-          .status(202)
-          .json({ success: true, message: "we sent new password to you" });
-      } else {
-        await Restaurants.findOneAndUpdate(
-          { email },
-          { $set: { password: randomString } }
-        );
-        res
-          .status(202)
-          .json({ success: true, message: "we sent new password to you" });
-      }
+      isExist.password = randomString;
+      await isExist.save();
+      return res
+        .status(202)
+        .json({ success: true, message: "we sent new password to you" });
     } else {
-      if (mailExist) res.status(402);
+      if (isExist) res.status(402).json({ success: false });
       else res.status(403).json({ success: false });
     }
   } catch (error) {
@@ -256,10 +233,10 @@ export const getUser = async (req, res) => {
   }
 
   try {
-    let user = await Customers.findById(_id).select("-_id -OTPCode ");
+    let user = await Customers.findById(_id).select("-_id -OTPCode -password");
     if (!user) {
       user = await Restaurants.findById(_id).select(
-        "-_id -OTPCode -__v -logitude -latitude"
+        "-_id -OTPCode -__v -logitude -latitude -password"
       );
     }
     if (!user) {
@@ -317,28 +294,26 @@ export const updateUser = async (req, res) => {
       .status(406)
       .json({ success: false, message: "this restaurant name already exist" });
   }
+  const updateFields = { username };
+
+  if (password) {
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
+    updateFields.password = hashedPassword;
+  }
+  if (restaurantName) updateFields.restaurantName = restaurantName;
+  if (coverPicture) updateFields.coverPicture = hashedPassword;
+
   let user = await Customers.findByIdAndUpdate(
     { _id },
-    {
-      $set: {
-        username,
-        password,
-      },
-    },
+    { $set: updateFields },
     { new: true }
   );
 
   if (!user) {
     user = await Restaurants.findByIdAndUpdate(
       { _id },
-      {
-        $set: {
-          username,
-          password,
-          restaurantName,
-          coverPicture,
-        },
-      },
+      { $set: updateFields },
       { new: true }
     );
   }

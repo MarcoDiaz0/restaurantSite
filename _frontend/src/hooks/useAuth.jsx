@@ -18,11 +18,11 @@ export const useSignup = () => {
     if (handleSignup({ ...props, setErr })) return;
     setLoading(true);
     try {
-      setErr({ email: "", password: "", username: "", confirmPassword: "" });      
+      setErr({ email: "", password: "", username: "", confirmPassword: "" });
       const resp = await axios.post("/api/auth", {
         ...props,
         isOwner,
-      });      
+      });
       setAuth({ _id: resp.data._id, isOwner: resp.data.isOwner });
       return resp;
     } catch (error) {
@@ -125,11 +125,11 @@ export const useLogin = () => {
       navigate(resp.data.isOwner ? "/restaurantHome/create" : "/");
       Alert("You Have Successfully Logged In", true);
     } catch (error) {
-      if (error.response.status === 402 || error.response.status === 403)
-        setErr({
-          password: error.response.status === 402 ? "Incorrect Password" : "",
-          email: error.response.status === 403 ? "Email Not Found" : "",
-        });
+      console.log(error);
+      setErr({
+        password: "Incorrect ",
+        email: "Incorrect",
+      });
     } finally {
       setloading(false);
     }
