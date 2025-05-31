@@ -50,7 +50,12 @@ function DetailsCard({ plate }) {
       <div className="flex flex-col md:flex-row  text-light bg-dark/80 rounded-2xl ">
         {editMode ? (
           <>
-            {typeof newPlate.picture == "string"  ? (
+            {newPlate.picture instanceof Blob ? (
+              <img
+                src={URL.createObjectURL(newPlate.picture)}
+                className=" w-full md:w-96 md:h-96  rounded-t-lg md:rounded-l-2xl "
+              />
+            ) : (
               <FileInput
                 type={"image/*"}
                 title="Upload New Picture"
@@ -59,20 +64,15 @@ function DetailsCard({ plate }) {
                   setNewPlate({
                     ...newPlate,
                     picture: e.target.files[0],
-                  });                                    
+                  });
                 }}
-              />
-            ) : (
-              <img
-                src={URL.createObjectURL(newPlate.picture)}
-                className=" w-full md:w-96 md:h-96  rounded-t-lg md:rounded-l-2xl "
               />
             )}
           </>
         ) : (
           <img
             src={plate.picture}
-            className=" w-full md:w-96 md:h-96  rounded-t-lg md:rounded-l-2xl "
+            className=" w-9-full md:w-96 md:h-96 aspect-square object-cover rounded-t-lg md:rounded-l-2xl "
           />
         )}
         <div className="flex p-3 flex-col">

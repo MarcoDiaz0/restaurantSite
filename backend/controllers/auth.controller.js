@@ -302,7 +302,7 @@ export const updateUser = async (req, res) => {
     updateFields.password = hashedPassword;
   }
   if (restaurantName) updateFields.restaurantName = restaurantName;
-  if (coverPicture) updateFields.coverPicture = hashedPassword;
+  if (coverPicture) updateFields.coverPicture = coverPicture;
 
   let user = await Customers.findByIdAndUpdate(
     { _id },

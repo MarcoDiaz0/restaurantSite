@@ -66,7 +66,7 @@ export const CreatePlate = () => {
   return (
     <div className="w-full min-h-[80vh] flex  flex-col-reverse md:flex-row ">
       <article className="bg-dark/80 p-3 text-light md:w-1/3 w-full overflow-scroll ">
-      <h1 className="m-auto text-3xl">Create Plate</h1>
+        <h1 className="m-auto text-3xl">Create Plate</h1>
         <Select
           options={types}
           value={plate.type}
@@ -120,7 +120,7 @@ export const CreatePlate = () => {
                         )}
                         onCheck={(isChecked) => {
                           let updatedHealthCondition = [
-                            ...plate.category[category]
+                            ...plate.category[category],
                           ];
                           if (isChecked) {
                             updatedHealthCondition = [
@@ -160,7 +160,7 @@ export const CreatePlate = () => {
         </div>
       </article>
       <div className="cursor-pointer flex flex-col lg:flex-row  justify-center gap-3 p-3">
-        {plate.picture ? (
+        {plate.picture instanceof Blob ? (
           <img
             className="rounded-2xl w-96 h-96 border aspect-square"
             src={URL.createObjectURL(plate.picture)}
