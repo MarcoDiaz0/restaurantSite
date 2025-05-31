@@ -1,8 +1,9 @@
 import { Link, useLocation } from "react-router-dom";
 import { authSlice } from "../../Store/user";
 import { GoHomeFill } from "react-icons/go";
-import {  MdRestaurantMenu, MdShoppingCart } from "react-icons/md";
-import LOGO from "../../images/LOGO light.svg"
+import { MdRestaurantMenu, MdShoppingCart } from "react-icons/md";
+
+import LOGO from "../../images/LOGO light.svg";
 
 const Navbar = () => {
   const { pathname: location } = useLocation();
@@ -10,7 +11,7 @@ const Navbar = () => {
   const {
     auth: { isOwner },
   } = authSlice();
-  
+
   return (
     <div className="w-full p-4 gap-2 sticky z-2000 top-0 bg-dark text-light backdrop-blur-xs flex flex-col justify-around sm:flex-row items-center">
       <Link to={"/"}>

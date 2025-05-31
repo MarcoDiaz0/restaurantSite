@@ -18,8 +18,11 @@ export const useSignup = () => {
     if (handleSignup({ ...props, setErr })) return;
     setLoading(true);
     try {
-      setErr({ email: "", password: "", username: "", confirmPassword: "" });
-      const resp = await axios.post("/api/auth", { ...props, isOwner });
+      setErr({ email: "", password: "", username: "", confirmPassword: "" });      
+      const resp = await axios.post("/api/auth", {
+        ...props,
+        isOwner,
+      });      
       setAuth({ _id: resp.data._id, isOwner: resp.data.isOwner });
       return resp;
     } catch (error) {
@@ -163,7 +166,6 @@ export const usePassRecover = () => {
         email,
         isOwner,
       });
-      console.log(res);
       Alert(res.data.message, res.data.success);
     } catch (error) {
       console.log(error);

@@ -1,8 +1,8 @@
 import axios from "axios";
 import { authSlice } from "../Store/user";
 import { useFavouritesStore } from "../Store/favouraites";
-import { useState } from "react";
 import { useAlert } from "../Store/Alert";
+import { useOrdersStore } from "../Store/Orders";
 
 //! Get Favourites
 export const useGetFavourites = () => {
@@ -72,7 +72,7 @@ export const useGetOrders = () => {
   const {
     auth: { _id },
   } = authSlice();
-  const [orders, setOrders] = useState([]);
+  const { setOrders } = useOrdersStore();
   const getOrders = async () => {
     try {
       const res = await axios.get(`api/customer/orders/${_id}`);
@@ -81,5 +81,5 @@ export const useGetOrders = () => {
       console.log(error);
     }
   };
-  return { getOrders, orders };
+  return { getOrders };
 };

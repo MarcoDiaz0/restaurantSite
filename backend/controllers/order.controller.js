@@ -2,11 +2,12 @@ import mongoose from "mongoose";
 import Orders from "../models/Order.model.js";
 import Plates from "../models/Plates.model.js";
 import Restaurants from "../models/Restaurant.model.js";
+import Customers from "../models/Customer.model.js";
 
 //! Create Order
 export const createOrder = async (req, res) => {
   const { adress, restaurant, plate, customer, phoneNumber } = req.body;
-
+  
   const restaurantExist = Restaurants.findById(restaurant);
   if (!restaurantExist) {
     return res.status(404).json({
@@ -20,9 +21,9 @@ export const createOrder = async (req, res) => {
       .status(401)
       .json({ success: false, message: "please provide all fields" });
   }
-  const { price } = await Plates.findById(plate).select("price -_id");
-
+  
   try {
+    const { price } = await Plates.findById(plate).select("price -_id");
     const order = await Orders.create({
       phoneNumber,
       adress,
@@ -32,6 +33,10 @@ export const createOrder = async (req, res) => {
       plate,
       status: null,
     });
+     await Restaurants.findOneAndUpdate(
+       { _id: restaurant },
+       { $inc: { "notification.newOrder": 1 } }
+     );    
     res.status(201).json({ success: true, data: order });
   } catch (error) {
     res.status(400).json({ success: false, message: "bad request" });
@@ -50,23 +55,27 @@ export const confirmOrder = async (req, res) => {
     });
   }
   try {
-    const oreder = await Orders.findOneAndUpdate(
+    const order = await Orders.findOneAndUpdate(
       { _id, restaurant },
       {
         $set: {
-          status:status
+          status: status,
         },
       },
       { new: true }
-    );
-    
-    
-    if (!oreder) {
+    );    
+    if (!order) {
       return res.status(404).json({
         success: false,
         message: "Order not found",
       });
     }
+    if (order.customer) {
+      await Customers.findOneAndUpdate(
+        { _id: order.customer },
+        { $inc: { notification: 1 } }
+      );
+    } 
     res.status(203).json({
       success: true,
       message: `Order ${status ? "Confirmed" : "Rejected"}`,

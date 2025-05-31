@@ -1,25 +1,18 @@
-import { useEffect } from "react";
 import OrderCard from "../components/common/OrderCard";
-import { useGetOrders } from "../hooks/useCustomer";
 import { authSlice } from "../Store/user";
-import { useGetOrders_R } from "../hooks/useRestaurant";
 import Modal from "../components/common/Modal";
 import RateModal from "../components/common/RateModal";
 import { useModal } from "../Store/modal";
+import { useOrdersStore } from "../Store/Orders";
 
 const Orders = () => {
   const {
     auth: { _id, isOwner },
   } = authSlice();
   const { modal } = useModal();
-  const { getOrders, orders = [] } = useGetOrders();
-  const { getRestOrders, ResOrders = [] } = useGetOrders_R();
-  useEffect(() => {
-    if (_id && !isOwner) getOrders();
-    if (_id && isOwner) getRestOrders();
-  }, [_id, isOwner, orders, ResOrders]);
+  const { orders } = useOrdersStore();  
   return (
-    <div className="md:w-7/10 min-h-[70vh] flex flex-col mx-auto py-2 ">
+    <div className="md:w-7/10 min-h-[70vh]  flex flex-col mx-auto p-2 ">
       {modal.display === "flex" && (
         <Modal>
           <RateModal plate={modal.user} />
@@ -27,13 +20,15 @@ const Orders = () => {
       )}
       {_id ? (
         <>
-          {isOwner
-            ? ResOrders.map((order) => (
-                <OrderCard key={order._id} order={order} />
-              ))
-            : orders.map((order) => (
-                <OrderCard key={order._id} order={order} />
-              ))}
+          {isOwner && orders.length > 0 ? (
+            orders.map((order) => <OrderCard key={order._id} order={order} />)
+          ) : orders.length > 0 ? (
+            orders.map((order) => <OrderCard key={order._id} order={order} />)
+          ) : (
+            <p className="text-3xl my-10 text-center">
+              You Do not Have Any Orders Yet
+            </p>
+          )}
         </>
       ) : (
         <p className="text-3xl my-10 text-center">

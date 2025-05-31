@@ -44,7 +44,6 @@ export const useUpdatePlate = () => {
     plate.picture = imgURL;
     try {
       const res = await axios.put("/api/plates/update", plate); // plate = { _id, restaurant, price, description, picture }
-      console.log(res.data);
       getRestaurantData(_id);
 
       Alert("The Plate Updated successfully", res.data.success);
@@ -59,9 +58,6 @@ export const useDeletePlate = () => {
   const [loading, setloading] = useState(false);
   const { Alert } = useAlert();
   const { getRestaurantData } = useGetRestaurant();
-  const {
-    auth: { _id },
-  } = authSlice();
   const deletePlate = async (plate, restaurant) => {
     setloading(true);
 
@@ -70,7 +66,7 @@ export const useDeletePlate = () => {
         _id: plate,
         restaurant,
       });
-      getRestaurantData(_id);
+      getRestaurantData(restaurant);
       Alert(res.data.message, res.data.success);
     } catch (error) {
       console.log(error);

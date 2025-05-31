@@ -2,6 +2,7 @@ import mongoose from "mongoose";
 import Customers from "../models/Customer.model.js";
 import Orders from "../models/Order.model.js";
 import Plates from "../models/Plates.model.js";
+import Restaurants from "../models/Restaurant.model.js";
 
 //! Get Customer Orders
 export const getOrders = async (req, res) => {
@@ -16,7 +17,7 @@ export const getOrders = async (req, res) => {
     const orders = await Orders.find({ customer: id }).populate({
       path: "plate",
       select: "name picture",
-    });    
+    });
     res.status(200).json({ success: true, data: orders });
   } catch (error) {
     res.status(400).json({ success: false, Error: "Bad request" });
@@ -151,13 +152,13 @@ export const ratePlate = async (req, res) => {
       message: "Invalid rating stars",
     });
   try {
-    const getCurrentRate = await Plates.findById(_id).select("rate -_id");
+    const getCurrentRate = await Plates.findById(_id).select("rate -_id restaurant");    
     if (!getCurrentRate)
       return res.status(404).json({
         success: false,
         message: "Plate Not Found",
       });
-    const isExsist = getCurrentRate.rate.rater.includes(customer);    
+    const isExsist = getCurrentRate.rate.rater.includes(customer);
     if (isExsist) {
       return res.status(402).json({
         success: false,
@@ -178,12 +179,58 @@ export const ratePlate = async (req, res) => {
           },
         }
       );
-      if (success)
+      if (success) {
+        await Restaurants.findOneAndUpdate(
+          { _id: getCurrentRate.restaurant },
+          { $inc: { "notification.newRate": 1 } }
+        );
         return res.status(202).json({
           success: true,
           message: "rating success",
         });
+      }
     }
+  } catch (error) {
+    res.status(400).json({ success: false, Error: "Bad request" });
+  }
+};
+//!Get Notifications
+export const getNotifications = async (req, res) => {
+  const { _id } = req.params;
+  if (!mongoose.Types.ObjectId.isValid(_id)) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid ID format",
+    });
+  }
+  try {
+    const notifications = await Customers.findById(_id).select("notification");
+    return res.status(201).json({
+      success: true,
+      data: notifications,
+    });
+  } catch (error) {
+    res.status(400).json({ success: false, Error: "Bad request" });
+  }
+};
+//! setNotifications
+export const setNotifications = async (req, res) => {
+  const { _id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(_id)) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid ID format",
+    });
+  }
+  try {
+    await Customers.findOneAndUpdate(
+      { _id },
+      { $set: { "notification": 0 } }
+    );
+    return res.status(203).json({
+      success: true,
+    });
   } catch (error) {
     res.status(400).json({ success: false, Error: "Bad request" });
   }

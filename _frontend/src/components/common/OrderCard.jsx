@@ -8,8 +8,7 @@ import Button from "./Button";
 const OrderCard = ({ order }) => {
   const { deleteOrder } = useDeleteOrder();
   const { confirmOrder } = useConfirmOrder();
-      const { setModal } = useModal();
-  
+  const { setModal } = useModal();
   const {
     auth: { isOwner },
   } = authSlice();
@@ -23,7 +22,7 @@ const OrderCard = ({ order }) => {
         <div className="flex flex-col items-center gap-2">
           <img
             src={order.plate.picture}
-            className=" w-full md:w-20 md:h-20  rounded-2xl "
+            className=" w-20 h-20 rounded-2xl "
           />
           {order.status !== null ? (
             <>

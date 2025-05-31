@@ -78,3 +78,47 @@ export const getRestaurantOrders = async (req, res) => {
     res.status(400).json({ success: false, Error: "Bad request" });
   }
 };
+//! Get Notifications
+export const getNotifications = async (req, res) => {
+  const { _id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(_id)) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid ID format",
+    });
+  }
+  try {
+    const notifications = await Restaurants.findById(_id).select(
+      "notification"
+    );
+    return res.status(201).json({
+      success: true,
+      data: notifications,
+    });
+  } catch (error) {
+    res.status(400).json({ success: false, Error: "Bad request" });
+  }
+};
+//! setNotifications
+export const setNotifications = async (req, res) => {
+  const { _id } = req.params;
+  
+  if (!mongoose.Types.ObjectId.isValid(_id)) {
+    return res.status(400).json({
+      success: false,
+      message: "Invalid ID format",
+    });
+  }
+  try {
+    await Restaurants.findOneAndUpdate(
+      { _id },
+      { $set: { "notification.newOrder": 0, "notification.newRate": 0 } }
+    );
+    return res.status(203).json({
+      success: true,
+    });
+  } catch (error) {
+    res.status(400).json({ success: false, Error: "Bad request" });
+  }
+};

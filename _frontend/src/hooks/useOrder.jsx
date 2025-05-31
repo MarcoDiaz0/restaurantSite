@@ -19,7 +19,7 @@ export const useCreateOrder = () => {
 
   //{ email, adress, restaurant, plates, customer }
   const createOrder = async (order) => {
-
+    
     if (
       !order.phoneNumber ||
       !/^(?:\+213|0)(5|6|7)\d{8}$/.test(order.phoneNumber)
@@ -34,7 +34,7 @@ export const useCreateOrder = () => {
       return;
     }
     try {
-      setErr("");
+      setErr("");      
       const res = await axios.post("/api/orders/create", {
         ...order,
         customer: _id || null,
@@ -74,7 +74,6 @@ export const useConfirmOrder = () => {
     auth: { _id },
   } = authSlice();
   const { getRestOrders } = useGetOrders_R();
-
   const { Alert } = useAlert();
   const confirmOrder = async (id, status) => {
     try {
@@ -82,7 +81,7 @@ export const useConfirmOrder = () => {
         restaurant: _id,
         _id: id,
         status,
-      });
+      });      
       getRestOrders();
       Alert(res.data.message, true);
     } catch (error) {

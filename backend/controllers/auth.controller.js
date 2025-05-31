@@ -2,10 +2,11 @@ import mongoose from "mongoose";
 import Customers from "../models/Customer.model.js";
 import Restaurants from "../models/Restaurant.model.js";
 import { sendMail } from "../utils/sendMail.js";
+import bcrypt from "bcrypt";
+
 //! signup
 export const createUser = async (req, res) => {
   const { username, password, email, isOwner } = req.body;
-
   if (!username || !email || !password) {
     return res
       .status(400)
@@ -44,7 +45,7 @@ export const createUser = async (req, res) => {
     to: email,
     subject: "Confirmation Code",
     text: String(randomNumber),
-    html: `<b>${randomNumber} </b>`,
+    html: `<b>Your Confirmation Code Is: ${randomNumber} </b>`,
   });
   let newUser;
   if (isOwner) {
@@ -53,6 +54,10 @@ export const createUser = async (req, res) => {
       password: password,
       email: email,
       OTPCode: String(randomNumber),
+      notification: {
+        newOrder: 0,
+        newRate: 0,
+      },
     });
   } else {
     newUser = new Customers({
@@ -60,11 +65,12 @@ export const createUser = async (req, res) => {
       password: password,
       email: email,
       OTPCode: String(randomNumber),
+      notification: 0,
     });
-  }
-
+  }  
   try {
     const success = await newUser.save();
+
     if (success) {
       res
         .status(201)
@@ -88,7 +94,7 @@ export const createUser = async (req, res) => {
       }
     }, 50000);
   } catch (error) {
-    res.status(500).json({ success: false, Error: "something went wrong" });
+    res.status(400).json({ success: false, Error: "Bad Request" });
   }
 };
 //! login
@@ -103,31 +109,22 @@ export const login = async (req, res) => {
   try {
     let isExist;
     if (isOwner) {
-      isExist = await Restaurants.findOne({
-        email: email,
-        password: password,
-      });
+      isExist = await Restaurants.findOne({ email });
     } else {
-      isExist = await Customers.findOne({
-        email: email,
-        password: password,
-      });
+      isExist = await Customers.findOne({ email });
     }
+    const isMatch = await bcrypt.compare(password, isExist.password);
 
-    if (isExist)
+    if (isMatch)
       res
         .status(200)
         .json({ success: true, data: isExist._id, isOwner: isOwner });
     else {
       let mailExist;
       if (isOwner) {
-        mailExist = await Restaurants.findOne({
-          email: email,
-        });
+        mailExist = await Restaurants.findOne({ email });
       } else {
-        mailExist = await Customers.findOne({
-          email: email,
-        });
+        mailExist = await Customers.findOne({ email });
       }
       if (mailExist) res.status(402).json({ success: false });
       else res.status(403).json({ success: false });
@@ -259,9 +256,7 @@ export const getUser = async (req, res) => {
   }
 
   try {
-    let user = await Customers.findById(_id).select(
-      "-_id -OTPCode "
-    );
+    let user = await Customers.findById(_id).select("-_id -OTPCode ");
     if (!user) {
       user = await Restaurants.findById(_id).select(
         "-_id -OTPCode -__v -logitude -latitude"

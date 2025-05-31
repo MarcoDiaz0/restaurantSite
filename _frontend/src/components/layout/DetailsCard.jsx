@@ -30,6 +30,7 @@ function DetailsCard({ plate }) {
     getRestaurantData(plate.restaurant._id);
     setModal();
   };
+  
   const update = async () => {
     updatePlate(newPlate);
     setModal();
@@ -38,7 +39,7 @@ function DetailsCard({ plate }) {
     setNewPlate({
       description: plate.description,
       price: plate.price,
-      picture: plate.picture,
+      picture: plate.picture || "",
       restaurant: _id,
       _id: plate._id,
     });
@@ -49,7 +50,7 @@ function DetailsCard({ plate }) {
       <div className="flex flex-col md:flex-row  text-light bg-dark/80 rounded-2xl ">
         {editMode ? (
           <>
-            {typeof newPlate.picture == "string" ? (
+            {typeof newPlate.picture == "string"  ? (
               <FileInput
                 type={"image/*"}
                 title="Upload New Picture"
@@ -58,7 +59,7 @@ function DetailsCard({ plate }) {
                   setNewPlate({
                     ...newPlate,
                     picture: e.target.files[0],
-                  });
+                  });                                    
                 }}
               />
             ) : (

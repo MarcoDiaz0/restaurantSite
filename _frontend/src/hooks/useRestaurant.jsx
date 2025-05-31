@@ -4,17 +4,18 @@ import { authSlice } from "../Store/user";
 import { useRestaurant } from "../Store/restaurant";
 import { useUploadImage } from "./useImage";
 import { useNavigate } from "react-router-dom";
+import { useOrdersStore } from "../Store/Orders";
 //! get data of the restaurant
 export const useGetRestaurant = () => {
   const { setData, setPlates } = useRestaurant();
-  const [exist ,setExist] =  useState(false)
-  
+  const [exist, setExist] = useState(false);
+
   const getRestaurantData = async (_id) => {
     try {
       const res = await axios.get(`/api/restaurant/${_id}`);
       setData(res.data.data);
       setPlates(res.data.plates);
-      setExist(true)
+      setExist(true);
     } catch (error) {
       console.log(error);
     }
@@ -56,17 +57,17 @@ export const useCreateRestaurant = () => {
 
 //! Get Restaurant Orders
 export const useGetOrders_R = () => {
-  const [ResOrders, setResOrders] = useState([]);
+  const { setOrders } = useOrdersStore();
   const {
     auth: { _id },
   } = authSlice();
   const getRestOrders = async () => {
     try {
       const res = await axios.get(`/api/restaurant/getOrders/${_id}`);
-      setResOrders(res.data.data);
+      setOrders(res.data.data);
     } catch (error) {
       console.log(error);
     }
   };
-  return { getRestOrders, ResOrders };
+  return { getRestOrders };
 };

@@ -39,7 +39,7 @@ app.post("/api/upload-image", async (req, res) => {
     form.append("type", "file");
 
     const response = await axios.post(
-      "https://freeimage.host/api/1/upload?key=6d207e02198a847aa98d0a2a901485a5",
+      `https://freeimage.host/api/1/upload?key=${process.env.IMG_HOST_kEY}`,
       form,
       { headers: form.getHeaders() }
     );
